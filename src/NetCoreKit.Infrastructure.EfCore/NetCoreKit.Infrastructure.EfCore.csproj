@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.0.1</Version>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+	  <Title>The EfCore library for Cloud Native .NET Core Kit.</Title>
+	  <Description>Helps to add Generic Repository and Unit of Work defaults for a service.</Description>
+	  <Authors>Thang Chung</Authors>
+	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.4.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
+    <PackageReference Include="Polly" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

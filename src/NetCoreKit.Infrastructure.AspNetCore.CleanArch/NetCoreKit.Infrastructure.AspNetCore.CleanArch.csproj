@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.0.1</Version>
+	  <Title>The Clean Architecture library for Cloud Native .NET Core Kit.</Title>
+	  <Description>Helps to organize a service structure and architecture according to Clean Architecture.</Description>
+	  <Authors>Thang Chung</Authors>
+	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
+    <PackageReference Include="System.Reactive" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

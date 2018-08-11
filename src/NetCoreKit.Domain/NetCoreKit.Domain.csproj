@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>NetCoreKit.Domain</AssemblyName>
+    <RootNamespace>NetCoreKit.Domain</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.0.1</Version>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+	  <Title>The domain library for Cloud Native .NET Core Kit.</Title>
+	  <Description>Supports DDD style with event approach in the library.</Description>
+	  <Authors>Thang Chung</Authors>
+	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

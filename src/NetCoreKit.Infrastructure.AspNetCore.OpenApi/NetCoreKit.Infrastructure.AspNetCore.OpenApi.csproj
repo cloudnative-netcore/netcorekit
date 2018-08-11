@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>0.0.1</Version>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+	  <Title>The OpenApi library for Cloud Native .NET Core Kit.</Title>
+	  <Description>Helps to attach the default Swagger and SwaggerUI for a service.</Description>
+	  <Authors>Thang Chung</Authors>
+	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="3.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="3.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>
