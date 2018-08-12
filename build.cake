@@ -46,9 +46,9 @@ Task("Version")
         versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
         
         msBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", versionInfo.NuGetVersion)
-            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
-            .WithProperty("FileVersion", versionInfo.AssemblySemVer);
+            .WithProperty("Version", versionInfo.FullSemVer)
+            .WithProperty("AssemblyVersion", versionInfo.FullSemVer)
+            .WithProperty("FileVersion", versionInfo.FullSemVer);
     });
 
 Task("Build")
