@@ -57,7 +57,7 @@ Task("Version")
         Information(versionInfo);
 
         msBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", versionInfo.NuGetVersion + "-" + versionInfo.Sha)
+            .WithProperty("Version", versionInfo.NuGetVersion + "-" + versionInfo.BuildMetaData)
             .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
             .WithProperty("FileVersion", versionInfo.AssemblySemVer);
     });
