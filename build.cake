@@ -72,7 +72,24 @@ Task("Package")
         }
     });
 
+Task("DeployNuget")
+    .IsDependentOn("Package")
+    .Does(() =>
+    {
+        if (isAppVeyor)
+        {
+            foreach (var file in GetFiles(outputDir + "**/*.nupkg")) 
+                NuGetPush(
+                    outputDir,
+                    new NuGetPushSettings {
+                        ApiKey = EnvironmentVariable("NuGetApiKey"),
+                        Source = "https://api.nuget.org/v3/index.json"
+                });
+        }
+        
+    });
+
 Task("Default")
-    .IsDependentOn("Package");
+    .IsDependentOn("DeployNuget");
 
 RunTarget(target);
