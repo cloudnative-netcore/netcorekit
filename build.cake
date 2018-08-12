@@ -78,13 +78,15 @@ Task("DeployNuget")
     {
         if (isAppVeyor)
         {
-            foreach (var file in GetFiles(outputDir + "**/*.nupkg")) 
+            foreach (var file in GetFiles(outputDir + "**/*.nupkg")) {
+                Information(file.ToString());
                 NuGetPush(
-                    outputDir,
+                    file,
                     new NuGetPushSettings {
                         ApiKey = EnvironmentVariable("NuGetApiKey"),
                         Source = "https://api.nuget.org/v3/index.json"
                 });
+            }
         }
         
     });
