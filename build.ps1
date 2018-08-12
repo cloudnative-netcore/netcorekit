@@ -18,33 +18,32 @@ The build script target to run.
 The build configuration to use.
 .PARAMETER Verbosity
 Specifies the amount of information to be displayed.
-.PARAMETER ShowDescription
-Shows description about tasks.
-.PARAMETER DryRun
-Performs a dry run.
 .PARAMETER Experimental
-Uses the nightly builds of the Roslyn script engine.
+Tells Cake to use the latest Roslyn release.
+.PARAMETER WhatIf
+Performs a dry run of the build script.
+No tasks will be executed.
 .PARAMETER Mono
-Uses the Mono Compiler rather than the Roslyn script engine.
+Tells Cake to use the Mono scripting engine.
 .PARAMETER SkipToolPackageRestore
 Skips restoring of packages.
 .PARAMETER ScriptArgs
 Remaining arguments are added here.
 .LINK
-https://cakebuild.net
+http://cakebuild.net
 #>
 
 [CmdletBinding()]
 Param(
     [string]$Script = "build.cake",
-    [string]$Target,
-    [string]$Configuration,
+    [string]$Target = "Default",
+    [ValidateSet("Release", "Debug")]
+    [string]$Configuration = "Release",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
-    [string]$Verbosity,
-    [switch]$ShowDescription,
-    [Alias("WhatIf", "Noop")]
-    [switch]$DryRun,
+    [string]$Verbosity = "Verbose",
     [switch]$Experimental,
+    [Alias("DryRun","Noop")]
+    [switch]$WhatIf,
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
@@ -76,15 +75,6 @@ function MD5HashFile([string] $filePath)
     }
 }
 
-function GetProxyEnabledWebClient
-{
-    $wc = New-Object System.Net.WebClient
-    $proxy = [System.Net.WebRequest]::GetSystemWebProxy()
-    $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials        
-    $wc.Proxy = $proxy
-    return $wc
-}
-
 Write-Host "Preparing to run build script..."
 
 if(!$PSScriptRoot){
@@ -92,15 +82,31 @@ if(!$PSScriptRoot){
 }
 
 $TOOLS_DIR = Join-Path $PSScriptRoot "tools"
-$ADDINS_DIR = Join-Path $TOOLS_DIR "Addins"
-$MODULES_DIR = Join-Path $TOOLS_DIR "Modules"
 $NUGET_EXE = Join-Path $TOOLS_DIR "nuget.exe"
 $CAKE_EXE = Join-Path $TOOLS_DIR "Cake/Cake.exe"
 $NUGET_URL = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $PACKAGES_CONFIG = Join-Path $TOOLS_DIR "packages.config"
 $PACKAGES_CONFIG_MD5 = Join-Path $TOOLS_DIR "packages.config.md5sum"
-$ADDINS_PACKAGES_CONFIG = Join-Path $ADDINS_DIR "packages.config"
-$MODULES_PACKAGES_CONFIG = Join-Path $MODULES_DIR "packages.config"
+
+# Should we use mono?
+$UseMono = "";
+if($Mono.IsPresent) {
+    Write-Verbose -Message "Using the Mono based scripting engine."
+    $UseMono = "-mono"
+}
+
+# Should we use the new Roslyn?
+$UseExperimental = "";
+if($Experimental.IsPresent -and !($Mono.IsPresent)) {
+    Write-Verbose -Message "Using experimental version of Roslyn."
+    $UseExperimental = "-experimental"
+}
+
+# Is this a dry run?
+$UseDryRun = "";
+if($WhatIf.IsPresent) {
+    $UseDryRun = "-dryrun"
+}
 
 # Make sure tools folder exists
 if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
@@ -110,10 +116,8 @@ if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
 
 # Make sure that packages.config exist.
 if (!(Test-Path $PACKAGES_CONFIG)) {
-    Write-Verbose -Message "Downloading packages.config..."    
-    try {        
-        $wc = GetProxyEnabledWebClient
-        $wc.DownloadFile("https://cakebuild.net/download/bootstrapper/packages", $PACKAGES_CONFIG) } catch {
+    Write-Verbose -Message "Downloading packages.config..."
+    try { (New-Object System.Net.WebClient).DownloadFile("http://cakebuild.net/download/bootstrapper/packages", $PACKAGES_CONFIG) } catch {
         Throw "Could not download packages.config."
     }
 }
@@ -133,8 +137,7 @@ if (!(Test-Path $NUGET_EXE)) {
 if (!(Test-Path $NUGET_EXE)) {
     Write-Verbose -Message "Downloading NuGet.exe..."
     try {
-        $wc = GetProxyEnabledWebClient
-        $wc.DownloadFile($NUGET_URL, $NUGET_EXE)
+        (New-Object System.Net.WebClient).DownloadFile($NUGET_URL, $NUGET_EXE)
     } catch {
         Throw "Could not download NuGet.exe."
     }
@@ -160,48 +163,13 @@ if(-Not $SkipToolPackageRestore.IsPresent) {
     $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$TOOLS_DIR`""
 
     if ($LASTEXITCODE -ne 0) {
-        Throw "An error occurred while restoring NuGet tools."
+        Throw "An error occured while restoring NuGet tools."
     }
     else
     {
         $md5Hash | Out-File $PACKAGES_CONFIG_MD5 -Encoding "ASCII"
     }
     Write-Verbose -Message ($NuGetOutput | out-string)
-
-    Pop-Location
-}
-
-# Restore addins from NuGet
-if (Test-Path $ADDINS_PACKAGES_CONFIG) {
-    Push-Location
-    Set-Location $ADDINS_DIR
-
-    Write-Verbose -Message "Restoring addins from NuGet..."
-    $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$ADDINS_DIR`""
-
-    if ($LASTEXITCODE -ne 0) {
-        Throw "An error occurred while restoring NuGet addins."
-    }
-
-    Write-Verbose -Message ($NuGetOutput | out-string)
-
-    Pop-Location
-}
-
-# Restore modules from NuGet
-if (Test-Path $MODULES_PACKAGES_CONFIG) {
-    Push-Location
-    Set-Location $MODULES_DIR
-
-    Write-Verbose -Message "Restoring modules from NuGet..."
-    $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$MODULES_DIR`""
-
-    if ($LASTEXITCODE -ne 0) {
-        Throw "An error occurred while restoring NuGet modules."
-    }
-
-    Write-Verbose -Message ($NuGetOutput | out-string)
-
     Pop-Location
 }
 
@@ -210,18 +178,7 @@ if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
 
-# Build Cake arguments
-$cakeArguments = @("$Script");
-if ($Target) { $cakeArguments += "-target=$Target" }
-if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
-if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
-if ($ShowDescription) { $cakeArguments += "-showdescription" }
-if ($DryRun) { $cakeArguments += "-dryrun" }
-if ($Experimental) { $cakeArguments += "-experimental" }
-if ($Mono) { $cakeArguments += "-mono" }
-$cakeArguments += $ScriptArgs
-
 # Start Cake
 Write-Host "Running build script..."
-&$CAKE_EXE $cakeArguments
+Invoke-Expression "& `"$CAKE_EXE`" `"$Script`" -target=`"$Target`" -configuration=`"$Configuration`" -verbosity=`"$Verbosity`" $UseMono $UseDryRun $UseExperimental $ScriptArgs"
 exit $LASTEXITCODE
