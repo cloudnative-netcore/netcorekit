@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <Title>The Mimiservice library for Cloud Native .NET Core Kit.</Title>
 	  <Description>Helps to organize a service structure and architecture to simple and elegant styles.</Description>

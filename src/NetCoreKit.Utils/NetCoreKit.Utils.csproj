@@ -15,7 +15,7 @@
     <PackageTags>cloud-native utils web-development</PackageTags>
     <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>

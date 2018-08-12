@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <Title>The EfCore SqlServer library for Cloud Native .NET Core Kit.</Title>
 	  <Description>The Microsoft Sql Server default for NetCoreKit.Infrastructure.EfCore.</Description>
