@@ -58,8 +58,8 @@ Task("Version")
 
         msBuildSettings = new DotNetCoreMSBuildSettings()
             .WithProperty("Version", versionInfo.Major + "." + versionInfo.Minor + "." + versionInfo.BuildMetaData)
-            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
-            .WithProperty("FileVersion", versionInfo.AssemblySemVer);
+            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer + "." + versionInfo.Minor + "." + versionInfo.BuildMetaData)
+            .WithProperty("FileVersion", versionInfo.AssemblySemVer + "." + versionInfo.Minor + "." + versionInfo.BuildMetaData);
     });
 
 Task("Build")
