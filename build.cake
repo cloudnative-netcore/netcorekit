@@ -40,7 +40,7 @@ Task("UpdateVersionInfo")
     .IsDependentOn("Restore")
     .Does(() =>
     {
-        tag = AppVeyor.Environment.Repository.Tag.Name;
+        var tag = AppVeyor.Environment.Repository.Tag.Name;
         AppVeyor.UpdateBuildVersion(tag);
     });
 
