@@ -25,6 +25,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{92D6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1317E2B0-8834-4770-9759-9CD0D9E84D28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1CCC105-67B3-45AE-9A74-DD6716521708}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		global.json = global.json
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{EE8515E4-F600-4699-A652-FE8E241B9A83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +89,7 @@ Global
 		{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{FA666FF1-5453-481D-BBDD-842F151F9E75} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{D6B29A97-1417-48A6-B141-74D57E5C8C16} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{A1CCC105-67B3-45AE-9A74-DD6716521708} = {EE8515E4-F600-4699-A652-FE8E241B9A83}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}
