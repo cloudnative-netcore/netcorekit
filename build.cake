@@ -39,16 +39,16 @@ DotNetCoreMSBuildSettings msBuildSettings = null;
 Task("Version")
     .Does(() => {
         GitVersion(new GitVersionSettings{
-            UpdateAssemblyInfo = false,
+            UpdateAssemblyInfo = true,
             OutputType = GitVersionOutput.BuildServer
         });
 
         versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
         
         msBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", versionInfo.NuGetVersion)
-            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
-            .WithProperty("FileVersion", versionInfo.AssemblySemVer);
+            .WithProperty("Version", versionInfo.NuGetVersion + "." + versionInfo.BuildMetaData)
+            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer + "." + versionInfo.BuildMetaData)
+            .WithProperty("FileVersion", versionInfo.AssemblySemVer + "." + versionInfo.BuildMetaData);
     });
 
 Task("Build")
