@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>0.0.1</Version>
 	  <Title>The Clean Architecture library for Cloud Native .NET Core Kit.</Title>
 	  <Description>Helps to organize a service structure and architecture according to Clean Architecture.</Description>
 	  <Authors>Thang Chung</Authors>

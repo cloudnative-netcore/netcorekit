@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,8 +6,6 @@
     <RootNamespace>NetCoreKit.Domain</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>0.0.1</Version>
-    <AssemblyVersion>0.0.1.0</AssemblyVersion>
 	  <Title>The domain library for Cloud Native .NET Core Kit.</Title>
 	  <Description>Supports DDD style with event approach in the library.</Description>
 	  <Authors>Thang Chung</Authors>
