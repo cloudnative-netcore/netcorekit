@@ -57,7 +57,7 @@ Task("Version")
         Information(versionInfo);
 
         msBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", versionInfo.NuGetVersion)
+            .WithProperty("Version", versionInfo.NuGetVersion + "-" + versionInfo.Sha)
             .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
             .WithProperty("FileVersion", versionInfo.AssemblySemVer);
     });
@@ -106,7 +106,7 @@ Task("DeployNuget")
                     file,
                     new NuGetPushSettings {
                         ApiKey = EnvironmentVariable("NuGetApiKey"),
-                        Source = "https://api.nuget.org/v3/index.json"
+                        Source = "https://www.nuget.org/api/v2/package"
                 });
             }
         }
