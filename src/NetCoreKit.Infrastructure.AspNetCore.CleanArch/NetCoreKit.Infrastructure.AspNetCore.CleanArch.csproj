@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <id>NetCoreKit.Infrastructure.AspNetCore.CleanArch</id>
+    <version>0.0.0</version>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <Title>The Clean Architecture library for Cloud Native .NET Core Kit.</Title>
 	  <Description>Helps to organize a service structure and architecture according to Clean Architecture.</Description>

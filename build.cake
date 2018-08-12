@@ -36,19 +36,30 @@ Task("Restore")
 GitVersion versionInfo = null;
 DotNetCoreMSBuildSettings msBuildSettings = null;
 
+Task("UpdateVersionInfo")
+    .IsDependentOn("Restore")
+    .Does(() =>
+    {
+        tag = AppVeyor.Environment.Repository.Tag.Name;
+        AppVeyor.UpdateBuildVersion(tag);
+    });
+
 Task("Version")
+    .IsDependentOn("Restore")
     .Does(() => {
         GitVersion(new GitVersionSettings{
-            UpdateAssemblyInfo = true,
+            UpdateAssemblyInfo = false,
             OutputType = GitVersionOutput.BuildServer
         });
 
         versionInfo = GitVersion(new GitVersionSettings{ OutputType = GitVersionOutput.Json });
-        
+
+        Information(versionInfo);
+
         msBuildSettings = new DotNetCoreMSBuildSettings()
-            .WithProperty("Version", versionInfo.NuGetVersion + "." + versionInfo.BuildMetaData)
-            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer + "." + versionInfo.BuildMetaData)
-            .WithProperty("FileVersion", versionInfo.AssemblySemVer + "." + versionInfo.BuildMetaData);
+            .WithProperty("Version", versionInfo.NuGetVersion)
+            .WithProperty("AssemblyVersion", versionInfo.AssemblySemVer)
+            .WithProperty("FileVersion", versionInfo.AssemblySemVer);
     });
 
 Task("Build")

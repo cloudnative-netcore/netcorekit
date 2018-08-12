@@ -1,13 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <id>NetCoreKit.Utils</id>
+    <version>0.0.0</version>
     <Title>This utils library contains ultility functions and helpers (e.g. string, bytes, hash, modular).</Title>
-    <Description>The need utilities for the web development using in Modular Starter Kit.</Description>
+    <Description>The need utilities for the web development.</Description>
     <Summary>This utils library contains ultility functions and helpers (e.g. string, bytes, hash, modular) that need for the web development.</Summary>
-    <Version>0.0.1</Version>
-    <VersionPrefix>0.0.1</VersionPrefix>
-    <AssemblyVersion>0.0.1</AssemblyVersion>
-    <FileVersion>0.0.1</FileVersion>
     <Authors>Thang Chung</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
@@ -15,7 +13,6 @@
     <PackageTags>cloud-native utils web-development</PackageTags>
     <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
