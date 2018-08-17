@@ -74,14 +74,28 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       var logger = serviceProvider.GetRequiredService<ILogger<TDbContext>>();
       var context = serviceProvider.GetRequiredService<TDbContext>();
 
-      logger.LogInformation($"[VND] Migrating database associated with {typeof(TDbContext).FullName} context.");
+      logger.LogInformation($"[NCK] Migrating database associated with {typeof(TDbContext).FullName} context.");
       context.Database.OpenConnection();
       if (!context.AllMigrationsApplied()) context.Database.Migrate();
 
-      logger.LogInformation($"[VND] Start to seed data for {typeof(TDbContext).FullName} context.");
+      logger.LogInformation($"[NCK] Start to seed data for {typeof(TDbContext).FullName} context.");
       seeder(context, serviceProvider);
 
-      logger.LogInformation($"[VND] Migrated database associated with {typeof(TDbContext).FullName} context.");
+      logger.LogInformation($"[NCK] Migrated database associated with {typeof(TDbContext).FullName} context.");
+      return serviceProvider;
+    }
+
+    public static IServiceProvider MigrateDbContext(this IServiceProvider serviceProvider)
+    {
+      var logger = serviceProvider.GetRequiredService<ILogger<DbContext>>();
+      var context = serviceProvider.GetRequiredService<DbContext>();
+
+      logger.LogInformation($"[NCK] Migrating database associated with {typeof(DbContext).FullName} context.");
+      context.Database.OpenConnection();
+      if (!context.AllMigrationsApplied())
+        context.Database.Migrate();
+
+      logger.LogInformation($"[NCK] Migrated database associated with {typeof(DbContext).FullName} context.");
       return serviceProvider;
     }
   }

@@ -14,9 +14,10 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
     {
       var svcProvider = services.BuildServiceProvider();
       var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
-      var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
-      assemblies.Add(typeof(MiniServiceExtensions).Assembly);
 
+      if (!(serviceParams["assemblies"] is HashSet<Assembly> assemblies)) return;
+
+      assemblies.Add(typeof(MiniServiceExtensions).Assembly);
       services.AddMediatR(assemblies.ToArray());
       services.Scan(
         scanner => scanner

@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,25 +23,50 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 
       var svcProvider = services.BuildServiceProvider();
       var config = svcProvider.GetRequiredService<IConfiguration>();
+
+      if (!config.GetValue<bool>("SqlDatabase:Enabled"))
+      {
+        return;
+      }
+
       var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
       var extendOptionsBuilder = svcProvider.GetRequiredService<IExtendDbContextOptionsBuilder>();
       var connStringFactory = svcProvider.GetRequiredService<IDatabaseConnectionStringFactory>();
 
-      //TODO: refactor it 
-      var fisrtAssembly = (serviceParams["assemblies"] as HashSet<Assembly>).FirstOrDefault();
+      //TODO: refactor it
+      var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
+      var fisrtAssembly = assemblies?.FirstOrDefault();
 
       services.AddOptions()
         .Configure<PersistenceOption>(config.GetSection("EfCore"));
 
       void OptionsBuilderAction(DbContextOptionsBuilder o)
       {
-        extendOptionsBuilder.Extend(o, connStringFactory, fisrtAssembly.GetName().Name);
+        extendOptionsBuilder.Extend(o, connStringFactory, fisrtAssembly?.GetName().Name);
       }
 
       services.AddDbContextPool<TDbContext>(OptionsBuilderAction);
       services.AddSingleton<TDbContext>();
       services.AddSingleton<DbContext>(resolver => resolver.GetRequiredService<TDbContext>());
       services.AddEfCore();
+
+      // healthcheck and migration automatically
+      services.AddSingleton<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
+    }
+  }
+
+  public class DbHealthCheckAndMigration : IExternalSystem
+  {
+    private readonly IServiceProvider _svcProvider;
+
+    public DbHealthCheckAndMigration(IServiceProvider svcProvider)
+    {
+      _svcProvider = svcProvider;
+    }
+
+    public Task<bool> Connect()
+    {
+      return Task.Run(() => _svcProvider.MigrateDbContext() != null);
     }
   }
 }

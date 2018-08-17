@@ -1,8 +1,13 @@
 // Reference at https://thenewstack.io/miniservices-a-realistic-alternative-to-microservices
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
@@ -27,6 +32,21 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         configureSvc.Configure(services);
       }
 
+      return services;
+    }
+
+    public static IServiceCollection AddExternalSystemHealthChecks(this IServiceCollection services,
+      Func<IServiceProvider, IEnumerable<IExternalSystem>> extendExternalSystem = null)
+    {
+      var svcProvider = services.BuildServiceProvider();
+      var config = svcProvider.GetService<IConfiguration>();
+      if (!config.GetValue<bool>("SqlDatabase:Enabled"))
+      {
+        return services;
+      }
+
+      if (extendExternalSystem == null) return services;
+      services.AddSingleton(p => extendExternalSystem(p).Append(p.GetService<DbHealthCheckAndMigration>()));
       return services;
     }
 

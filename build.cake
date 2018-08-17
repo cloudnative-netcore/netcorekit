@@ -10,6 +10,7 @@ var isWindows = IsRunningOnWindows();
 var libs = new List<string>{
     "./src/NetCoreKit.Utils/NetCoreKit.Utils.csproj",
     "./src/NetCoreKit.Domain/NetCoreKit.Domain.csproj",
+    "./src/NetCoreKit.Infrastructure/NetCoreKit.Infrastructure.csproj",
     "./src/NetCoreKit.Infrastructure.AspNetCore/NetCoreKit.Infrastructure.AspNetCore.csproj",
     "./src/NetCoreKit.Infrastructure.AspNetCore.CleanArch/NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj",
     "./src/NetCoreKit.Infrastructure.AspNetCore.Miniservice/NetCoreKit.Infrastructure.AspNetCore.Miniservice.csproj",

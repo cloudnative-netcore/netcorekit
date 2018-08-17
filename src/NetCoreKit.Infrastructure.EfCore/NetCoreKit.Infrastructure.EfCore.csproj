@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
     <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
