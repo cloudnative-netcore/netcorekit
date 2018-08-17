@@ -20,6 +20,7 @@ A set of cloud native tools and utilities for .NET Core.
 ```bash
 Install-Package NetCoreKit.Utils
 Install-Package NetCoreKit.Domain
+Install-Package NetCoreKit.Infrastructure
 Install-Package NetCoreKit.Infrastructure.AspNetCore
 Install-Package NetCoreKit.Infrastructure.AspNetCore.CleanArch
 Install-Package NetCoreKit.Infrastructure.AspNetCore.Miniservice
@@ -33,6 +34,7 @@ Alternatively if you're using .NET Core then you can install **NetCoreKit** via 
 ```bash
 dotnet add package NetCoreKit.Utils
 dotnet add package NetCoreKit.Domain
+dotnet add package NetCoreKit.Infrastructure
 dotnet add package NetCoreKit.Infrastructure.AspNetCore
 dotnet add package NetCoreKit.Infrastructure.AspNetCore.CleanArch
 dotnet add package NetCoreKit.Infrastructure.AspNetCore.Miniservice

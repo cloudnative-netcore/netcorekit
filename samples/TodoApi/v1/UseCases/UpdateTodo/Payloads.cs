@@ -7,7 +7,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTodo
 {
 	public class UpdateTodoRequest : IRequest<UpdateTodoResponse>
 	{
-		public Guid Id { get; set; }
+		internal Guid Id { get; set; }
 		public int? Order { get; set; } = 1;
 		[Required] public string Title { get; set; }
 		public bool? Completed { get; set; } = false;

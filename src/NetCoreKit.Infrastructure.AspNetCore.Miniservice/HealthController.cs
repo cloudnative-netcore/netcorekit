@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
@@ -22,17 +23,15 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     {
       try
       {
-        foreach (var externalSystem in _externalSystems)
-        {
-          await externalSystem.Connect();
-        }
+        var tasks = _externalSystems.Select(externalSystem => externalSystem.Connect()).Cast<Task>().ToList();
+        await Task.WhenAll(tasks);
       }
-      catch (Exception)
+      catch
       {
-        return new BadRequestResult();
+        return new StatusCodeResult(StatusCodes.Status503ServiceUnavailable);
       }
 
-      return Ok();
+      return new NoContentResult();
     }
   }
 }

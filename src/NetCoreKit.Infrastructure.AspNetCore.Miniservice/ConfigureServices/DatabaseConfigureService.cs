@@ -38,7 +38,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
       var fisrtAssembly = assemblies?.FirstOrDefault();
 
       services.AddOptions()
-        .Configure<PersistenceOption>(config.GetSection("EfCore"));
+        .Configure<PersistenceOptions>(config.GetSection("EfCore"));
 
       void OptionsBuilderAction(DbContextOptionsBuilder o)
       {

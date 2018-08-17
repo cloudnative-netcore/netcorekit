@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
 using NetCoreKit.Infrastructure.EfCore.SqlServer;
@@ -30,7 +29,7 @@ namespace NetCoreKit.Samples.TodoAPI
 		  services.AddExternalSystemHealthChecks();
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app)
 		{
 			app.UseMiniService();
 		}

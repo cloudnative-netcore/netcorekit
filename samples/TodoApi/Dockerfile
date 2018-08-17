@@ -14,7 +14,7 @@ FROM microsoft/dotnet:2.1.302-sdk-alpine AS build
 WORKDIR /src
 COPY . .
 
-WORKDIR /src/src/samples
+WORKDIR /src/src/samples/TodoApi
 
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
@@ -25,4 +25,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Company.Application.samples.dll"]
+ENTRYPOINT ["dotnet", "NetCoreKit.Samples.TodoAPI.dll"]
