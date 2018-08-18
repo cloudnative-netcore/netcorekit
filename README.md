@@ -2,15 +2,14 @@
 
 A set of cloud native tools and utilities for .NET Core.
 
-<p align="left">
-  <a href="https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE"><img src="https://img.shields.io/badge/price-FREE-0098f7.svg" alt="Price"></a>
-  <a href="https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true"><img src="https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true" alt="Build Status" data-canonical-src="https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true" style="max-width:100%;"></a>
-</p>
+[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE)
+[![Build status](https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
+[![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version)](https://www.nuget.org/packages?q=NetCoreKit)
 
 ### Features
 - Simple libraries. No frameworks. Little abstraction.
 - Modular (Easy to swap out Utils, Domain, AspNetCore, Clean Architecture, Open API, Entity Framework Core...)
-- Tries to adhere to the 12 factor application paradigm by Heroku.
+- Adhere to [twelve-factor app paradigm](https://12factor.net).
 - Documentation template with OpenAPI documentation.
 
 ### Installation
@@ -44,6 +43,51 @@ dotnet add package NetCoreKit.Infrastructure.EfCore
 dotnet add package NetCoreKit.Infrastructure.EfCore.SqlServer
 dotnet add package NetCoreKit.Infrastructure.EfCore.MySql
 ```
+
+### Up and Running
+
+- Open up the `netcore-kit.sln`, then press `F5`
+- We should see OpenAPI UI of `samples\TodoApi` sample
+- Just play around with it.
+
+### Database Providers
+
+- SQL Server
+
+```
+> docker run --name sqlserverdb -p 1433:1433 -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=Passw0rd  microsoft/mssql-server-linux:2017-latest
+```
+
+- MySQL
+
+```
+> docker run --name mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=P@ssw0rd -e MYSQL_PASSWORD=P@ssw0rd mysql:8.0.12
+```
+
+- Add middleware in `samples\TodoApi\Startup.cs` as following
+
+```csharp
+services.AddMiniService<TodoDbContext>(
+  new[] {typeof(Startup)},
+    svc =>
+    {
+      // svc.AddEfCoreSqlServerDb();
+      svc.AddEfCoreMySqlDb();
+      svc.AddExternalSystemHealthChecks();
+    });
+```
+
+- Put connection string for each type of database into `ConnectionStrings` section in the `appsettings.json` file as below
+
+```json
+"mssqldb": "Server=tcp:127.0.0.1,1433;Database=maindb;User Id=cs;Password=P@ssw0rd;"
+```
+
+```json
+"mysqldb": "server=127.0.0.1;port=3306;uid=root;pwd=P@ssw0rd;database=maindb"
+```
+
+> Basic used can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcore-kit/tree/master/samples/TodoApi), more advance at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project. We use this libs for building up the whole technical stack for them.
 
 ### Contributing
 
