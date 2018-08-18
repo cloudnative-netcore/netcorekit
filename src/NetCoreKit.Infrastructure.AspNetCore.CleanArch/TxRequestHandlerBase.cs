@@ -2,9 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NetCoreKit.Domain;
+using NetCoreKit.Utils.Attributes;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
 {
+  [AutoScanAwareness]
   public abstract class TxRequestHandlerBase<TRequest, TResponse> : ITxEventHandler<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
   {

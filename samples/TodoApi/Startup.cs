@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
@@ -9,29 +7,21 @@ using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 namespace NetCoreKit.Samples.TodoAPI
 {
   public class Startup
-	{
-		public void ConfigureServices(IServiceCollection services)
-		{
-			var assemblies = new HashSet<Assembly>
-			{
-				typeof(Startup).GetTypeInfo().Assembly,
-				typeof(MiniServiceExtensions).GetTypeInfo().Assembly
-			};
+  {
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddMiniService<TodoDbContext>(
+        new[] {typeof(Startup)},
+        svc =>
+        {
+          // svc.AddEfCoreSqlServer();
+          svc.AddExternalSystemHealthChecks();
+        });
+    }
 
-			var serviceParams = new ServiceParams
-			{
-				{"assemblies", assemblies}
-			};
-
-			services.AddScoped(sp => serviceParams);
-			services.AddEfCoreSqlServer();
-			services.AddMiniService<TodoDbContext>();
-		  services.AddExternalSystemHealthChecks();
-		}
-
-		public void Configure(IApplicationBuilder app)
-		{
-			app.UseMiniService();
-		}
-	}
+    public void Configure(IApplicationBuilder app)
+    {
+      app.UseMiniService();
+    }
+  }
 }

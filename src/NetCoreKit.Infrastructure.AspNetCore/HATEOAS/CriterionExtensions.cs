@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetCoreKit.Domain;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
+namespace NetCoreKit.Infrastructure.AspNetCore.HATEOAS
 {
   public static class CriterionExtensions
   {

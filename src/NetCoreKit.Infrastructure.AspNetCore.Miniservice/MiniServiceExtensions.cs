@@ -5,31 +5,40 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices;
+using NetCoreKit.Infrastructure.EfCore;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
   public static class MiniServiceExtensions
   {
-    public static IServiceCollection AddMiniService<TDbContext>(this IServiceCollection services)
+    public static IServiceCollection AddMiniService<TDbContext>(
+      this IServiceCollection services,
+      IEnumerable<Type> registeredAssemblyTypes,
+      Action<IServiceCollection> databaseRegistrationAction = null,
+      Action<IServiceCollection> postRegistrationAction = null)
       where TDbContext : DbContext
     {
-      services.ScanAndRegisterServices<IDbConfigureServices>();
-      services.ScanAndRegisterServices<IBasicConfigureServices>();
+      if (registeredAssemblyTypes == null || !registeredAssemblyTypes.Any())
+        throw new Exception("Should have at least one assembly in Startup file.");
 
-      var svcProvider = services.BuildServiceProvider();
-      var dbConfigureSvcs = svcProvider.GetServicesByPriority<IDbConfigureServices>();
-      foreach (var configureSvc in dbConfigureSvcs)
-      {
-        configureSvc.Configure<TDbContext>(services);
-      }
+      services.AddScoped(sp => sp.GetServiceParams(registeredAssemblyTypes));
+      services.ScanAndRegisterServices<IPriorityConfigure>();
 
-      var configureSvcs = svcProvider.GetServicesByPriority<IBasicConfigureServices>();
-      foreach (var configureSvc in configureSvcs)
+      using (var scope = services.BuildServiceProvider().CreateScope())
       {
-        configureSvc.Configure(services);
+        var svcProvider = scope.ServiceProvider;
+
+        services.AddEfCore();
+        databaseRegistrationAction?.Invoke(services);
+
+        var dbConfigureSvcs = svcProvider.GetServicesByPriority<IDbConfigureServices>();
+        foreach (var configureSvc in dbConfigureSvcs) configureSvc.Configure<TDbContext>(services);
+
+        var configureSvcs = svcProvider.GetServicesByPriority<IBasicConfigureServices>();
+        foreach (var configureSvc in configureSvcs) configureSvc.Configure(services);
+
+        postRegistrationAction?.Invoke(services);
       }
 
       return services;
@@ -38,26 +47,22 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     public static IServiceCollection AddExternalSystemHealthChecks(this IServiceCollection services,
       Func<IServiceProvider, IEnumerable<IExternalSystem>> extendExternalSystem = null)
     {
-      var svcProvider = services.BuildServiceProvider();
-      var config = svcProvider.GetService<IConfiguration>();
-      if (!config.GetValue<bool>("SqlDatabase:Enabled"))
-      {
+      if (extendExternalSystem == null)
         return services;
-      }
-
-      if (extendExternalSystem == null) return services;
       services.AddSingleton(p => extendExternalSystem(p).Append(p.GetService<DbHealthCheckAndMigration>()));
+
       return services;
     }
 
     public static IApplicationBuilder UseMiniService(this IApplicationBuilder app)
     {
-      var appSvc = app.ApplicationServices;
-      var configureApps = appSvc.GetServicesByPriority<IConfigureApplication>();
-      foreach (var configureApp in configureApps)
+      using (var scope = app.ApplicationServices.CreateScope())
       {
-        configureApp.Configure(app);
+        var appSvc = scope.ServiceProvider;
+        var configureApps = appSvc.GetServicesByPriority<IConfigureApplication>();
+        foreach (var configureApp in configureApps) configureApp.Configure(app);
       }
+
       return app;
     }
   }

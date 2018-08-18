@@ -6,12 +6,12 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
 {
 	public sealed class Todo : EntityBase
 	{
-		internal Todo(string title)
+		private Todo(string title)
 			: this(Guid.NewGuid(), title)
 		{
 		}
 
-		public Todo(Guid id, string title) : base(id)
+	  private Todo(Guid id, string title) : base(id)
 		{
 			Title = title;
 		}

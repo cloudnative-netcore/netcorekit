@@ -9,7 +9,7 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.EfCore.Repository;
 using NetCoreKit.Utils.Extensions;
 
-namespace NetCoreKit.Infrastructure.EfCore.Extensions
+namespace NetCoreKit.Infrastructure.EfCore
 {
   public static class ServiceCollectionExtensions
   {
@@ -20,30 +20,30 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
         .GetRequiredService<IConfiguration>()
         .GetValue<string>("EfCore:FullyQualifiedPrefix");
 
-        var entityTypes = fullyQualifiedPrefix
-          .LoadAssemblyWithPattern()
-          .SelectMany(m => m.DefinedTypes)
-          .Where(x => typeof(IEntity).IsAssignableFrom(x) && !x.GetTypeInfo().IsAbstract);
+      var entityTypes = fullyQualifiedPrefix
+        .LoadAssemblyWithPattern()
+        .SelectMany(m => m.DefinedTypes)
+        .Where(x => typeof(IEntity).IsAssignableFrom(x) && !x.GetTypeInfo().IsAbstract);
 
-        foreach (var entity in entityTypes)
-        {
-          var repoType = typeof(IEfRepositoryAsync<>).MakeGenericType(entity);
-          var implRepoType = typeof(EfRepositoryAsync<>).MakeGenericType(entity);
-          services.AddSingleton(repoType, implRepoType);
+      foreach (var entity in entityTypes)
+      {
+        var repoType = typeof(IEfRepositoryAsync<>).MakeGenericType(entity);
+        var implRepoType = typeof(EfRepositoryAsync<>).MakeGenericType(entity);
+        services.AddSingleton(repoType, implRepoType);
 
-          var queryRepoType = typeof(IEfQueryRepository<>).MakeGenericType(entity);
-          var implQueryRepoType = typeof(EfQueryRepository<>).MakeGenericType(entity);
-          services.AddSingleton(queryRepoType, implQueryRepoType);
-        }
+        var queryRepoType = typeof(IEfQueryRepository<>).MakeGenericType(entity);
+        var implQueryRepoType = typeof(EfQueryRepository<>).MakeGenericType(entity);
+        services.AddSingleton(queryRepoType, implQueryRepoType);
+      }
 
       services.AddSingleton(
-          typeof(IUnitOfWorkAsync), resolver =>
+        typeof(IUnitOfWorkAsync), resolver =>
           new EfUnitOfWork(
-              resolver.GetService<DbContext>(),
-              resolver.GetService<IServiceProvider>()));
+            resolver.GetService<DbContext>(),
+            resolver.GetService<IServiceProvider>()));
 
       services.AddSingleton(
-          typeof(IQueryRepositoryFactory), resolver =>
+        typeof(IQueryRepositoryFactory), resolver =>
           new EfQueryRepositoryFactory(resolver.GetService<IServiceProvider>()));
 
       // by default, we register the in-memory database

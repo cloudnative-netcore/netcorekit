@@ -8,8 +8,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
   {
     public static string GetHostUri(this IConfiguration config, IHostingEnvironment env, string groupName)
     {
-      if (env.IsDevelopment()) return config.GetExternalHostUri(groupName);
-      return config.GetInternalHostUri(groupName);
+      return env.IsDevelopment() ? config.GetExternalHostUri(groupName) : config.GetInternalHostUri(groupName);
     }
 
     public static string GetInternalHostUri(this IConfiguration config, string groupName)

@@ -26,73 +26,61 @@ namespace NetCoreKit.Infrastructure.AspNetCore
     }
 
     public async Task<TReturnMessage> GetAsync<TReturnMessage>(string serviceUrl)
-        where TReturnMessage : class, new()
+      where TReturnMessage : class, new()
     {
-      HttpClient enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
 
-      HttpResponseMessage response = await enrichClient.GetAsync(serviceUrl);
+      var response = await enrichClient.GetAsync(serviceUrl);
       response.EnsureSuccessStatusCode();
 
-      if (!response.IsSuccessStatusCode)
-      {
-        return await Task.FromResult(new TReturnMessage());
-      }
+      if (!response.IsSuccessStatusCode) return await Task.FromResult(new TReturnMessage());
 
-      string result = await response.Content.ReadAsStringAsync();
+      var result = await response.Content.ReadAsStringAsync();
 
       return JsonConvert.DeserializeObject<TReturnMessage>(result);
     }
 
     public async Task<TReturnMessage> PostAsync<TReturnMessage>(string serviceUrl, object dataObject = null)
-        where TReturnMessage : class, new()
+      where TReturnMessage : class, new()
     {
-      HttpClient enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
-      string content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
+      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      var content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
 
-      HttpResponseMessage response = await _client.PostAsync(serviceUrl, GetStringContent(content));
+      var response = await _client.PostAsync(serviceUrl, GetStringContent(content));
       response.EnsureSuccessStatusCode();
 
-      if (!response.IsSuccessStatusCode)
-      {
-        return await Task.FromResult(new TReturnMessage());
-      }
+      if (!response.IsSuccessStatusCode) return await Task.FromResult(new TReturnMessage());
 
-      string result = await response.Content.ReadAsStringAsync();
+      var result = await response.Content.ReadAsStringAsync();
 
       return JsonConvert.DeserializeObject<TReturnMessage>(result);
     }
 
     public async Task<TReturnMessage> PutAsync<TReturnMessage>(string serviceUrl, object dataObject = null)
-        where TReturnMessage : class, new()
+      where TReturnMessage : class, new()
     {
-      HttpClient enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
-      string content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
+      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      var content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
 
-      HttpResponseMessage response = await _client.PutAsync(serviceUrl, GetStringContent(content));
+      var response = await _client.PutAsync(serviceUrl, GetStringContent(content));
       response.EnsureSuccessStatusCode();
 
-      if (!response.IsSuccessStatusCode)
-      {
-        return await Task.FromResult(new TReturnMessage());
-      }
+      if (!response.IsSuccessStatusCode) return await Task.FromResult(new TReturnMessage());
 
-      string result = await response.Content.ReadAsStringAsync();
+      var result = await response.Content.ReadAsStringAsync();
       return JsonConvert.DeserializeObject<TReturnMessage>(result);
     }
 
     public async Task<bool> DeleteAsync(string serviceUrl)
     {
-      HttpClient enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
 
-      HttpResponseMessage response = await _client.DeleteAsync(serviceUrl);
+      var response = await _client.DeleteAsync(serviceUrl);
       response.EnsureSuccessStatusCode();
 
-      if (!response.IsSuccessStatusCode)
-      {
-        return await Task.FromResult(false);
-      }
+      if (!response.IsSuccessStatusCode) return await Task.FromResult(false);
 
-      string result = await response.Content.ReadAsStringAsync();
+      var result = await response.Content.ReadAsStringAsync();
       return JsonConvert.DeserializeObject<bool>(result);
     }
 
@@ -101,25 +89,20 @@ namespace NetCoreKit.Infrastructure.AspNetCore
       return new StringContent(content, Encoding.UTF8, "application/json");
     }
 
-    private HttpClient EnrichHeaderInfo(
-        HttpClient client,
-        IEnumerable<KeyValuePair<string, string>> openTracingInfo)
+    private static HttpClient EnrichHeaderInfo(
+      HttpClient client,
+      IEnumerable<KeyValuePair<string, string>> openTracingInfo)
     {
-      // _logger.LogDebug($"VND: {openTracingInfo.ToArray().ToString()}");
+      // _logger.LogDebug($"NCK: {openTracingInfo.ToArray().ToString()}");
 
       client.DefaultRequestHeaders.Accept.Clear();
       client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-      if (openTracingInfo != null)
-      {
-        foreach (KeyValuePair<string, string> info in openTracingInfo)
-        {
-          if (!client.DefaultRequestHeaders.Contains(info.Key))
-          {
-            client.DefaultRequestHeaders.Add(info.Key, info.Value);
-          }
-        }
-      }
+      if (openTracingInfo == null) return client;
+
+      foreach (var info in openTracingInfo)
+        if (!client.DefaultRequestHeaders.Contains(info.Key))
+          client.DefaultRequestHeaders.Add(info.Key, info.Value);
 
       return client;
     }

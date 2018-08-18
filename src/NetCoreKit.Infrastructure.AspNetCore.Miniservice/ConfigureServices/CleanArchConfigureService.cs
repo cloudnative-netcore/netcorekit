@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreKit.Utils.Attributes;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 {
@@ -17,12 +18,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 
       if (!(serviceParams["assemblies"] is HashSet<Assembly> assemblies)) return;
 
-      assemblies.Add(typeof(MiniServiceExtensions).Assembly);
       services.AddMediatR(assemblies.ToArray());
       services.Scan(
         scanner => scanner
           .FromAssemblies(assemblies.ToArray())
-          .AddClasses()
+          .AddClasses(x => x.WithAttribute<AutoScanAwarenessAttribute>())
           .AsImplementedInterfaces());
     }
   }

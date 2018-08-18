@@ -8,16 +8,19 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   {
     public static IServiceCollection ScanAndRegisterServices<TConfigureService>(this IServiceCollection services)
     {
-      var svcProvider = services.BuildServiceProvider();
-      var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
-      var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
+      using (var scope = services.BuildServiceProvider().CreateScope())
+      {
+        var svcProvider = scope.ServiceProvider;
+        var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
+        var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
 
-      return services.Scan(
-        scanner => scanner
-          .FromAssemblies(assemblies)
-          .AddClasses(x => x.AssignableTo<TConfigureService>())
-          .AsImplementedInterfaces()
-          .WithScopedLifetime());
+        return services.Scan(
+          scanner => scanner
+            .FromAssemblies(assemblies)
+            .AddClasses(x => x.AssignableTo<TConfigureService>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+      }
     }
   }
 }

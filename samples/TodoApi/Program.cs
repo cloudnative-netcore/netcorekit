@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
@@ -12,13 +11,6 @@ namespace NetCoreKit.Samples.TodoAPI
     public static void Main(string[] args)
     {
       var webHost = CreateWebHostBuilder(args).Build();
-      var config = webHost.Services.GetService<IConfiguration>();
-      if (!config.GetValue<bool>("SqlDatabase:Enabled"))
-      {
-        webHost.Run();
-        return;
-      }
-
       var env = webHost.Services.GetService<IHostingEnvironment>();
       if (env.IsDevelopment()) webHost = webHost.RegisterDbContext<TodoDbContext>();
 

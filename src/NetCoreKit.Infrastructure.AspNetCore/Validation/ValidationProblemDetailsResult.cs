@@ -7,6 +7,7 @@ using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Validation
 {
+  /// <inheritdoc />
   /// <summary>
   /// Reference at https://www.strathweb.com/2018/07/centralized-exception-handling-and-request-validation-in-asp-net-core
   /// </summary>

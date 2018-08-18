@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.EfCore.SqlServer.Options;
 
@@ -14,8 +15,15 @@ namespace NetCoreKit.Infrastructure.EfCore.SqlServer
 
       services.Configure<MsSqlDbOptions>(config.GetSection("k8s:mssqldb"));
 
-      services.AddScoped<IExtendDbContextOptionsBuilder, SqlServerDbContextOptionsBuilderFactory>();
-      services.AddScoped<IDatabaseConnectionStringFactory, SqlServerDatabaseConnectionStringFactory>();
+      services.Replace(
+        ServiceDescriptor.Scoped<
+          IDatabaseConnectionStringFactory,
+          SqlServerDatabaseConnectionStringFactory>());
+
+      services.Replace(
+        ServiceDescriptor.Scoped<
+          IExtendDbContextOptionsBuilder,
+          SqlServerDbContextOptionsBuilderFactory>());
 
       return services;
     }

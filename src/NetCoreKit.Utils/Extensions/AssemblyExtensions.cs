@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyModel;
@@ -15,6 +17,11 @@ namespace NetCoreKit.Utils.Extensions
       var res = deps.CompileLibraries.Where(d => d.Name.Contains(assemblyName)).ToList();
       var assembly = Assembly.Load(new AssemblyName(res.First().Name));
       return assembly;
+    }
+
+    public static HashSet<Assembly> GetAssembliesByTypes(this IEnumerable<Type> types)
+    {
+      return new HashSet<Assembly>(types.Select(type => type.GetTypeInfo().Assembly));
     }
   }
 }

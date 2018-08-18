@@ -46,6 +46,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
 </Project>

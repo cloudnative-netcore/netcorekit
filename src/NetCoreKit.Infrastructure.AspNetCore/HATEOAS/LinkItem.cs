@@ -1,4 +1,4 @@
-namespace NetCoreKit.Infrastructure.AspNetCore
+namespace NetCoreKit.Infrastructure.AspNetCore.HATEOAS
 {
   public class LinkItem
   {

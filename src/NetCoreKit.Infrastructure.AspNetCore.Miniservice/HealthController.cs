@@ -21,6 +21,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     [HttpGet("/healthz")]
     public async Task<ActionResult> Get()
     {
+      if(_externalSystems == null || !_externalSystems.Any())
+        return new NoContentResult();
+
       try
       {
         var tasks = _externalSystems.Select(externalSystem => externalSystem.Connect()).Cast<Task>().ToList();

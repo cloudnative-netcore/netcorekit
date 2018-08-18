@@ -6,38 +6,36 @@ using NetCoreKit.Domain;
 using NetCoreKit.Utils.Extensions;
 using Newtonsoft.Json;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
+namespace NetCoreKit.Infrastructure.AspNetCore.HATEOAS
 {
   public static class ApiExtensions
   {
     public static List<LinkItem> CreateLinksForCollection(this IUrlHelper urlHelper, string methodName,
       Criterion criterion, int totalCount)
     {
-      var links = new List<LinkItem>();
-
-      // self 
-      links.Add(
+      var links = new List<LinkItem>
+      {
         new LinkItem(urlHelper.Link(methodName, new
         {
           pagecount = criterion.PageSize,
-          page = criterion.CurrentPage,
+          page = (int) (double) criterion.CurrentPage,
           orderby = criterion.SortBy
-        }), "self", "GET"));
+        }), "self", "GET"),
+        new LinkItem(urlHelper.Link(methodName, new
+        {
+          pagecount = criterion.PageSize,
+          page = 1,
+          orderby = criterion.SortBy
+        }), "first", "GET"),
+        new LinkItem(urlHelper.Link(methodName, new
+        {
+          pagecount = criterion.PageSize,
+          page = criterion.GetTotalPages(totalCount),
+          orderby = criterion.SortBy
+        }), "last", "GET")
+      };
 
-      links.Add(new LinkItem(urlHelper.Link(methodName, new
-      {
-        pagecount = criterion.PageSize,
-        page = 1,
-        orderby = criterion.SortBy
-      }), "first", "GET"));
-
-      links.Add(new LinkItem(urlHelper.Link(methodName, new
-      {
-        pagecount = criterion.PageSize,
-        page = criterion.GetTotalPages(totalCount),
-        orderby = criterion.SortBy
-      }), "last", "GET"));
-
+      // self 
       if (criterion.HasNext(totalCount))
         links.Add(new LinkItem(urlHelper.Link(methodName, new
         {
@@ -61,7 +59,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
     {
       var links = GetLinks(urlHelper, methodName, item.Id);
       var resource = item.ToDynamic() as IDictionary<string, object>;
-      resource.Add("links", links);
+      resource?.Add("links", links);
 
       return resource;
     }
@@ -81,13 +79,13 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
 
     private static IEnumerable<LinkItem> GetLinks(IUrlHelper urlHelper, string methodName, Guid id)
     {
-      var links = new List<LinkItem>();
-
-      links.Add(
+      var links = new List<LinkItem>
+      {
         new LinkItem(
           urlHelper.Link(methodName, new {id}),
           "self",
-          "GET"));
+          "GET")
+      };
 
       return links;
     }

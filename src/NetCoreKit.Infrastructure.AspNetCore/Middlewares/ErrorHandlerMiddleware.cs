@@ -30,13 +30,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Middlewares
 
     private static Task HandleErrorAsync(HttpContext context, Exception exception)
     {
-      var errorCode = "error";
-      var statusCode = HttpStatusCode.BadRequest;
-      var message = "There was an error.";
+      const string errorCode = "error";
+      const HttpStatusCode statusCode = HttpStatusCode.BadRequest;
       switch (exception)
       {
         case CoreException e:
-          message = e.Message;
           break;
       }
 
@@ -45,6 +43,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Middlewares
         code = errorCode,
         message = exception.Message
       };
+
       var payload = JsonConvert.SerializeObject(response);
       context.Response.ContentType = "application/json";
       context.Response.StatusCode = (int)statusCode;
