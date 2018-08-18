@@ -21,6 +21,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.ClearTodos
 
       var todos = await queryRepository.ListAsync();
       if (todos == null || todos.Count <= 0) return new ClearTodosResponse();
+
       //TODO: need to have a ClearAll method in CommandRepository
       foreach (var todo in todos)
       {

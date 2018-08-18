@@ -16,7 +16,8 @@ var libs = new List<string>{
     "./src/NetCoreKit.Infrastructure.AspNetCore.Miniservice/NetCoreKit.Infrastructure.AspNetCore.Miniservice.csproj",
     "./src/NetCoreKit.Infrastructure.AspNetCore.OpenApi/NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj",
     "./src/NetCoreKit.Infrastructure.EfCore/NetCoreKit.Infrastructure.EfCore.csproj",
-    "./src/NetCoreKit.Infrastructure.EfCore.SqlServer/NetCoreKit.Infrastructure.EfCore.SqlServer.csproj"
+    "./src/NetCoreKit.Infrastructure.EfCore.SqlServer/NetCoreKit.Infrastructure.EfCore.SqlServer.csproj",
+    "./src/NetCoreKit.Infrastructure.EfCore.MySql/NetCoreKit.Infrastructure.EfCore.MySql.csproj"
 };
 
 Task("Clean")

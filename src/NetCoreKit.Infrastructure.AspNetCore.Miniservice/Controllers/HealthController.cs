@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
+namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Controllers
 {
   [Route("")]
   [ApiVersionNeutral]

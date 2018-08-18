@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
-  public static class ServiceProviderExtensions
+  internal static class ServiceProviderExtensions
   {
     public static IOrderedEnumerable<TConfigureService> GetServicesByPriority<TConfigureService>(
       this IServiceProvider svcProvider)

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
+namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Controllers
 {
   [Route("")]
   [ApiVersionNeutral]

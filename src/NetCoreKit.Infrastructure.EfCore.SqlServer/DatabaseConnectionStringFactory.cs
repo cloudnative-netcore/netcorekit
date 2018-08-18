@@ -5,12 +5,12 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.SqlServer
 {
-  public sealed class SqlServerDatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
+  public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
   {
     private readonly IConfiguration _config;
     private readonly IHostingEnvironment _env;
 
-    public SqlServerDatabaseConnectionStringFactory(
+    public DatabaseConnectionStringFactory(
       IConfiguration config,
       IHostingEnvironment env)
     {

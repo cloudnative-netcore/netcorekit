@@ -4,7 +4,7 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.SqlServer
 {
-  public sealed class SqlServerDbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
+  public sealed class DbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
   {
     public DbContextOptionsBuilder Extend(
       DbContextOptionsBuilder optionsBuilder,

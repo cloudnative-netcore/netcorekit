@@ -5,7 +5,7 @@ using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
-  public static class ServiceParamsExtensions
+  internal static class ServiceParamsExtensions
   {
     public static ServiceParams GetServiceParams(this IServiceProvider svcProvider,
       IEnumerable<Type> assemblyTypes, IEnumerable<KeyValuePair<string, object>> extends = null)
@@ -13,7 +13,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       var svcParams = new ServiceParams
       {
         {
-          "assemblies", assemblyTypes.Append(typeof(MiniServiceExtensions)).GetAssembliesByTypes()
+          "assemblies", assemblyTypes.Append(typeof(ServiceCollectionExtensions)).GetAssembliesByTypes()
         }
       };
 

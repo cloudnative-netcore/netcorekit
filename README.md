@@ -27,6 +27,7 @@ Install-Package NetCoreKit.Infrastructure.AspNetCore.Miniservice
 Install-Package NetCoreKit.Infrastructure.AspNetCore.OpenApi
 Install-Package NetCoreKit.Infrastructure.EfCore
 Install-Package NetCoreKit.Infrastructure.EfCore.SqlServer
+Install-Package NetCoreKit.Infrastructure.EfCore.MySql
 ```
 
 Alternatively if you're using .NET Core then you can install **NetCoreKit** via the command line interface with the following command:
@@ -41,6 +42,7 @@ dotnet add package NetCoreKit.Infrastructure.AspNetCore.Miniservice
 dotnet add package NetCoreKit.Infrastructure.AspNetCore.OpenApi
 dotnet add package NetCoreKit.Infrastructure.EfCore
 dotnet add package NetCoreKit.Infrastructure.EfCore.SqlServer
+dotnet add package NetCoreKit.Infrastructure.EfCore.MySql
 ```
 
 ### Contributing

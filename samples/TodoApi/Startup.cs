@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
+using NetCoreKit.Infrastructure.EfCore.MySql;
 using NetCoreKit.Infrastructure.EfCore.SqlServer;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 
@@ -14,7 +15,8 @@ namespace NetCoreKit.Samples.TodoAPI
         new[] {typeof(Startup)},
         svc =>
         {
-          // svc.AddEfCoreSqlServer();
+          // svc.AddEfCoreSqlServerDb();
+          // svc.AddEfCoreMySqlDb();
           svc.AddExternalSystemHealthChecks();
         });
     }

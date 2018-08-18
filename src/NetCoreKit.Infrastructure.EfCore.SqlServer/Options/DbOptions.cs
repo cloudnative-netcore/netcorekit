@@ -1,6 +1,6 @@
 namespace NetCoreKit.Infrastructure.EfCore.SqlServer.Options
 {
-  public class MsSqlDbOptions
+  public class DbOptions
   {
     public string Host { get; set; }
     public string Port { get; set; }
