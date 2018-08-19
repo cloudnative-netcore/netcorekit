@@ -5,9 +5,9 @@ using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
-  internal static class ServiceParamsExtensions
+  public static class ServiceParamsExtensions
   {
-    public static ServiceParams GetServiceParams(this IServiceProvider svcProvider,
+    public static ServiceParams GetServiceParams(this IServiceProvider sp,
       IEnumerable<Type> assemblyTypes, IEnumerable<KeyValuePair<string, object>> extends = null)
     {
       var svcParams = new ServiceParams
@@ -18,12 +18,16 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       };
 
       if (extends == null || !extends.Any()) return svcParams;
-      foreach (var extend in extends)
+      var conParams = svcParams.Concat(extends);
+
+      // to avoid a side-effect then we don't manipulate directly ServiceParams in the input
+      var result = new ServiceParams();
+      foreach (var param in conParams)
       {
-        svcParams.Append(extend);
+        result.Add(param.Key, param.Value);
       }
 
-      return svcParams;
+      return result;
     }
   }
 }

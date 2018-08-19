@@ -15,13 +15,14 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       this IServiceCollection services,
       IEnumerable<Type> registeredAssemblyTypes,
       Action<IServiceCollection> databaseRegistrationAction = null,
+      Func<IEnumerable<KeyValuePair<string, object>>> extendServiceParamsFunc = null,
       Action<IServiceCollection> postRegistrationAction = null)
       where TDbContext : DbContext
     {
       if (registeredAssemblyTypes == null || !registeredAssemblyTypes.Any())
         throw new Exception("Should have at least one assembly in Startup file.");
 
-      services.AddScoped(sp => sp.GetServiceParams(registeredAssemblyTypes));
+      services.AddScoped(sp => sp.GetServiceParams(registeredAssemblyTypes, extendServiceParamsFunc?.Invoke()));
       services.ScanAndRegisterServices<IPriorityConfigure>();
 
       using (var scope = services.BuildServiceProvider().CreateScope())
