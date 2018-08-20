@@ -52,16 +52,16 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     {
       return await _context.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
     }
+    
+    public void Rollback()
+    {
+      _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+    }
 
     public void Dispose()
     {
       Transaction?.Dispose();
       _context?.Dispose();
-    }
-
-    public void Rollback()
-    {
-      _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
     }
   }
 }

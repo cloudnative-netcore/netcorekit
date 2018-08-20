@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Domain;
@@ -57,10 +59,46 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       return entity;
     }
 
+    public async Task<int> CountAsync()
+    {
+      return await _dbContext.Set<TEntity>().CountAsync();
+    }
+
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
       _dbContext.Entry(entity).State = EntityState.Deleted;
       return await Task.FromResult(entity);
+    }
+
+    public bool Exist(Expression<Func<TEntity, bool>> predicate)
+    {
+      var exist = _dbContext.Set<TEntity>().Where(predicate);
+      return exist.Any() ? true : false;
+    }
+
+    public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match)
+    {
+      return await _dbContext.Set<TEntity>().Where(match).ToListAsync();
+    }
+
+    public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match)
+    {
+      return await _dbContext.Set<TEntity>().SingleOrDefaultAsync(match);
+    }
+
+    public async Task<ICollection<TEntity>> GetAllAsync()
+    {
+      return await _dbContext.Set<TEntity>().ToListAsync();
+    }
+
+    public async Task<TEntity> GetByIdAsync(int id)
+    {
+      return await _dbContext.Set<TEntity>().FindAsync(id);
+    }
+
+    public async Task<TEntity> GetByUniqueIdAsync(string id)
+    {
+      return await _dbContext.Set<TEntity>().FindAsync(id);
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
