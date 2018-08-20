@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
+using NetCoreKit.Infrastructure.EfCore.MySql;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 
 namespace NetCoreKit.Samples.TodoAPI
@@ -9,12 +10,12 @@ namespace NetCoreKit.Samples.TodoAPI
   {
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMiniService<TodoDbContext>(
+      services.AddMiniService<TodoListDbContext>(
         new[] {typeof(Startup)},
         svc =>
         {
           // svc.AddEfCoreSqlServerDb();
-          // svc.AddEfCoreMySqlDb();
+          svc.AddEfCoreMySqlDb();
           svc.AddExternalSystemHealthChecks();
         }
       );

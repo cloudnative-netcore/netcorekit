@@ -3,6 +3,8 @@ WORKDIR /app
 
 ARG service_version
 ENV SERVICE_VERSION ${service_version:-0.0.1}
+ENV PROJECT /src/src/samples/TodoApi
+ENV EXECUTE_FILE NetCoreKit.Samples.TodoAPI.dll
 
 ARG api_version
 ENV API_VERSION ${api_version:-1.0}
@@ -14,7 +16,7 @@ FROM microsoft/dotnet:2.1.302-sdk-alpine AS build
 WORKDIR /src
 COPY . .
 
-WORKDIR /src/src/samples/TodoApi
+WORKDIR $PROJECT
 
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
@@ -25,4 +27,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "NetCoreKit.Samples.TodoAPI.dll"]
+ENTRYPOINT ["dotnet", "$EXECUTE_FILE"]

@@ -12,8 +12,7 @@ namespace NetCoreKit.Samples.TodoAPI
     {
       var webHost = CreateWebHostBuilder(args).Build();
       var env = webHost.Services.GetService<IHostingEnvironment>();
-      if (env.IsDevelopment()) webHost = webHost.RegisterDbContext<TodoDbContext>();
-
+      if (env.IsDevelopment()) webHost = webHost.RegisterDbContext<TodoListDbContext>();
       webHost.Run();
     }
 

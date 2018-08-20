@@ -62,6 +62,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
           }
 
           c.OperationFilter<DefaultValuesOperationFilter>();
+          c.SchemaFilter<SwaggerExcludeSchemaFilter>();
           c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
         });
       }
