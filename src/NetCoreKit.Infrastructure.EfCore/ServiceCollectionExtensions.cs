@@ -29,26 +29,26 @@ namespace NetCoreKit.Infrastructure.EfCore
       {
         var repoType = typeof(IEfRepositoryAsync<>).MakeGenericType(entity);
         var implRepoType = typeof(EfRepositoryAsync<>).MakeGenericType(entity);
-        services.AddSingleton(repoType, implRepoType);
+        services.AddScoped(repoType, implRepoType);
 
         var queryRepoType = typeof(IEfQueryRepository<>).MakeGenericType(entity);
         var implQueryRepoType = typeof(EfQueryRepository<>).MakeGenericType(entity);
-        services.AddSingleton(queryRepoType, implQueryRepoType);
+        services.AddScoped(queryRepoType, implQueryRepoType);
       }
 
-      services.AddSingleton(
+      services.AddScoped(
         typeof(IUnitOfWorkAsync), resolver =>
           new EfUnitOfWork(
             resolver.GetService<DbContext>(),
             resolver.GetService<IServiceProvider>()));
 
-      services.AddSingleton(
+      services.AddScoped(
         typeof(IQueryRepositoryFactory), resolver =>
           new EfQueryRepositoryFactory(resolver.GetService<IServiceProvider>()));
 
       // by default, we register the in-memory database
-      services.AddSingleton(typeof(IDatabaseConnectionStringFactory), typeof(NoOpDatabaseConnectionStringFactory));
-      services.AddSingleton(typeof(IExtendDbContextOptionsBuilder), typeof(InMemoryDbContextOptionsBuilderFactory));
+      services.AddScoped(typeof(IDatabaseConnectionStringFactory), typeof(NoOpDatabaseConnectionStringFactory));
+      services.AddScoped(typeof(IExtendDbContextOptionsBuilder), typeof(InMemoryDbContextOptionsBuilderFactory));
 
       return services;
     }

@@ -51,7 +51,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     {
       if (extendExternalSystem == null)
         return services;
-      services.AddSingleton(p => extendExternalSystem(p).Append(p.GetService<DbHealthCheckAndMigration>()));
+      services.AddScoped(p => extendExternalSystem(p).Append(p.GetService<DbHealthCheckAndMigration>()));
 
       return services;
     }

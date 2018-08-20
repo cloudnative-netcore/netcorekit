@@ -44,29 +44,33 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     where TEntity : class, IEntity
   {
     private readonly TDbContext _dbContext;
+    private readonly DbSet<TEntity> _dbSet;
 
     public EfRepositoryAsync(TDbContext dbContext)
     {
       _dbContext = dbContext;
-      _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+      _dbSet = _dbContext.Set<TEntity>();
+      //_dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
     }
 
     public async Task<TEntity> AddAsync(TEntity entity)
     {
-      await _dbContext.Set<TEntity>().AddAsync(entity);
+      await _dbSet.AddAsync(entity);
       return entity;
     }
 
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
-      _dbContext.Entry(entity).State = EntityState.Deleted;
-      return await Task.FromResult(entity);
+      // _dbContext.Entry(entity).State = EntityState.Deleted;
+      var entry = _dbSet.Remove(entity);
+      return await Task.FromResult(entry.Entity);
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-      _dbContext.Entry(entity).State = EntityState.Modified;
-      return await Task.FromResult(entity);
+      // _dbContext.Entry(entity).State = EntityState.Modified;
+      var entry = _dbSet.Update(entity);
+      return await Task.FromResult(entry.Entity);
     }
   }
 
@@ -79,7 +83,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     public EfQueryRepository(TDbContext dbContext)
     {
       _dbContext = dbContext;
-      _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+      //_dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
     }
 
     public IQueryable<TEntity> Queryable() => _dbContext.Set<TEntity>();

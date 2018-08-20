@@ -42,9 +42,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
       }
 
       services.AddDbContextPool<TDbContext>(OptionsBuilderAction);
-      services.AddSingleton<TDbContext>();
-      services.AddSingleton<DbContext>(resolver => resolver.GetRequiredService<TDbContext>());
-      services.AddSingleton<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
+      services.AddScoped<TDbContext>();
+      services.AddScoped<DbContext>(resolver => resolver.GetRequiredService<TDbContext>());
+      services.AddScoped<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
     }
   }
 }

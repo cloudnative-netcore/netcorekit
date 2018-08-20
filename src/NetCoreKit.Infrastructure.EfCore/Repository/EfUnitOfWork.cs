@@ -30,6 +30,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       set => _context.Database.SetCommandTimeout(value);
     }
 
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+    {
+      return _context.Database.BeginTransactionAsync(cancellationToken);
+    }
+
     public virtual int SaveChanges() => _context.SaveChanges();
 
     public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken)

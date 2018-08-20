@@ -24,8 +24,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
       var queryRepository = QueryRepositoryFactory.QueryEfRepository<Project>();
       var taskQueryRepository = QueryRepositoryFactory.QueryEfRepository<Domain.Task>();
 
-      var project = await queryRepository.GetByIdAsync(request.TaskId, q => q.Include(x => x.Tasks));
-      if (project == null) throw new Exception($"Could not find project#{request.TaskId}.");
+      var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks));
+      if (project == null) throw new Exception($"Could not find project#{request.ProjectId}.");
 
       var task = await taskQueryRepository.GetByIdAsync(request.TaskId);
       task.ChangeTitle(request.Title)
@@ -36,6 +36,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
 
       project.UpdateTask(task);
       var updated = await commandRepository.UpdateAsync(project);
+
       await UnitOfWork.SaveChangesAsync(cancellationToken);
 
       return new UpdateTaskResponse {Result = updated.ToDto()};

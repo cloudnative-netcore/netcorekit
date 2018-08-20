@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Domain;
 using Newtonsoft.Json;
 
@@ -32,8 +33,12 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Middlewares
     {
       const string errorCode = "error";
       const HttpStatusCode statusCode = HttpStatusCode.BadRequest;
+      var message = exception.Message;
       switch (exception)
       {
+        case DbUpdateException e:
+          message = e.InnerException?.Message;
+          break;
         case CoreException e:
           break;
       }
@@ -41,7 +46,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Middlewares
       var response = new
       {
         code = errorCode,
-        message = exception.Message
+        message
       };
 
       var payload = JsonConvert.SerializeObject(response);
