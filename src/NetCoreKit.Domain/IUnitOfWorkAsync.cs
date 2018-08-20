@@ -12,5 +12,6 @@ namespace NetCoreKit.Domain
     Task<int> ExecuteSqlCommandAsync(string sql, params object[] parameters);
     Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters);
     int? CommandTimeout { get; set; }
+    void Rollback();
   }
 }

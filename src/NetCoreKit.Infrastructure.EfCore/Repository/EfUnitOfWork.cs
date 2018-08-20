@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     {
       Transaction?.Dispose();
       _context?.Dispose();
+    }
+
+    public void Rollback()
+    {
+      _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
     }
   }
 }
