@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     public virtual async Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters)
     {
       return await _context.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
+    }
+    
+    public void Rollback()
+    {
+      _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
     }
 
     public void Dispose()
