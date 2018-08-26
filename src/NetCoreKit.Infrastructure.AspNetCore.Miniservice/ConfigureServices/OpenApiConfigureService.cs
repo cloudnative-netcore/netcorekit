@@ -68,12 +68,12 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
       }
     }
 
-    private static string GetExternalAuthUri(IConfiguration config)
+    public static string GetExternalAuthUri(IConfiguration config)
     {
       return config.GetExternalHostUri("Auth");
     }
 
-    private static Info CreateInfoForApiVersion(IConfiguration config, ApiVersionDescription description)
+    public static Info CreateInfoForApiVersion(IConfiguration config, ApiVersionDescription description)
     {
       var info = new Info()
       {

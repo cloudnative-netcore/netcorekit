@@ -37,7 +37,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
       });
     }
 
-    private static ApiVersion ParseApiVersion(string serviceVersion)
+    public static ApiVersion ParseApiVersion(string serviceVersion)
     {
       if (string.IsNullOrEmpty(serviceVersion))
       {

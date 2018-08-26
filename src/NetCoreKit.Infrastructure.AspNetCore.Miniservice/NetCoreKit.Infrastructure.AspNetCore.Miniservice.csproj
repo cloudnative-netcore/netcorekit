@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.AspNetCore.Miniservice</id>
@@ -36,16 +36,18 @@
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.133" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.1" />
+    <PackageReference Include="MediatR" Version="5.0.1" />
     <PackageReference Include="Scrutor" Version="2.2.2" />
     <PackageReference Include="System.Reactive" Version="4.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="3.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="3.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore.CleanArch\NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.EfCore\NetCoreKit.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
     <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 

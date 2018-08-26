@@ -9,8 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using NetCoreKit.Infrastructure;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice.Options;
+using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
+using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 {
@@ -22,29 +24,37 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
     {
       IdentityModelEventSource.ShowPII = true;
 
-      var svcProvider = services.BuildServiceProvider();
-      var config = svcProvider.GetRequiredService<IConfiguration>();
-
-      var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
-      var extendOptionsBuilder = svcProvider.GetService<IExtendDbContextOptionsBuilder>();
-      var connStringFactory = svcProvider.GetService<IDatabaseConnectionStringFactory>();
-
-      //TODO: refactor it
-      var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
-      var fisrtAssembly = assemblies?.FirstOrDefault();
-
-      services.AddOptions()
-        .Configure<PersistenceOptions>(config.GetSection("EfCore"));
-
-      void OptionsBuilderAction(DbContextOptionsBuilder o)
+      //using (var scope = services.BuildServiceProvider().CreateScope())
       {
-        extendOptionsBuilder.Extend(o, connStringFactory, fisrtAssembly?.GetName().Name);
-      }
+        //var svcProvider = scope.ServiceProvider;
+        var svcProvider = services.BuildServiceProvider();
+        var config = svcProvider.GetRequiredService<IConfiguration>();
 
-      services.AddDbContextPool<TDbContext>(OptionsBuilderAction);
-      services.AddScoped<TDbContext>();
-      services.AddScoped<DbContext>(resolver => resolver.GetRequiredService<TDbContext>());
-      services.AddScoped<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
+        var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
+        var extendOptionsBuilder = svcProvider.GetService<IExtendDbContextOptionsBuilder>();
+        var connStringFactory = svcProvider.GetService<IDatabaseConnectionStringFactory>();
+
+        //TODO: refactor it
+        var assemblies = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+        //var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
+        var firstAssembly = assemblies?.FirstOrDefault(x => x.FullName.ToLowerInvariant().Contains("todoapi"));
+
+        services.AddOptions()
+          .Configure<PersistenceOptions>(config.GetSection("EfCore"));
+
+        void OptionsBuilderAction(DbContextOptionsBuilder o)
+        {
+          extendOptionsBuilder.Extend(o, connStringFactory, firstAssembly?.GetName().Name);
+        }
+
+        services.AddDbContextPool<TDbContext>(OptionsBuilderAction);
+        services.AddScoped<TDbContext>();
+        services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
+
+        services.AddEfCore();
+
+        services.AddScoped<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
+      }
     }
   }
 }

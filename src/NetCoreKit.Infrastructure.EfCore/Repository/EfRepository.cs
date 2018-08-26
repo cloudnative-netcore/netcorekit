@@ -43,14 +43,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     where TDbContext : DbContext
     where TEntity : class, IEntity
   {
-    private readonly TDbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
 
     public EfRepositoryAsync(TDbContext dbContext)
     {
-      _dbContext = dbContext;
-      _dbSet = _dbContext.Set<TEntity>();
-      //_dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+      _dbSet = dbContext.Set<TEntity>();
     }
 
     public async Task<TEntity> AddAsync(TEntity entity)
@@ -83,7 +80,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     public EfQueryRepository(TDbContext dbContext)
     {
       _dbContext = dbContext;
-      //_dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
     }
 
     public IQueryable<TEntity> Queryable() => _dbContext.Set<TEntity>();

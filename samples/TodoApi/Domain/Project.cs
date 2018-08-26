@@ -32,7 +32,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
 
     public Project AddTask(Task task)
     {
-      Tasks.Add(task.SetProject(this));
+      Tasks.Add(task);
       return this;
     }
 

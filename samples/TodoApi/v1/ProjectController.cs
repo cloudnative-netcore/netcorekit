@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Samples.TodoAPI.v1.UseCases.AddTask;
 using NetCoreKit.Samples.TodoAPI.v1.UseCases.ClearTasks;
@@ -18,13 +19,20 @@ namespace NetCoreKit.Samples.TodoAPI.v1
   [Route("api/projects")]
   public class ProjectController : Controller
   {
+    private readonly ILogger<ProjectController> _logger;
+    public ProjectController(ILoggerFactory factory)
+    {
+      _logger = factory.CreateLogger<ProjectController>();
+    }
+
     [HttpPost]
     public async Task<IActionResult> PostProject([FromServices] IMediator eventor, CreateProjectRequest request,
       CancellationToken cancellationToken)
     {
       return await eventor.SendStream<CreateProjectRequest, CreateProjectResponse>(
         request,
-        x => x.Result);
+        x => x.Result,
+        cancellationToken);
     }
 
     [HttpGet("{projectId:guid}/tasks")]
@@ -32,29 +40,33 @@ namespace NetCoreKit.Samples.TodoAPI.v1
       CancellationToken cancellationToken)
     {
       return await eventor.SendStream<GetTasksRequest, GetTasksResponse>(
-        new GetTasksRequest {ProjectId = projectId },
-        x => x.Result);
+        new GetTasksRequest {ProjectId = projectId},
+        x => x.Result,
+        cancellationToken);
     }
 
     [HttpPost("{projectId:guid}/tasks")]
-    public async Task<IActionResult> PostTask([FromServices] IMediator eventor, Guid projectId, AddTaskRequest request,
+    public async Task<IActionResult> PostTask([FromServices] IMediator eventor, Guid projectId,
+      AddTaskRequest request,
       CancellationToken cancellationToken)
     {
       request.ProjectId = projectId;
       return await eventor.SendStream<AddTaskRequest, AddTaskResponse>(
         request,
-        x => x.Result);
+        x => x.Result,
+        cancellationToken);
     }
 
     [HttpPut("{projectId:guid}/tasks/{taskId:guid}")]
     public async Task<IActionResult> PutTask([FromServices] IMediator eventor, Guid projectId, Guid taskId,
-      UpdateTaskRequest request)
+      UpdateTaskRequest request, CancellationToken cancellationToken)
     {
       request.ProjectId = projectId;
       request.TaskId = taskId;
       return await eventor.SendStream<UpdateTaskRequest, UpdateTaskResponse>(
         request,
-        x => x.Result);
+        x => x.Result,
+        cancellationToken);
     }
 
     [HttpDelete("{projectId:guid}/tasks/{taskId:guid}")]
@@ -67,7 +79,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1
           ProjectId = projectId,
           TaskId = taskId
         },
-        x => x.Result);
+        x => x.Result,
+        cancellationToken);
     }
 
     [HttpDelete("{projectId:guid}/tasks")]
@@ -75,7 +88,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1
       CancellationToken cancellationToken)
     {
       return await eventor.SendStream<ClearTasksRequest, ClearTasksResponse>(
-        new ClearTasksRequest {ProjectId = projectId },
+        new ClearTasksRequest {ProjectId = projectId},
         x => x.Result);
     }
   }

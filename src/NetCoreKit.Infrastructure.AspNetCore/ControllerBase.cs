@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using MediatR;
+// using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
@@ -11,12 +11,12 @@ namespace NetCoreKit.Infrastructure.AspNetCore
   [ApiController]
   public abstract class EvtControllerBase : Controller
   {
-    protected IMediator Eventor;
+    //protected IMediator Eventor;
 
-    protected EvtControllerBase(IMediator eventor)
+    /*protected EvtControllerBase(IMediator eventor)
     {
       Eventor = eventor;
-    }
+    }*/
   }
 
   [ApiController]

@@ -49,7 +49,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
       }
     }
 
-    private static string GetAuthUri(IConfiguration config, IHostingEnvironment env)
+    public static string GetAuthUri(IConfiguration config, IHostingEnvironment env)
     {
       return config.GetHostUri(env, "Auth");
     }

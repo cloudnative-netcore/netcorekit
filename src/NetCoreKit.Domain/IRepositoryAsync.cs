@@ -5,7 +5,7 @@ namespace NetCoreKit.Domain
 {
   public interface IRepositoryFactory
   {
-    IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : IEntity;
+    IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IEntity;
   }
 
   public interface IQueryRepositoryFactory

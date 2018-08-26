@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 {
@@ -13,15 +13,13 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
     {
       var svcProvider = services.BuildServiceProvider();
       var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
+      var config = svcProvider.GetRequiredService<IConfiguration>();
 
-      var mvcBuilder = services.AddMvc();
-      if (serviceParams["assemblies"] is HashSet<Assembly> assemblies && assemblies.Count > 0)
-        foreach (var assembly in assemblies)
-        {
-          mvcBuilder = mvcBuilder.AddApplicationPart(assembly);
-        }
-
-      mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      //var mvcBuilder = services.AddMvc();
+      //if (serviceParams["assemblies"] is HashSet<Assembly> assemblies && assemblies.Count > 0)
+      /*var assemblies = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+      foreach (var assembly in assemblies) mvcBuilder = mvcBuilder.AddApplicationPart(assembly);*/
+      //mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
   }
 }

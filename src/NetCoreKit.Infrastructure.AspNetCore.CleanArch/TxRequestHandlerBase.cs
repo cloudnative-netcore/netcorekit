@@ -6,7 +6,6 @@ using NetCoreKit.Utils.Attributes;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
 {
-  [AutoScanAwareness]
   public abstract class TxRequestHandlerBase<TRequest, TResponse> : ITxEventHandler<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
   {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -11,17 +12,27 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
   {
     private readonly DbContext _context;
     protected IDbContextTransaction Transaction;
-    protected IServiceProvider ServiceProvider;
+    private ConcurrentDictionary<Type, object> _repositories;
 
-    public EfUnitOfWork(DbContext context, IServiceProvider serviceProvider)
+
+    public EfUnitOfWork(DbContext context)
     {
       _context = context;
-      ServiceProvider = serviceProvider;
     }
 
-    public virtual IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : IEntity
+    public virtual IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IEntity
     {
-      return (IEfRepositoryAsync<TEntity>)ServiceProvider.GetService(typeof(IEfRepositoryAsync<TEntity>));
+      if (_repositories == null)
+      {
+        _repositories = new ConcurrentDictionary<Type, object>();
+      }
+      var type = typeof(TEntity);
+      if (!_repositories.ContainsKey(type))
+      {
+        _repositories[type] = new EfRepositoryAsync<TEntity>(_context);
+      }
+
+      return (IRepositoryAsync<TEntity>)_repositories[type];
     }
 
     public int? CommandTimeout

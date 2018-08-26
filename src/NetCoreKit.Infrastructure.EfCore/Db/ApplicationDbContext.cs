@@ -23,9 +23,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 
       var typeToRegisters = new List<Type>();
 
-      var ourModules = config
-        .GetValue<string>("EfCore:FullyQualifiedPrefix")
-        .LoadAssemblyWithPattern();
+      var ourModules = config.LoadFullAssemblies();
 
       typeToRegisters.AddRange(ourModules.SelectMany(m => m.DefinedTypes));
 

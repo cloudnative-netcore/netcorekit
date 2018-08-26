@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.EfCore.Repository;
-using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.EfCore
 {
@@ -15,13 +13,11 @@ namespace NetCoreKit.Infrastructure.EfCore
   {
     public static IServiceCollection AddEfCore(this IServiceCollection services)
     {
-      var serviceProvider = services.BuildServiceProvider();
-      var fullyQualifiedPrefix = serviceProvider
-        .GetRequiredService<IConfiguration>()
-        .GetValue<string>("EfCore:FullyQualifiedPrefix");
+      var svcProvider = services.BuildServiceProvider();
 
-      var entityTypes = fullyQualifiedPrefix
-        .LoadAssemblyWithPattern()
+      var entityTypes = svcProvider
+        .GetRequiredService<IConfiguration>()
+        .LoadFullAssemblies()
         .SelectMany(m => m.DefinedTypes)
         .Where(x => typeof(IEntity).IsAssignableFrom(x) && !x.GetTypeInfo().IsAbstract);
 
@@ -36,20 +32,16 @@ namespace NetCoreKit.Infrastructure.EfCore
         services.AddScoped(queryRepoType, implQueryRepoType);
       }
 
-      services.AddScoped(
-        typeof(IUnitOfWorkAsync), resolver =>
-          new EfUnitOfWork(
-            resolver.GetService<DbContext>(),
-            resolver.GetService<IServiceProvider>()));
+      services.AddScoped<IUnitOfWorkAsync, EfUnitOfWork>();
+      services.AddScoped<IQueryRepositoryFactory, EfQueryRepositoryFactory>();
 
-      services.AddScoped(
-        typeof(IQueryRepositoryFactory), resolver =>
-          new EfQueryRepositoryFactory(resolver.GetService<IServiceProvider>()));
+      return services;
+    }
 
-      // by default, we register the in-memory database
-      services.AddScoped(typeof(IDatabaseConnectionStringFactory), typeof(NoOpDatabaseConnectionStringFactory));
-      services.AddScoped(typeof(IExtendDbContextOptionsBuilder), typeof(InMemoryDbContextOptionsBuilderFactory));
-
+    public static IServiceCollection AddSqlLiteDb(this IServiceCollection services)
+    {
+      services.AddScoped<IDatabaseConnectionStringFactory, NoOpDatabaseConnectionStringFactory>();
+      services.AddScoped<IExtendDbContextOptionsBuilder, InMemoryDbContextOptionsBuilderFactory>();
       return services;
     }
   }
@@ -65,16 +57,13 @@ namespace NetCoreKit.Infrastructure.EfCore
   public class InMemoryDbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
   {
     public DbContextOptionsBuilder Extend(
-        DbContextOptionsBuilder optionsBuilder,
-        IDatabaseConnectionStringFactory connectionStringFactory,
-        string assemblyName)
+      DbContextOptionsBuilder optionsBuilder,
+      IDatabaseConnectionStringFactory connectionStringFactory,
+      string assemblyName)
     {
       return optionsBuilder.UseSqlite(
-          "Data Source=App_Data\\localdb.db",
-          sqlOptions =>
-          {
-            sqlOptions.MigrationsAssembly(assemblyName);
-          });
+        "Data Source=App_Data\\localdb.db",
+        sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
     }
   }
 }

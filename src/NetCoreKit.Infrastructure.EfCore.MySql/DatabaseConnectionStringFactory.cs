@@ -29,9 +29,9 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
         _config.GetConnectionString("mysqldb"),
         Environment.GetEnvironmentVariable(_config.GetValue<string>("k8s:mysqldb:Host")),
         Environment.GetEnvironmentVariable(_config.GetValue<string>("k8s:mysqldb:Port")),
-        _config.GetValue<string>("k8s:mysqldb:Database"),
         _config.GetValue<string>("k8s:mysqldb:UserName"),
-        _config.GetValue<string>("k8s:mysqldb:Password"));
+        _config.GetValue<string>("k8s:mysqldb:Password"),
+        _config.GetValue<string>("k8s:mysqldb:Database"));
     }
   }
 }

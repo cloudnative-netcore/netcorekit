@@ -7,12 +7,14 @@ using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Extensions;
+using NetCoreKit.Utils.Attributes;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.GetTasks
 {
-	public class RequestHandler : RequestHandlerBase<GetTasksRequest, GetTasksResponse>
+  [AutoScanAwareness]
+  public class RequestHandler : RequestHandlerBase<GetTasksRequest, GetTasksResponse>
 	{
-		public RequestHandler(IQueryRepositoryFactory queryRepositoryFactory)
+		public RequestHandler(IUnitOfWorkAsync uow, IQueryRepositoryFactory queryRepositoryFactory)
 			: base(queryRepositoryFactory)
 		{
 		}

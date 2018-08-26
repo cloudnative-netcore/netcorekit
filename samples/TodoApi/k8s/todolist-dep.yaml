@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todolist-v1
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todolist
+        version: v1
+    spec:
+      containers:
+      - name: todolist
+        image: vndg/todoapi:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: Hosts__BasePath
+          value: /
+        ports:
+        - containerPort: 5001
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---

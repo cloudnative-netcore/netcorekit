@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: todolistdb-v1
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todolistdb
+        version: v1
+    spec:
+      containers:
+      - name: todolistdb
+        image: vndg/cs-mysqldb:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: P@ssw0rd
+        ports:
+        - containerPort: 3306
+---

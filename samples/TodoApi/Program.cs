@@ -19,7 +19,8 @@ namespace NetCoreKit.Samples.TodoAPI
     public static IWebHostBuilder CreateWebHostBuilder(string[] args)
     {
       return WebHost.CreateDefaultBuilder(args)
-        .UseStartup<Startup>();
+        .UseStartup<Startup>()
+        .UseDefaultServiceProvider(o => o.ValidateScopes = false);
     }
   }
 }

@@ -25,7 +25,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
       var taskQueryRepository = QueryRepositoryFactory.QueryEfRepository<Domain.Task>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks));
-      if (project == null) throw new Exception($"Could not find project#{request.ProjectId}.");
+      if (project == null) throw new Exception($"Couldn't find project#{request.ProjectId}.");
 
       var task = await taskQueryRepository.GetByIdAsync(request.TaskId);
       task.ChangeTitle(request.Title)
