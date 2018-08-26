@@ -9,8 +9,15 @@ A set of cloud native tools and utilities for .NET Core.
 ### Features
 - Simple libraries. No frameworks. Little abstraction.
 - Modular (Easy to swap out Utils, Domain, AspNetCore, Clean Architecture, Open API, Entity Framework Core...)
-- Adhere to [twelve-factor app paradigm](https://12factor.net).
+- Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
+- Resilience and health check out of the box.
+- Easy for configuration management.
+- Simply clean architecture supports.
+- Authentication/Authorization with OAuth 2.0 and OpenID Connect.
+- Clean and demystify error, debug logs.
+- API versioning from Docker container to WebAPI. 
 - Documentation template with OpenAPI documentation.
+- Work natively with Kubernetes or even with Service Mesh.
 
 ### Installation
 
