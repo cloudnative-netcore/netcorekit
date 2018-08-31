@@ -6,6 +6,7 @@ assembly_info:
 configuration:
   - Debug
 build_script:
+  - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.1.401
   - ps: ./build.ps1
 test: off
 skip_tags: true

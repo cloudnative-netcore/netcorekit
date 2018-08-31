@@ -14,7 +14,7 @@ spec:
       containers:
       - name: todolistdb
         image: vndg/cs-mysqldb:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: P@ssw0rd
