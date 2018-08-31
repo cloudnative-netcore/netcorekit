@@ -21,7 +21,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore
 
   [ApiController]
   public abstract class EfCoreControllerBase<TEntity> : Controller
-    where TEntity : EntityBase
+    where TEntity : AggregateRootBase
   {
     protected readonly IEfQueryRepository<TEntity> QueryRepository;
     protected readonly IEfRepositoryAsync<TEntity> MutateRepository;
@@ -41,7 +41,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore
   /// <typeparam name="TEntity"></typeparam>
   [ApiController]
   public abstract class CrudControllerBase<TEntity> : EfCoreControllerBase<TEntity>
-      where TEntity : EntityBase
+      where TEntity : AggregateRootBase
   {
     protected CrudControllerBase(
         IEfQueryRepository<TEntity> queryRepository,

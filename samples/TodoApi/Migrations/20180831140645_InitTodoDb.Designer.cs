@@ -9,15 +9,14 @@ using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 namespace NetCoreKit.Samples.TodoAPI.Migrations
 {
     [DbContext(typeof(TodoListDbContext))]
-    [Migration("20180826041936_InitToDoListDb")]
-    partial class InitToDoListDb
+    [Migration("20180831140645_InitTodoDb")]
+    partial class InitTodoDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932");
 
             modelBuilder.Entity("NetCoreKit.Samples.TodoAPI.Domain.Project", b =>
                 {
@@ -29,6 +28,8 @@ namespace NetCoreKit.Samples.TodoAPI.Migrations
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("Updated");
+
+                    b.Property<int>("Version");
 
                     b.HasKey("Id");
 

@@ -333,3 +333,4 @@ ASALocalRun/
 tools
 build
 *.deb
+**/*/*.db

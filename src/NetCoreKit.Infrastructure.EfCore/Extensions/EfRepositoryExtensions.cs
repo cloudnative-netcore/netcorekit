@@ -18,7 +18,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
 
     {
       var queryable = repo.Queryable();
@@ -36,7 +36,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
     {
       var queryable = repo.Queryable();
 
@@ -52,7 +52,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
     {
       var queryable = repo.Queryable();
 
@@ -70,7 +70,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
     {
       return await GetDataAsync(repo, criterion, selector, null, include, disableTracking);
     }
@@ -83,7 +83,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
     {
       return await GetDataAsync(repo, criterion, selector, filter, include, disableTracking);
     }
@@ -96,7 +96,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
       Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
       bool disableTracking = true)
       where TDbContext : DbContext
-      where TEntity : class, IEntity
+      where TEntity : class, IAggregateRoot
     {
       var queryable = repo.Queryable();
       if (disableTracking) queryable = queryable.AsNoTracking();

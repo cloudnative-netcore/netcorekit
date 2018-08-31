@@ -6,7 +6,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
   public static class EfQueryRepositoryFactoryExtensions
   {
     public static IEfQueryRepository<TEntity> QueryEfRepository<TEntity>(this IQueryRepositoryFactory factory)
-      where TEntity : IEntity
+      where TEntity : IAggregateRoot
     {
       return factory.QueryRepository<TEntity>() as IEfQueryRepository<TEntity>;
     }

@@ -6,7 +6,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
 {
   public sealed class Task : EntityBase
   {
-    internal Task()
+    private Task()
     {
     }
 

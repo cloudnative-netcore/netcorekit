@@ -26,11 +26,10 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.AddTask
 
     public override async Task<AddTaskResponse> Handle(AddTaskRequest request, CancellationToken cancellationToken)
     {
-      var projectRepository = UnitOfWork.Repository<Project>();
-      var taskRepository = UnitOfWork.Repository<Task>();
-      var projectQueryRepository = QueryRepositoryFactory.QueryEfRepository<Project>();
+      var commandRepository = UnitOfWork.Repository<Project>();
+      var queryRepository = QueryFactory.QueryEfRepository<Project>();
 
-      var project = await projectQueryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks));
+      var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
       if (project == null)
         throw new Exception($"Couldn't found the project#{request.ProjectId}.");
 
@@ -40,9 +39,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.AddTask
       var task = Task.Load(request.Title);
       task = task.SetAuthor(author.Id, author.GetFullName());
 
-      task = await taskRepository.AddAsync(task);
       project.AddTask(task);
-      project = await projectRepository.UpdateAsync(project);
+      project = await commandRepository.UpdateAsync(project);
       await UnitOfWork.SaveChangesAsync(cancellationToken);
 
       return new AddTaskResponse {Result = project.ToDto()};

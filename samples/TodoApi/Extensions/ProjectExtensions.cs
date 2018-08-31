@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Dtos;
@@ -12,7 +13,9 @@ namespace NetCoreKit.Samples.TodoAPI.Extensions
       {
         Id = prj.Id,
         Name = prj.Name,
-        Tasks = prj.Tasks.Select(t => t.ToDto()).ToList()
+        Tasks = prj.Tasks == null
+          ? new List<TaskDto>()
+          : prj.Tasks.Select(t => t.ToDto()).ToList()
       };
     }
   }

@@ -21,20 +21,12 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
       CancellationToken cancellationToken)
     {
       var commandRepository = UnitOfWork.Repository<Project>();
-      var queryRepository = QueryRepositoryFactory.QueryEfRepository<Project>();
-      var taskQueryRepository = QueryRepositoryFactory.QueryEfRepository<Domain.Task>();
+      var queryRepository = QueryFactory.QueryEfRepository<Project>();
 
-      var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks));
+      var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
       if (project == null) throw new Exception($"Couldn't find project#{request.ProjectId}.");
 
-      var task = await taskQueryRepository.GetByIdAsync(request.TaskId);
-      task.ChangeTitle(request.Title)
-        .ChangeOrder(request.Order ?? 1);
-
-      if (request.Completed.HasValue && request.Completed.Value)
-        task.ChangeToCompleted();
-
-      project.UpdateTask(task);
+      project.UpdateTask(request.TaskId, request.Title, request.Order ?? 1, request.Completed ?? false);
       var updated = await commandRepository.UpdateAsync(project);
 
       await UnitOfWork.SaveChangesAsync(cancellationToken);

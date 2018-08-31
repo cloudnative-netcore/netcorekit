@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
+using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.MySql;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
@@ -15,7 +16,8 @@ namespace NetCoreKit.Samples.TodoAPI
       services.AddMiniService<TodoListDbContext>(
         svc =>
         {
-          svc.AddEfCoreMySqlDb();
+          // svc.AddEfCoreMySqlDb();
+          svc.AddEfSqlLiteDb();
           svc.AddExternalSystemHealthChecks();
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }

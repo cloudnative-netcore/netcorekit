@@ -6,7 +6,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
   public interface IEventHandler<in TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
   {
-    IQueryRepositoryFactory QueryRepositoryFactory { get; }
+    IQueryRepositoryFactory QueryFactory { get; }
   }
 
   public interface ITxEventHandler<in TRequest, TResponse> : IEventHandler<TRequest, TResponse>

@@ -19,7 +19,7 @@ namespace NetCoreKit.Infrastructure.EfCore
         .GetRequiredService<IConfiguration>()
         .LoadFullAssemblies()
         .SelectMany(m => m.DefinedTypes)
-        .Where(x => typeof(IEntity).IsAssignableFrom(x) && !x.GetTypeInfo().IsAbstract);
+        .Where(x => typeof(IAggregateRoot).IsAssignableFrom(x) && !x.GetTypeInfo().IsAbstract);
 
       foreach (var entity in entityTypes)
       {
@@ -38,7 +38,7 @@ namespace NetCoreKit.Infrastructure.EfCore
       return services;
     }
 
-    public static IServiceCollection AddSqlLiteDb(this IServiceCollection services)
+    public static IServiceCollection AddEfSqlLiteDb(this IServiceCollection services)
     {
       services.AddScoped<IDatabaseConnectionStringFactory, NoOpDatabaseConnectionStringFactory>();
       services.AddScoped<IExtendDbContextOptionsBuilder, InMemoryDbContextOptionsBuilderFactory>();

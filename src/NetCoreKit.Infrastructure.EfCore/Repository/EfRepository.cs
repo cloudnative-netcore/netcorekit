@@ -15,7 +15,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       _serviceProvider = serviceProvider;
     }
 
-    public IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IEntity
+    public IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IAggregateRoot
     {
       return _serviceProvider.GetService(typeof(IEfQueryRepository<TEntity>)) as IEfQueryRepository<TEntity>;
     }
@@ -23,7 +23,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
   public class EfRepositoryAsync<TEntity>
     : EfRepositoryAsync<DbContext, TEntity>, IEfRepositoryAsync<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IAggregateRoot
   {
     public EfRepositoryAsync(DbContext dbContext) : base(dbContext)
     {
@@ -32,7 +32,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
   public class EfQueryRepository<TEntity>
     : EfQueryRepository<DbContext, TEntity>, IEfQueryRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IAggregateRoot
   {
     public EfQueryRepository(DbContext dbContext) : base(dbContext)
     {
@@ -41,13 +41,15 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
   public class EfRepositoryAsync<TDbContext, TEntity> : IEfRepositoryAsync<TDbContext, TEntity>
     where TDbContext : DbContext
-    where TEntity : class, IEntity
+    where TEntity : class, IAggregateRoot
   {
+    private readonly TDbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
 
     public EfRepositoryAsync(TDbContext dbContext)
     {
-      _dbSet = dbContext.Set<TEntity>();
+      _dbContext = dbContext;
+      _dbSet = _dbContext.Set<TEntity>();
     }
 
     public async Task<TEntity> AddAsync(TEntity entity)
@@ -58,22 +60,22 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
-      // _dbContext.Entry(entity).State = EntityState.Deleted;
       var entry = _dbSet.Remove(entity);
       return await Task.FromResult(entry.Entity);
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
-      // _dbContext.Entry(entity).State = EntityState.Modified;
-      var entry = _dbSet.Update(entity);
+      var entry = _dbContext.Entry(entity);
+      entry.State = EntityState.Modified;
+      // var entry = _dbSet.Update(entity);
       return await Task.FromResult(entry.Entity);
     }
   }
 
   public class EfQueryRepository<TDbContext, TEntity> : IEfQueryRepository<TDbContext, TEntity>
     where TDbContext : DbContext
-    where TEntity : class, IEntity
+    where TEntity : class, IAggregateRoot
   {
     private readonly TDbContext _dbContext;
 

@@ -11,11 +11,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
   {
     protected TxRequestHandlerBase(IUnitOfWorkAsync uow, IQueryRepositoryFactory queryRepositoryFactory)
     {
-      QueryRepositoryFactory = queryRepositoryFactory;
+      QueryFactory = queryRepositoryFactory;
       UnitOfWork = uow;
     }
 
-    public IQueryRepositoryFactory QueryRepositoryFactory { get; }
+    public IQueryRepositoryFactory QueryFactory { get; }
 
     public IUnitOfWorkAsync UnitOfWork { get; }
 

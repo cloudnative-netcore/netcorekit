@@ -10,7 +10,13 @@ namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Db
     {
       modelBuilder.Entity<Project>(b =>
       {
-        b.HasMany(t => t.Tasks).WithOne(a => a.Project)
+        /*var navigation =
+          b.Metadata.FindNavigation(nameof(Project.Tasks));
+
+        navigation.SetPropertyAccessMode(PropertyAccessMode.Field);*/
+
+        b.HasMany(t => t.Tasks)
+          .WithOne(a => a.Project)
           .HasForeignKey(k => k.ProjectId)
           .OnDelete(DeleteBehavior.Cascade);
       });

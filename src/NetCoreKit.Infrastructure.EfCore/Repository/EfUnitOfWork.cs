@@ -20,7 +20,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       _context = context;
     }
 
-    public virtual IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IEntity
+    public virtual IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IAggregateRoot
     {
       if (_repositories == null)
       {

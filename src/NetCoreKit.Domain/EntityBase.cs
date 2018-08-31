@@ -8,7 +8,7 @@ namespace NetCoreKit.Domain
   public interface IEntity : IIdentity
   { }
 
-  public interface IAggregateRoot
+  public interface IAggregateRoot: IEntity
   {
     IAggregateRoot ApplyEvent(IDomainEvent payload);
     List<IDomainEvent> GetUncommittedEvents();

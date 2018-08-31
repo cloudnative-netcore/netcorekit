@@ -5,9 +5,9 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-  public class Project : EntityBase
+  public class Project : AggregateRootBase
   {
-    internal Project()
+    private Project()
     {
     }
 
@@ -17,7 +17,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     }
 
     public string Name { get; private set; }
-    public ICollection<Task> Tasks { get; private set; } = new List<Task>();
+    public ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     public static Project Load(string name)
     {
@@ -32,15 +32,22 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
 
     public Project AddTask(Task task)
     {
+      task.SetProject(this);
       Tasks.Add(task);
       return this;
     }
 
-    public Project UpdateTask(Task task)
+    public Project UpdateTask(Guid taskId, string taskName, int order = 1, bool completed = false)
     {
-      var taskInList = Tasks.First(x => x.Id == task.Id);
-      if (!Tasks.Remove(task)) throw new DomainException("Couldn't remove the old task.");
-      Tasks.Add(taskInList);
+      var task = Tasks.FirstOrDefault(x => x.Id == taskId);
+      if(task == null)
+        throw new DomainException($"Couldn't find any task#{taskId}");
+
+      task.ChangeTitle(taskName)
+        .ChangeOrder(order);
+
+      if (completed) task.ChangeToCompleted();
+
       return this;
     }
 
