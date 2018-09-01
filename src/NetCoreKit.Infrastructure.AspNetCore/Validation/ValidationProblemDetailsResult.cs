@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
+using static NetCoreKit.Utils.Helpers.IdHelper;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Validation
 {
   /// <inheritdoc />
   /// <summary>
-  /// Reference at https://www.strathweb.com/2018/07/centralized-exception-handling-and-request-validation-in-asp-net-core
+  ///   Reference at https://www.strathweb.com/2018/07/centralized-exception-handling-and-request-validation-in-asp-net-core
   /// </summary>
   public class ValidationProblemDetailsResult : IActionResult
   {
@@ -44,7 +44,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Validation
       {
         Status = 400,
         Title = "Request Validation Error",
-        Instance = $"urn:myorganization:badrequest:{Guid.NewGuid()}",
+        Instance = $"urn:myorganization:badrequest:{GenerateId()}",
         Detail = details,
         ValidationErrors = errors
       };

@@ -46,6 +46,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.EfCore.MySql", "src\NetCoreKit.Infrastructure.EfCore.MySql\NetCoreKit.Infrastructure.EfCore.MySql.csproj", "{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus.Kafka", "src\NetCoreKit.Infrastructure.Bus.Kafka\NetCoreKit.Infrastructure.Bus.Kafka.csproj", "{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.Bus", "src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj", "{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Samples.Notifier", "samples\NetCoreKit.Samples.Notifier\NetCoreKit.Samples.Notifier.csproj", "{E9235808-DB75-4461-831D-E58A325FDA01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +148,30 @@ Global
 		{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE}.Release|x86.Build.0 = Release|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Debug|x86.Build.0 = Debug|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}.Release|x86.Build.0 = Release|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Debug|x86.Build.0 = Debug|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|x86.ActiveCfg = Release|Any CPU
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|x86.Build.0 = Release|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|x86.Build.0 = Debug|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|x86.ActiveCfg = Release|Any CPU
+		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +189,9 @@ Global
 		{07F7005A-062E-478D-93C0-3B7E1C42389E} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 		{EE16B7AA-67D5-463E-A24F-6221DBD80A5F} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{E9235808-DB75-4461-831D-E58A325FDA01} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}

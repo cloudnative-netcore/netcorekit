@@ -4,6 +4,9 @@ using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Domain
 {
+  /// <summary>
+  /// Source: https://github.com/VaughnVernon/IDDD_Samples_NET
+  /// </summary>
   public abstract class ValueObjectBase
   {
     protected abstract IEnumerable<object> GetEqualityComponents();

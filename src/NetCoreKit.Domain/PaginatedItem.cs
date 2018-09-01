@@ -11,11 +11,11 @@ namespace NetCoreKit.Domain
       Items = items;
     }
 
-    public int TotalItems { get; private set; }
+    public int TotalItems { get; }
 
-    public long TotalPages { get; private set; }
+    public long TotalPages { get; }
 
-    public IReadOnlyList<TResponse> Items { get; private set; }
+    public IReadOnlyList<TResponse> Items { get; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

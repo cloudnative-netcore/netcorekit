@@ -9,7 +9,7 @@ using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 namespace NetCoreKit.Samples.TodoAPI.Migrations
 {
     [DbContext(typeof(TodoListDbContext))]
-    [Migration("20180831140645_InitTodoDb")]
+    [Migration("20180901072324_InitTodoDb")]
     partial class InitTodoDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

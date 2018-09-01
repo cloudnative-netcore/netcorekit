@@ -3,6 +3,7 @@
 A set of cloud native tools and utilities for .NET Core.
 
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE)
+[![CodeFactor](https://www.codefactor.io/repository/github/cloudnative-netcore/netcore-kit/badge)](https://www.codefactor.io/repository/github/cloudnative-netcore/netcore-kit)
 [![Build status](https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
 [![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version)](https://www.nuget.org/packages?q=NetCoreKit)
 

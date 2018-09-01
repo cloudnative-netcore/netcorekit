@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using AutoMapper;
 using IdentityServer4.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,6 +31,7 @@ using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using static NetCoreKit.Utils.Helpers.IdHelper;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
@@ -79,6 +81,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         services.AddHttpPolly<RestClient>();
 
         // #3
+        Mapper.Initialize(cfg => cfg.AddProfiles(config.LoadApplicationAssemblies()));
         services.AddMediatR(config.LoadApplicationAssemblies());
 
         // #4
@@ -250,7 +253,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             // i.e. based on the current principal
             var problemDetails = new ProblemDetails
             {
-              Instance = $"urn:myorganization:error:{Guid.NewGuid()}"
+              Instance = $"urn:myorganization:error:{GenerateId()}"
             };
 
             if (exception is BadHttpRequestException badHttpRequestException)

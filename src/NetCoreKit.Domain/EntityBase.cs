@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NetCoreKit.Utils.Helpers;
+using static NetCoreKit.Utils.Helpers.IdHelper;
+using static NetCoreKit.Utils.Helpers.DateTimeHelper;
 
 namespace NetCoreKit.Domain
 {
@@ -10,42 +12,44 @@ namespace NetCoreKit.Domain
 
   public interface IAggregateRoot: IEntity
   {
-    IAggregateRoot ApplyEvent(IDomainEvent payload);
-    List<IDomainEvent> GetUncommittedEvents();
+    IAggregateRoot ApplyEvent(IEvent payload);
+    List<IEvent> GetUncommittedEvents();
     void ClearUncommittedEvents();
-    IAggregateRoot RemoveEvent(IDomainEvent @event);
-    IAggregateRoot AddEvent(IDomainEvent uncommittedEvent);
+    IAggregateRoot RemoveEvent(IEvent @event);
+    IAggregateRoot AddEvent(IEvent uncommittedEvent);
     IAggregateRoot RegisterHandler<T>(Action<T> handler);
   }
 
   public abstract class AggregateRootBase : EntityBase, IAggregateRoot
   {
-    private readonly List<IDomainEvent> _uncommittedEvents = new List<IDomainEvent>();
-    private readonly Dictionary<Type, Action<object>> _handlers = new Dictionary<Type, Action<object>>();
+    private readonly List<IEvent> _uncommittedEvents = new List<IEvent>();
+    private readonly IDictionary<Type, Action<object>> _handlers = new ConcurrentDictionary<Type, Action<object>>();
 
-    protected AggregateRootBase() : this(IdHelper.GenerateId())
+    protected AggregateRootBase() : this(GenerateId())
     {
     }
 
     protected AggregateRootBase(Guid id)
     {
       Id = id;
-      Created = DateTimeHelper.GenerateDateTime();
+      Created = GenerateDateTime();
     }
 
     public int Version { get; protected set; }
 
-    public IAggregateRoot AddEvent(IDomainEvent uncommittedEvent)
+    public IAggregateRoot AddEvent(IEvent uncommittedEvent)
     {
       _uncommittedEvents.Add(uncommittedEvent);
       ApplyEvent(uncommittedEvent);
       return this;
     }
 
-    public IAggregateRoot ApplyEvent(IDomainEvent payload)
+    public IAggregateRoot ApplyEvent(IEvent payload)
     {
-      _handlers[payload.GetType()](payload);
+      if (!_handlers.ContainsKey(payload.GetType())) return this;
+      _handlers[payload.GetType()]?.Invoke(payload);
       Version++;
+
       return this;
     }
 
@@ -54,7 +58,7 @@ namespace NetCoreKit.Domain
       _uncommittedEvents.Clear();
     }
 
-    public List<IDomainEvent> GetUncommittedEvents()
+    public List<IEvent> GetUncommittedEvents()
     {
       return _uncommittedEvents;
     }
@@ -65,7 +69,7 @@ namespace NetCoreKit.Domain
       return this;
     }
 
-    public IAggregateRoot RemoveEvent(IDomainEvent @event)
+    public IAggregateRoot RemoveEvent(IEvent @event)
     {
       if (_uncommittedEvents.Find(e => e == @event) != null)
       {
@@ -75,16 +79,19 @@ namespace NetCoreKit.Domain
     }
   }
 
+  /// <summary>
+  /// Source: https://github.com/VaughnVernon/IDDD_Samples_NET
+  /// </summary>
   public abstract class EntityBase : IEntity
   {
-    protected EntityBase() : this(IdHelper.GenerateId())
+    protected EntityBase() : this(GenerateId())
     {
     }
 
     protected EntityBase(Guid id)
     {
       Id = id;
-      Created = DateTimeHelper.GenerateDateTime();
+      Created = GenerateDateTime();
     }
 
     [Key]

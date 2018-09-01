@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.1.1" />
@@ -36,8 +37,8 @@
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.133" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.1" />
-    <PackageReference Include="MediatR" Version="5.0.1" />
-    <PackageReference Include="Scrutor" Version="2.2.2" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Scrutor" Version="3.0.1" />
     <PackageReference Include="System.Reactive" Version="4.0.0" />
   </ItemGroup>
 

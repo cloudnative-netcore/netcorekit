@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using NetCoreKit.Domain;
-using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Infrastructure.EfCore.Db
 {
-  public abstract class ApplicationDbContext : DbContext
+  public abstract class AppDbContext : DbContext
   {
-    protected ApplicationDbContext(DbContextOptions options) : base(options)
+    protected AppDbContext(DbContextOptions options) : base(options)
     {
     }
 
@@ -34,6 +35,49 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
       base.OnModelCreating(builder);
 
       RegisterCustomMappings(builder, typeToRegisters);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+      var eventBus = this.GetService<IEventBus>();
+
+      var result = base.SaveChangesAsync(cancellationToken);
+
+      if (eventBus != null)
+        SaveChangesWithEvents(eventBus);
+
+      return result;
+    }
+
+    public override int SaveChanges()
+    {
+      var eventBus = this.GetService<IEventBus>();
+
+      var result = base.SaveChanges();
+
+      if (eventBus != null)
+        SaveChangesWithEvents(eventBus);
+
+      return result;
+    }
+
+    /// <summary>
+    ///   Source:
+    ///   https://github.com/ardalis/CleanArchitecture/blob/master/src/CleanArchitecture.Infrastructure/Data/AppDbContext.cs
+    /// </summary>
+    private void SaveChangesWithEvents(IEventBus eventBus)
+    {
+      var entitiesWithEvents = ChangeTracker.Entries<IAggregateRoot>()
+        .Select(e => e.Entity)
+        .Where(e => e.GetUncommittedEvents().Any())
+        .ToArray();
+
+      foreach (var entity in entitiesWithEvents)
+      {
+        var events = entity.GetUncommittedEvents().ToArray();
+        entity.GetUncommittedEvents().Clear();
+        foreach (var domainEvent in events) eventBus.Publish(domainEvent);
+      }
     }
 
     private static void RegisterEntities(ModelBuilder modelBuilder, IEnumerable<Type> typeToRegisters)

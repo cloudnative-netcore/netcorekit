@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NetCoreKit.Domain;
+using static NetCoreKit.Utils.Helpers.IdHelper;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
@@ -11,7 +12,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     }
 
     private Task(string title)
-      : this(Guid.NewGuid(), title)
+      : this(GenerateId(), title)
     {
     }
 
@@ -19,6 +20,14 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     {
       Title = title;
     }
+
+    public int? Order { get; private set; } = 1;
+    [Required] public string Title { get; private set; }
+    public bool? Completed { get; private set; } = false;
+    public Guid AuthorId { get; private set; }
+    public string AuthorName { get; private set; }
+    public Project Project { get; private set; }
+    public Guid ProjectId { get; private set; }
 
     public static Task Load(string title)
     {
@@ -30,18 +39,11 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
       return new Task(id, title);
     }
 
-    public int? Order { get; private set; } = 1;
-    [Required] public string Title { get; private set; }
-    public bool? Completed { get; private set; } = false;
-    public Guid AuthorId { get; private set; }
-    public string AuthorName { get; private set; }
-    public Project Project { get; private set; }
-    public Guid ProjectId { get; private set; }
-
     public Task ChangeTitle(string title)
     {
       if (string.IsNullOrEmpty(title))
-        throw new DomainException("Order is null or empty.");
+        throw new DomainException("Title is null or empty.");
+
       Title = title;
       return this;
     }
@@ -50,6 +52,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     {
       if (order <= 0)
         throw new DomainException("Order could be greater than zero.");
+
       Order = order;
       return this;
     }

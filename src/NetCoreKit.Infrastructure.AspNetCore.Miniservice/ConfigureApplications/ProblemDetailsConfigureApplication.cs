@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
@@ -9,12 +8,14 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
+using static NetCoreKit.Utils.Helpers.IdHelper;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureApplications
 {
   public class ProblemDetailsConfigureApplication : IConfigureApplication
   {
     public int Priority { get; } = 200;
+
     public void Configure(IApplicationBuilder app)
     {
       var env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
@@ -44,7 +45,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureApplications
 
             var problemDetails = new ProblemDetails
             {
-              Instance = $"urn:myorganization:error:{Guid.NewGuid()}"
+              Instance = $"urn:myorganization:error:{GenerateId()}"
             };
 
             if (exception is BadHttpRequestException badHttpRequestException)
