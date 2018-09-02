@@ -111,7 +111,6 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           if (!consumer.Consume(out var msg, TimeSpan.FromSeconds(1))) continue;
           _logger.LogInformation($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-          // var eventType = Type.GetType(msg.Key);
           var domainEvent = (TEvent)JsonConvert.DeserializeObject(msg.Value, typeof(TEvent));
           await _mediator.Publish(Mapper.Map<INotification>(domainEvent));
         }
