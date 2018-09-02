@@ -2,7 +2,6 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Options
 {
   public class PersistenceOptions
   {
-    public string FullyQualifiedPrefix { get; set; } = "VND.CoolStore.Services.*";
-    public string ShortyQualifiedPrefix { get; set; } = "VND.CoolStore.Services";
+    public string QualifiedAssemblyPattern { get; set; }
   }
 }

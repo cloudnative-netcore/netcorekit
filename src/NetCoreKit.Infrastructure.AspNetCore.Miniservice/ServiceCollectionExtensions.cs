@@ -67,7 +67,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         });
 
         services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
-        services.AddEfCore();
+        services.AddGenericRepository();
 
         // let outside inject more logic (like more healthcheck endpoints...)
         inScopeAction?.Invoke(services, svcProvider);

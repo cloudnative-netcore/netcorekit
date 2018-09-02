@@ -18,8 +18,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
           ?.GetSection("Internals")
           ?.GetSection(groupName);
 
-      var serviceHost = $"{Environment.GetEnvironmentVariable(group.GetValue<string>("Host"))}";
-      var servicePort = $"{Environment.GetEnvironmentVariable(group.GetValue<string>("Port"))}";
+      var serviceDnsName = group.GetValue<string>("ServiceName").ToUpperInvariant();
+      var serviceHost = $"{Environment.GetEnvironmentVariable($"{serviceDnsName}_SERVICE_HOST")}";
+      var servicePort = $"{Environment.GetEnvironmentVariable($"{serviceDnsName}_SERVICE_PORT")}";
       var basePath = $"{group.GetValue("BasePath", string.Empty)}";
 
       return $"http://{serviceHost}:{servicePort}{basePath}";

@@ -11,7 +11,7 @@ namespace NetCoreKit.Infrastructure.EfCore
 {
   public static class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddEfCore(this IServiceCollection services)
+    public static IServiceCollection AddGenericRepository(this IServiceCollection services)
     {
       var svcProvider = services.BuildServiceProvider();
 
@@ -46,7 +46,7 @@ namespace NetCoreKit.Infrastructure.EfCore
     }
   }
 
-  public class NoOpDatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
+  internal class NoOpDatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
   {
     public string Create()
     {
@@ -54,7 +54,7 @@ namespace NetCoreKit.Infrastructure.EfCore
     }
   }
 
-  public class InMemoryDbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
+  internal class InMemoryDbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
   {
     public DbContextOptionsBuilder Extend(
       DbContextOptionsBuilder optionsBuilder,

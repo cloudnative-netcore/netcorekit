@@ -25,10 +25,11 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
         return _config.GetConnectionString("mysqldb");
       }
 
+      var serviceName = _config.GetValue<string>("k8s:mysqldb:ServiceName").ToUpperInvariant();
       return string.Format(
         _config.GetConnectionString("mysqldb"),
-        Environment.GetEnvironmentVariable(_config.GetValue<string>("k8s:mysqldb:Host")),
-        Environment.GetEnvironmentVariable(_config.GetValue<string>("k8s:mysqldb:Port")),
+        Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST"),
+        Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT"),
         _config.GetValue<string>("k8s:mysqldb:UserName"),
         _config.GetValue<string>("k8s:mysqldb:Password"),
         _config.GetValue<string>("k8s:mysqldb:Database"));

@@ -1,11 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using NetCoreKit.Domain;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Extensions;
-using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 {
@@ -30,10 +28,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
     }
   }
 
-  /// <summary>
-  /// Due to In-memory mode
-  /// </summary>
-  public class ProjectCreatedProfile : Profile
+  /*public class ProjectCreatedProfile : Profile
   {
     public ProjectCreatedProfile()
     {
@@ -50,5 +45,5 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 
       return Task.FromResult(@event);
     }
-  }
+  }*/
 }

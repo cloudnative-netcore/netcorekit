@@ -22,7 +22,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 
       if (!(serviceParams["assemblies"] is HashSet<Assembly> assemblies)) return;
 
-      var ass = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+      var ass = config.GetValue<string>("QualifiedAssemblyPattern").LoadAssemblyWithPattern();
 
       services.AddScoped<ServiceFactory>(p => p.GetService);
       services.AddScoped<IMediator, Mediator>();

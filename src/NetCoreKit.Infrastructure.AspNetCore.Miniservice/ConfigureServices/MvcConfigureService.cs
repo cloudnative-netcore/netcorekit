@@ -17,7 +17,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 
       //var mvcBuilder = services.AddMvc();
       //if (serviceParams["assemblies"] is HashSet<Assembly> assemblies && assemblies.Count > 0)
-      /*var assemblies = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+      /*var assemblies = config.GetValue<string>("QualifiedAssemblyPattern").LoadAssemblyWithPattern();
       foreach (var assembly in assemblies) mvcBuilder = mvcBuilder.AddApplicationPart(assembly);*/
       //mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }

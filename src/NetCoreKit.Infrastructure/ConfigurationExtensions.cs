@@ -11,12 +11,12 @@ namespace NetCoreKit.Infrastructure
   {
     public static IEnumerable<Assembly> LoadFullAssemblies(this IConfiguration config)
     {
-      return config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadFullAssemblies();
+      return config.GetValue<string>("QualifiedAssemblyPattern").LoadFullAssemblies();
     }
 
     public static IEnumerable<Assembly> LoadApplicationAssemblies(this IConfiguration config)
     {
-      var apps = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+      var apps = config.GetValue<string>("QualifiedAssemblyPattern").LoadAssemblyWithPattern();
       if (apps == null || !apps.Any())
       {
         throw new Exception("Should have at least one application assembly to load.");

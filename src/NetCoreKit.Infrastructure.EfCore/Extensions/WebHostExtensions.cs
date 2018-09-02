@@ -46,7 +46,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
     public static void InstanceSeedData(this IServiceProvider resolver, DbContext context, Type seedData)
     {
       var configuration = resolver.GetService<IConfiguration>();
-      var scanAssemblyPattern = configuration.GetSection("EfCore")["FullyQualifiedPrefix"];
+      var scanAssemblyPattern = configuration.GetValue<string>("QualifiedAssemblyPattern");
       var seeders = scanAssemblyPattern.ResolveModularGenericTypes(seedData, context.GetType());
 
       if (seeders == null) return;

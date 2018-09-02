@@ -35,7 +35,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
         var connStringFactory = svcProvider.GetService<IDatabaseConnectionStringFactory>();
 
         //TODO: refactor it
-        var assemblies = config.GetValue<string>("EfCore:FullyQualifiedPrefix").LoadAssemblyWithPattern();
+        var assemblies = config.GetValue<string>("QualifiedAssemblyPattern").LoadAssemblyWithPattern();
         //var assemblies = serviceParams["assemblies"] as HashSet<Assembly>;
         var firstAssembly = assemblies?.FirstOrDefault(x => x.FullName.ToLowerInvariant().Contains("todoapi"));
 
@@ -51,7 +51,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
         services.AddScoped<TDbContext>();
         services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
 
-        services.AddEfCore();
+        services.AddGenericRepository();
 
         services.AddScoped<DbHealthCheckAndMigration, DbHealthCheckAndMigration>();
       }
