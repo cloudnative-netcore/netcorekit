@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Bus.Kafka;
@@ -21,15 +20,11 @@ namespace NetCoreKit.Samples.TodoAPI
           // svc.AddEfCoreMySqlDb();
           svc.AddEfSqlLiteDb();
           svc.AddExternalSystemHealthChecks();
-          svc.AddInMemoryEventBus();
-          // svc.AddKafkaEventBus();
+          //svc.AddInMemoryEventBus();
+          svc.AddKafkaEventBus();
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
       );
-
-      /*services.BuildServiceProvider()
-        .GetService<IEventBus>()
-        .Subscribe<ProjectCreated>();*/
     }
 
     public void Configure(IApplicationBuilder app)

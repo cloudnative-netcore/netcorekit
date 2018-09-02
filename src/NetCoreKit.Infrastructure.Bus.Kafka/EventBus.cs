@@ -7,6 +7,7 @@ using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NetCoreKit.Domain;
 using Newtonsoft.Json;
 
@@ -24,7 +25,9 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
     private readonly Producer<string, string> _producer;
     private readonly string _topic;
 
-    public EventBus(IMediator mediator, IConfiguration config)
+    private readonly ILogger<EventBus> _logger;
+
+    public EventBus(IMediator mediator, IConfiguration config, ILoggerFactory factory)
     {
       _brokerList = config.GetValue("EventBus:Brokers", "127.0.0.1:9092");
       _topic = config.GetValue("EventBus:Topic", "IAmKafka");
@@ -40,6 +43,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         new StringSerializer(Encoding.UTF8), new StringSerializer(Encoding.UTF8));
 
       _mediator = mediator;
+      _logger = factory.CreateLogger<EventBus>();
     }
 
     public async Task Publish(IEvent @event)
@@ -48,7 +52,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       await _producer.ProduceAsync(_topic, @event.GetType().AssemblyQualifiedName, data);
     }
 
-    public async Task Subscribe<T>() where T : IEvent
+    public async Task Subscribe<TEvent>() where TEvent : IEvent
     {
       using (var consumer = new Consumer<string, string>(
         constructConfig(_brokerList, true),
@@ -56,42 +60,43 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         new StringDeserializer(Encoding.UTF8)))
       {
         consumer.OnPartitionEOF += (_, end)
-          => Console.WriteLine(
+          => _logger.LogInformation(
             $"Reached end of topic {end.Topic} partition {end.Partition}, next message will be at offset {end.Offset}");
 
         consumer.OnError += (_, error)
-          => Console.WriteLine($"Error: {error}");
+          => _logger.LogError($"Error: {error}");
 
         consumer.OnConsumeError += (_, msg)
-          => Console.WriteLine(
+          => _logger.LogError(
             $"Error consuming from topic/partition/offset {msg.Topic}/{msg.Partition}/{msg.Offset}: {msg.Error}");
 
         consumer.OnOffsetsCommitted += (_, commit) =>
         {
-          Console.WriteLine($"[{string.Join(", ", commit.Offsets)}]");
+          _logger.LogInformation($"[{string.Join(", ", commit.Offsets)}]");
 
-          if (commit.Error) Console.WriteLine($"Failed to commit offsets: {commit.Error}");
-          Console.WriteLine($"Successfully committed offsets: [{string.Join(", ", commit.Offsets)}]");
+          if (commit.Error)
+            _logger.LogError($"Failed to commit offsets: {commit.Error}");
+          _logger.LogInformation($"Successfully committed offsets: [{string.Join(", ", commit.Offsets)}]");
         };
 
         consumer.OnPartitionsAssigned += (_, partitions) =>
         {
-          Console.WriteLine($"Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
+          _logger.LogInformation($"Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
           consumer.Assign(partitions);
         };
 
         consumer.OnPartitionsRevoked += (_, partitions) =>
         {
-          Console.WriteLine($"Revoked partitions: [{string.Join(", ", partitions)}]");
+          _logger.LogInformation($"Revoked partitions: [{string.Join(", ", partitions)}]");
           consumer.Unassign();
         };
 
         consumer.OnStatistics += (_, json)
-          => Console.WriteLine($"Statistics: {json}");
+          => _logger.LogInformation($"Statistics: {json}");
 
         consumer.Subscribe(_topic);
 
-        Console.WriteLine($"Subscribed to: [{string.Join(", ", consumer.Subscription)}]");
+        _logger.LogInformation($"Subscribed to: [{string.Join(", ", consumer.Subscription)}]");
 
         var cancelled = false;
         Console.CancelKeyPress += (_, e) =>
@@ -104,10 +109,10 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         while (!cancelled)
         {
           if (!consumer.Consume(out var msg, TimeSpan.FromSeconds(1))) continue;
-          Console.WriteLine($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
+          _logger.LogInformation($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-          var eventType = Type.GetType(msg.Key);
-          var domainEvent = (IEvent)JsonConvert.DeserializeObject(msg.Value, eventType);
+          // var eventType = Type.GetType(msg.Key);
+          var domainEvent = (TEvent)JsonConvert.DeserializeObject(msg.Value, typeof(TEvent));
           await _mediator.Publish(Mapper.Map<INotification>(domainEvent));
         }
       }
@@ -117,7 +122,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
     {
       return new Dictionary<string, object>
       {
-        ["group.id"] = "jambo-consumer",
+        ["group.id"] = "netcorekit-consumer",
         ["enable.auto.commit"] = enableAutoCommit,
         ["auto.commit.interval.ms"] = 5000,
         ["statistics.interval.ms"] = 60000,

@@ -20,6 +20,12 @@ A set of cloud native tools and utilities for .NET Core.
 - Documentation template with OpenAPI documentation.
 - Work natively with Kubernetes or even with Service Mesh.
 
+### Get Started
+- Take a look at [Get started](https://github.com/cloudnative-netcore/netcore-kit/wiki/Get-Started) section and [Play with Kubernetes](https://github.com/cloudnative-netcore/netcore-kit/wiki/Deploy-on-k8s-on-local) section to know more about this toolkit.
+
+- Basic used can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcore-kit/tree/master/samples/TodoApi)
+- More advance at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project.
+
 ### Installation
 
 **NetCoreKit** can be [found here on NuGet](https://www.nuget.org/packages?q=NetCoreKit) and can be installed by copying and pasting the following command into your Package Manager Console within Visual Studio (Tools > NuGet Package Manager > Package Manager Console).
@@ -51,51 +57,6 @@ dotnet add package NetCoreKit.Infrastructure.EfCore
 dotnet add package NetCoreKit.Infrastructure.EfCore.SqlServer
 dotnet add package NetCoreKit.Infrastructure.EfCore.MySql
 ```
-
-### Up and Running
-
-- Open up the `netcore-kit.sln`, then press `F5`
-- We should see OpenAPI UI of `samples\TodoApi` sample
-- Just play around with it.
-
-### Database Providers
-
-- SQL Server
-
-```
-> docker run --name sqlserverdb -p 1433:1433 -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=Passw0rd  microsoft/mssql-server-linux:2017-latest
-```
-
-- MySQL
-
-```
-> docker run --name mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=P@ssw0rd -e MYSQL_PASSWORD=P@ssw0rd mysql:8.0.12
-```
-
-- Add middleware in `samples\TodoApi\Startup.cs` as following
-
-```csharp
-services.AddMiniService<TodoDbContext>(
-  new[] {typeof(Startup)},
-    svc =>
-    {
-      // svc.AddEfCoreSqlServerDb();
-      svc.AddEfCoreMySqlDb();
-      svc.AddExternalSystemHealthChecks();
-    });
-```
-
-- Put connection string for each type of database into `ConnectionStrings` section in the `appsettings.json` file as below
-
-```json
-"mssqldb": "Server=tcp:127.0.0.1,1433;Database=maindb;User Id=cs;Password=P@ssw0rd;"
-```
-
-```json
-"mysqldb": "server=127.0.0.1;port=3306;uid=root;pwd=P@ssw0rd;database=maindb"
-```
-
-> Basic used can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcore-kit/tree/master/samples/TodoApi), more advance at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project. We use this libs for building up the whole technical stack for them.
 
 ### Contributing
 

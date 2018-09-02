@@ -48,9 +48,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus.Kafka", "src\NetCoreKit.Infrastructure.Bus.Kafka\NetCoreKit.Infrastructure.Bus.Kafka.csproj", "{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.Bus", "src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj", "{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus", "src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj", "{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Samples.Notifier", "samples\NetCoreKit.Samples.Notifier\NetCoreKit.Samples.Notifier.csproj", "{E9235808-DB75-4461-831D-E58A325FDA01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.Notifier", "samples\Notifier\NetCoreKit.Samples.Notifier.csproj", "{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -164,14 +164,14 @@ Global
 		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA}.Release|x86.Build.0 = Release|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Debug|x86.Build.0 = Debug|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|x86.ActiveCfg = Release|Any CPU
-		{E9235808-DB75-4461-831D-E58A325FDA01}.Release|x86.Build.0 = Release|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Debug|x86.Build.0 = Debug|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Release|x86.ActiveCfg = Release|Any CPU
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,7 +191,7 @@ Global
 		{CBEEBE6A-BBC3-420A-A491-48EDEEF058FE} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{BEA4FAB4-1A38-4720-8CCB-D7074CF7596D} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{4C788CCD-4695-4A1E-8F8D-AD1C864C7AFA} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
-		{E9235808-DB75-4461-831D-E58A325FDA01} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
+		{7AE8F281-2C86-4CF5-80CF-FCCE940E5DC3} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}
