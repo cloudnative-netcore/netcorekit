@@ -22,6 +22,13 @@ namespace NetCoreKit.Infrastructure.Bus
     public async Task Subscribe<TEvent>() where TEvent : IEvent
     {
       // because this is in-memory so that we don't have anything to do here
+      await Task.FromResult(true);
+    }
+
+    public async Task SubscribeAsync<TEvent>() where TEvent : IEvent
+    {
+      // because this is in-memory so that we don't have anything to do here
+      await Task.FromResult(true);
     }
   }
 }

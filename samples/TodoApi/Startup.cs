@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Bus.Kafka;
@@ -26,6 +27,13 @@ namespace NetCoreKit.Samples.TodoAPI
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
       );
+
+      System.Threading.Tasks.Task.Run(() =>
+      {
+        services.BuildServiceProvider()
+          .GetService<IEventBus>()
+          .SubscribeAsync<ProjectCreated>();
+      });
     }
 
     public void Configure(IApplicationBuilder app)

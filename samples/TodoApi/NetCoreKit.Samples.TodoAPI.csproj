@@ -6,17 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="v1\Extensions\**" />
-    <Compile Remove="v1\Services\**" />
-    <Content Remove="v1\Extensions\**" />
-    <Content Remove="v1\Services\**" />
-    <EmbeddedResource Remove="v1\Extensions\**" />
-    <EmbeddedResource Remove="v1\Services\**" />
-    <None Remove="v1\Extensions\**" />
-    <None Remove="v1\Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.1.3" />

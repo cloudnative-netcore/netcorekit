@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Domain;
+using NetCoreKit.Infrastructure.Mappers;
 using Newtonsoft.Json;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
@@ -105,16 +106,54 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           cancelled = true;
         };
 
-        Console.WriteLine("Ctrl-C to exit.");
+        _logger.LogInformation("Ctrl-C to exit.");
         while (!cancelled)
         {
           if (!consumer.Consume(out var msg, TimeSpan.FromSeconds(1))) continue;
           _logger.LogInformation($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-          var domainEvent = (TEvent)JsonConvert.DeserializeObject(msg.Value, typeof(TEvent));
-          await _mediator.Publish(Mapper.Map<INotification>(domainEvent));
+          var domainEvent = (IEvent)JsonConvert.DeserializeObject(msg.Value, typeof(TEvent));
+          await _mediator.Publish(domainEvent.MapTo<IEvent, INotification>());
         }
       }
+    }
+
+    public async Task SubscribeAsync<TEvent>() where TEvent : IEvent
+    {
+      using (var consumer = new Consumer<string, string>(
+        constructConfig(_brokerList, true),
+        new StringDeserializer(Encoding.UTF8),
+        new StringDeserializer(Encoding.UTF8)))
+      {
+        consumer.OnMessage += async (o, e) =>
+        {
+          _logger.LogInformation($"Topic: {e.Topic} Partition: {e.Partition} Offset: {e.Offset} {e.Value}");
+
+          var domainEvent = (IEvent)JsonConvert.DeserializeObject(e.Value, typeof(TEvent));
+          await _mediator.Publish(domainEvent.MapTo<IEvent, INotification>());
+        };
+
+        consumer.OnError += (_, e)
+          => _logger.LogError("Error: " + e.Reason);
+
+        consumer.OnConsumeError += (_, e)
+          => _logger.LogError("Consume error: " + e.Error.Reason);
+
+        consumer.Subscribe(_topic);
+
+        var cts = new CancellationTokenSource();
+        var consumeTask = Task.Factory.StartNew(() =>
+        {
+          while (!cts.Token.IsCancellationRequested)
+          {
+            consumer.Poll(TimeSpan.FromSeconds(1));
+          }
+        }, cts.Token);
+
+        consumeTask.Wait(cts.Token);
+      }
+
+      await Task.FromResult(true);
     }
 
     private static IDictionary<string, object> constructConfig(string brokerList, bool enableAutoCommit)

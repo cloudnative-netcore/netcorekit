@@ -14,7 +14,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     private Project(string name)
     {
       Name = name;
-      AddEvent(new ProjectCreated());
+      AddEvent(new ProjectCreated(name));
     }
 
     public string Name { get; private set; }

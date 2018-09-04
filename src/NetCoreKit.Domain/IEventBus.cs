@@ -6,5 +6,6 @@ namespace NetCoreKit.Domain
   {
     Task Publish(IEvent @event);
     Task Subscribe<T>() where T : IEvent;
+    Task SubscribeAsync<TEvent>() where TEvent : IEvent;
   }
 }

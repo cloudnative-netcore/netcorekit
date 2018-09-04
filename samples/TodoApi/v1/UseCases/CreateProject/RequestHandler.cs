@@ -28,22 +28,14 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
     }
   }
 
-  /*public class ProjectCreatedProfile : Profile
+  public class EventSubscriber : INotificationHandler<ProjectCreated>
   {
-    public ProjectCreatedProfile()
-    {
-      CreateMap<ProjectCreated, ProjectCreated>();
-    }
-  }
-
-  public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
-  {
-    public Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
+    public async System.Threading.Tasks.Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
     {
       // do something with @event
       //...
 
-      return Task.FromResult(@event);
+      await System.Threading.Tasks.Task.FromResult(@event);
     }
-  }*/
+  }
 }

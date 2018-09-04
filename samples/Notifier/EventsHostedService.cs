@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Domain;
+using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Samples.Notifier
 {
@@ -64,12 +65,18 @@ namespace NetCoreKit.Samples.Notifier
   {
     public ProjectCreatedProfile()
     {
-      this.RegisterMySelf(typeof(ProjectCreated));
+      this.MapMySelf(typeof(ProjectCreated));
     }
   }
 
   public class ProjectCreated : EventBase, INotification
   {
+    public ProjectCreated(string name)
+    {
+      Name = name;
+    }
+
+    public string Name { get; set; }
   }
 
   public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
@@ -86,15 +93,6 @@ namespace NetCoreKit.Samples.Notifier
       _logger.LogInformation($"@ Project Created Event -{@event.OccurredOn}-{@event.EventVersion}. Now I will do something cool in this worker...");
 
       return Task.FromResult(@event);
-    }
-  }
-
-  public static class AutoMapperProfileExtension
-  {
-    public static Profile RegisterMySelf(this Profile profile, Type type)
-    {
-      profile.CreateMap(type, type).ReverseMap();
-      return profile;
     }
   }
 }
