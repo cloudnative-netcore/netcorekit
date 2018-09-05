@@ -26,7 +26,7 @@ namespace NetCoreKit.Domain
 
     // currently for Entity Framework, set must be protected, not private.
     // will be fixed in EF 6.
-    public Guid Id { get; }
+    public Guid Id { get; protected set; }
 
     public override bool Equals(object anotherObject)
     {
