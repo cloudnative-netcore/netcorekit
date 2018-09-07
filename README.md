@@ -1,6 +1,6 @@
 # Cloud Native .NET Core Kit
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg?style=for-the-badge)](https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE) [![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version&style=for-the-badge)](https://www.nuget.org/packages?q=NetCoreKit)
-[![Build status](https://img.shields.io/appveyor/ci/thangchung/netcorekit.svg?style=for-the-badge)](https://ci.appveyor.com/api/project/thangchung/netcorekit)
+[![Build status](https://img.shields.io/appveyor/ci/thangchung/netcore-kit.svg?style=for-the-badge)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
 
 A set of cloud native tools and utilities for .NET Core.
 
