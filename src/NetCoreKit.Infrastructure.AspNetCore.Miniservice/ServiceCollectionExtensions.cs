@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices;
@@ -81,8 +82,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         services.AddHttpPolly<RestClient>();
 
         // #3
-        Mapper.Initialize(cfg => cfg.AddProfiles(config.LoadApplicationAssemblies()));
-        services.AddMediatR(config.LoadApplicationAssemblies());
+        services.AddCleanArch(config.LoadApplicationAssemblies());
 
         // #4
         services.AddRouting(o => o.LowercaseUrls = true);

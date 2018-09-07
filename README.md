@@ -1,11 +1,8 @@
 # Cloud Native .NET Core Kit
+[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg?style=for-the-badge)](https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE) [![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version&style=for-the-badge)](https://www.nuget.org/packages?q=NetCoreKit)
+[![Build status](https://img.shields.io/appveyor/ci/thangchung/netcorekit.svg?style=for-the-badge)](https://ci.appveyor.com/api/project/thangchung/netcorekit)
 
 A set of cloud native tools and utilities for .NET Core.
-
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE)
-[![CodeFactor](https://www.codefactor.io/repository/github/cloudnative-netcore/netcore-kit/badge)](https://www.codefactor.io/repository/github/cloudnative-netcore/netcore-kit)
-[![Build status](https://ci.appveyor.com/api/projects/status/cxfcynyaufo2tp3m?svg=true)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
-[![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version)](https://www.nuget.org/packages?q=NetCoreKit)
 
 ### Features
 - Simple libraries. No frameworks. Little abstraction.
@@ -45,9 +42,9 @@ public class Startup
 }
 ```
 
-- Read [Get starting](https://github.com/cloudnative-netcore/netcore-kit/wiki/Get-Started) section and [Play with Kubernetes](https://github.com/cloudnative-netcore/netcore-kit/wiki/Deploy-on-k8s-on-local) section to know more about this cloud-native toolkit.
+- Read [Get starting](https://github.com/cloudnative-netcore/netcorekit/wiki/Get-Started) section and [Play with Kubernetes](https://github.com/cloudnative-netcore/netcorekit/wiki/Deploy-on-k8s-on-local) section to know more about this cloud-native toolkit.
 
-- Basic usage can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcore-kit/tree/master/samples/TodoApi)
+- Basic usage can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcorekit/tree/master/samples/TodoApi)
 - More advance usage is at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project.
 
 ### Contributing
@@ -60,4 +57,4 @@ public class Startup
 
 ### Licence
 
-Code released under [the MIT license](https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE).
+Code released under [the MIT license](https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE).

@@ -12,6 +12,6 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
   public interface ITxEventHandler<in TRequest, TResponse> : IEventHandler<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
   {
-    IUnitOfWorkAsync UnitOfWork { get; }
+    IUnitOfWorkAsync CommandFactory { get; }
   }
 }

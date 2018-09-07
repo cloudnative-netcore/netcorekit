@@ -19,7 +19,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.DeleteTask
     public override async Task<DeleteTaskResponse> Handle(DeleteTaskRequest request,
       CancellationToken cancellationToken)
     {
-      var projectRepository = UnitOfWork.Repository<Project>();
+      var projectRepository = CommandFactory.Repository<Project>();
       var queryRepository = QueryFactory.QueryEfRepository<Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
@@ -27,8 +27,6 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.DeleteTask
 
       project.RemoveTask(request.TaskId);
       var result = await projectRepository.UpdateAsync(project);
-
-      await UnitOfWork.SaveChangesAsync(cancellationToken);
 
       return new DeleteTaskResponse {Result = result.Id};
     }

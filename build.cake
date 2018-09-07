@@ -32,7 +32,7 @@ Task("Clean")
 
 Task("Restore")
     .Does(() => {
-        DotNetCoreRestore("./netcore-kit.sln", new DotNetCoreRestoreSettings{
+        DotNetCoreRestore("./netcorekit.sln", new DotNetCoreRestoreSettings{
             Verbosity = DotNetCoreVerbosity.Minimal,
         });
     });
@@ -71,7 +71,7 @@ Task("Build")
     .IsDependentOn("Version")
     .IsDependentOn("Restore")
     .Does(() => {
-        DotNetCoreBuild("./netcore-kit.sln", new DotNetCoreBuildSettings()
+        DotNetCoreBuild("./netcorekit.sln", new DotNetCoreBuildSettings()
         {
             Configuration = configuration,
             MSBuildSettings = msBuildSettings

@@ -9,13 +9,14 @@
 	  <Description>Helps to organize a service structure and architecture according to Clean Architecture.</Description>
 	  <Authors>Thang Chung</Authors>
 	  <RepositoryType>git</RepositoryType>
-	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
-	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
-	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
 	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />

@@ -9,9 +9,9 @@
 	  <Description>Helps to add Generic Repository and Unit of Work defaults for a service.</Description>
 	  <Authors>Thang Chung</Authors>
 	  <RepositoryType>git</RepositoryType>
-	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcore-kit.git</RepositoryUrl>
-	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcore-kit</PackageProjectUrl>
-	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcore-kit/blob/master/LICENSE</PackageLicenseUrl>
+	  <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+	  <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
 	  <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
   </PropertyGroup>
 

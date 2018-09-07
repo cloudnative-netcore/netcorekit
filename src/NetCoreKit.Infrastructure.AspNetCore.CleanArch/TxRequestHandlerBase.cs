@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NetCoreKit.Domain;
-using NetCoreKit.Utils.Attributes;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
 {
@@ -12,12 +11,12 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
     protected TxRequestHandlerBase(IUnitOfWorkAsync uow, IQueryRepositoryFactory queryRepositoryFactory)
     {
       QueryFactory = queryRepositoryFactory;
-      UnitOfWork = uow;
+      CommandFactory = uow;
     }
 
     public IQueryRepositoryFactory QueryFactory { get; }
 
-    public IUnitOfWorkAsync UnitOfWork { get; }
+    public IUnitOfWorkAsync CommandFactory { get; }
 
     public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
   }

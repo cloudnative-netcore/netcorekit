@@ -22,7 +22,6 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
       var projectRepository = _uow.Repository<Project>();
 
       var result = await projectRepository.AddAsync(Project.Load(request.Name));
-      await _uow.SaveChangesAsync(cancellationToken);
 
       return new CreateProjectResponse {Result = result.ToDto()};
     }

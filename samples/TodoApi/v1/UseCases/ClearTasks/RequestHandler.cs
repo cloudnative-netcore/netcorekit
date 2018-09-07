@@ -19,7 +19,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.ClearTasks
     public override async Task<ClearTasksResponse> Handle(ClearTasksRequest request,
       CancellationToken cancellationToken)
     {
-      var projectRepository = UnitOfWork.Repository<Project>();
+      var projectRepository = CommandFactory.Repository<Project>();
       var queryRepository = QueryFactory.QueryEfRepository<Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
@@ -28,8 +28,6 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.ClearTasks
 
       project.ClearTasks();
       await projectRepository.UpdateAsync(project);
-
-      await UnitOfWork.SaveChangesAsync(cancellationToken);
 
       return new ClearTasksResponse();
     }
