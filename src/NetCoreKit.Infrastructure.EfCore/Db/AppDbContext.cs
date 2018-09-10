@@ -76,7 +76,8 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
       {
         var events = entity.GetUncommittedEvents().ToArray();
         entity.GetUncommittedEvents().Clear();
-        foreach (var domainEvent in events) eventBus.Publish(domainEvent);
+        foreach (var domainEvent in events)
+          eventBus.Publish(domainEvent, $"{entity.GetType().Name.ToLowerInvariant()}");
       }
     }
 

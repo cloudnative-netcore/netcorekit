@@ -21,14 +21,14 @@ namespace NetCoreKit.Samples.Notifier
         {
           configHost.SetBasePath(Directory.GetCurrentDirectory());
           configHost.AddJsonFile("hostsettings.json", optional: true);
-          configHost.AddEnvironmentVariables(prefix: "PREFIX_");
+          configHost.AddEnvironmentVariables();
           configHost.AddCommandLine(args);
         })
         .ConfigureAppConfiguration((hostContext, configApp) =>
         {
           configApp.AddJsonFile("appsettings.json", optional: true);
           configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
-          configApp.AddEnvironmentVariables(prefix: "PREFIX_");
+          configApp.AddEnvironmentVariables();
           configApp.AddCommandLine(args);
         })
         .ConfigureServices((hostContext, services) =>

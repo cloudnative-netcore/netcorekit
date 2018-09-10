@@ -9,7 +9,6 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
     public static IServiceCollection AddKafkaEventBus(this IServiceCollection services)
     {
       services.Replace(ServiceDescriptor.Singleton<IEventBus, EventBus>());
-
       return services;
     }
   }

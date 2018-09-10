@@ -28,12 +28,12 @@ namespace NetCoreKit.Samples.TodoAPI
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
       );
 
-      System.Threading.Tasks.Task.Run(() =>
+      /*System.Threading.Tasks.Task.Run(() =>
       {
         services.BuildServiceProvider()
           .GetService<IEventBus>()
           .SubscribeAsync<ProjectCreated>();
-      });
+      });*/
     }
 
     public void Configure(IApplicationBuilder app)

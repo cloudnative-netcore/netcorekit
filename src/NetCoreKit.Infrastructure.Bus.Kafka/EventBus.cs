@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MediatR;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NetCoreKit.Domain;
-using NetCoreKit.Infrastructure.Mappers;
 using Newtonsoft.Json;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
@@ -21,18 +21,16 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
   {
     private readonly string _brokerList;
 
-    private readonly IMediator _mediator;
-
-    private readonly Producer<string, string> _producer;
-    private readonly string _topic;
-
     private readonly ILogger<EventBus> _logger;
 
-    public EventBus(IMediator mediator, IConfiguration config, ILoggerFactory factory)
-    {
-      _brokerList = config.GetValue("EventBus:Brokers", "127.0.0.1:9092");
-      _topic = config.GetValue("EventBus:Topic", "IAmKafka");
+    private readonly Producer<string, string> _producer;
+    private readonly IServiceProvider _serviceProvider;
 
+    public EventBus(IServiceProvider serviceProvider, IOptions<KafkaOptions> options, ILoggerFactory factory)
+    {
+      _serviceProvider = serviceProvider;
+
+      _brokerList = options.Value.Brokers;
       _producer = new Producer<string, string>(
         new Dictionary<string, object>
         {
@@ -43,20 +41,25 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         },
         new StringSerializer(Encoding.UTF8), new StringSerializer(Encoding.UTF8));
 
-      _mediator = mediator;
       _logger = factory.CreateLogger<EventBus>();
     }
 
-    public async Task Publish(IEvent @event)
+    public async Task Publish(IEvent @event, params string[] topics)
     {
+      if (topics.Length <= 0) throw new CoreException("Topic to publish should be at least one.");
+
       var data = JsonConvert.SerializeObject(@event, Formatting.Indented);
-      await _producer.ProduceAsync(_topic, @event.GetType().AssemblyQualifiedName, data);
+      foreach (var topic in topics)
+        _ = await _producer.ProduceAsync(topic, @event.GetType().AssemblyQualifiedName, data);
     }
 
-    public async Task Subscribe<TEvent>() where TEvent : IEvent
+    public async Task Subscribe(params string[] topics)
     {
+      if (topics.Length <= 0)
+        throw new CoreException("Topics to subscribe should be at least one.");
+
       using (var consumer = new Consumer<string, string>(
-        constructConfig(_brokerList, true),
+        ConstructConfig(_brokerList, true),
         new StringDeserializer(Encoding.UTF8),
         new StringDeserializer(Encoding.UTF8)))
       {
@@ -82,7 +85,8 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
 
         consumer.OnPartitionsAssigned += (_, partitions) =>
         {
-          _logger.LogInformation($"Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
+          _logger.LogInformation(
+            $"Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
           consumer.Assign(partitions);
         };
 
@@ -95,7 +99,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         consumer.OnStatistics += (_, json)
           => _logger.LogInformation($"Statistics: {json}");
 
-        consumer.Subscribe(_topic);
+        consumer.Subscribe(topics);
 
         _logger.LogInformation($"Subscribed to: [{string.Join(", ", consumer.Subscription)}]");
 
@@ -112,16 +116,26 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           if (!consumer.Consume(out var msg, TimeSpan.FromSeconds(1))) continue;
           _logger.LogInformation($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-          var domainEvent = (IEvent)JsonConvert.DeserializeObject(msg.Value, typeof(TEvent));
-          await _mediator.Publish(domainEvent.MapTo<IEvent, INotification>());
+          var eventType = Type.GetType(msg.Key);
+          if (eventType == null) continue;
+
+          var @event = (INotification)JsonConvert.DeserializeObject(msg.Value, eventType);
+          using (var scope = _serviceProvider.CreateScope())
+          {
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            await mediator.Publish(@event);
+          }
         }
       }
     }
 
-    public async Task SubscribeAsync<TEvent>() where TEvent : IEvent
+    public async Task SubscribeAsync(params string[] topics)
     {
+      if (topics.Length <= 0)
+        throw new CoreException("Topics to subscribe should be at least one.");
+
       using (var consumer = new Consumer<string, string>(
-        constructConfig(_brokerList, true),
+        ConstructConfig(_brokerList, true),
         new StringDeserializer(Encoding.UTF8),
         new StringDeserializer(Encoding.UTF8)))
       {
@@ -129,8 +143,16 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         {
           _logger.LogInformation($"Topic: {e.Topic} Partition: {e.Partition} Offset: {e.Offset} {e.Value}");
 
-          var domainEvent = (IEvent)JsonConvert.DeserializeObject(e.Value, typeof(TEvent));
-          await _mediator.Publish(domainEvent.MapTo<IEvent, INotification>());
+          var eventType = Type.GetType(e.Key);
+          if (eventType == null)
+            return;
+
+          var domainEvent = (INotification)JsonConvert.DeserializeObject(e.Value, eventType);
+          using (var scope = _serviceProvider.CreateScope())
+          {
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            await mediator.Publish(domainEvent);
+          }
         };
 
         consumer.OnError += (_, e)
@@ -139,15 +161,12 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         consumer.OnConsumeError += (_, e)
           => _logger.LogError("Consume error: " + e.Error.Reason);
 
-        consumer.Subscribe(_topic);
+        consumer.Subscribe(topics);
 
         var cts = new CancellationTokenSource();
         var consumeTask = Task.Factory.StartNew(() =>
         {
-          while (!cts.Token.IsCancellationRequested)
-          {
-            consumer.Poll(TimeSpan.FromSeconds(1));
-          }
+          while (!cts.Token.IsCancellationRequested) consumer.Poll(TimeSpan.FromSeconds(1));
         }, cts.Token);
 
         consumeTask.Wait(cts.Token);
@@ -156,7 +175,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       await Task.FromResult(true);
     }
 
-    private static IDictionary<string, object> constructConfig(string brokerList, bool enableAutoCommit)
+    private static IDictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit)
     {
       return new Dictionary<string, object>
       {

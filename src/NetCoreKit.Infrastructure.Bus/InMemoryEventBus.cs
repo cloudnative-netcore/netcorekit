@@ -14,18 +14,18 @@ namespace NetCoreKit.Infrastructure.Bus
       _mediator = mediator;
     }
 
-    public async Task Publish(IEvent @event)
+    public async Task Publish(IEvent @event, params string[] topics)
     {
       await _mediator.Publish(Mapper.Map<INotification>(@event));
     }
 
-    public async Task Subscribe<TEvent>() where TEvent : IEvent
+    public async Task Subscribe(params string[] topics)
     {
       // because this is in-memory so that we don't have anything to do here
       await Task.FromResult(true);
     }
 
-    public async Task SubscribeAsync<TEvent>() where TEvent : IEvent
+    public async Task SubscribeAsync(params string[] topics)
     {
       // because this is in-memory so that we don't have anything to do here
       await Task.FromResult(true);

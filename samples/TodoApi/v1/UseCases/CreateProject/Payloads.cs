@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using MediatR;
 using NetCoreKit.Infrastructure.Mappers;
-using NetCoreKit.Samples.TodoAPI.Domain;
+using NetCoreKit.Samples.Contracts.Events;
 using NetCoreKit.Samples.TodoAPI.Dtos;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
@@ -26,7 +26,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
   {
     public CreateProjectProfile()
     {
-      this.MapMySelf(typeof(ProjectCreated));
+      this.MapMySelf<ProjectCreated>();
+      this.MapMySelf<TaskCreated>();
     }
   }
 }

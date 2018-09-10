@@ -1,12 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Domain;
-using NetCoreKit.Infrastructure.Mappers;
+using NetCoreKit.Samples.Contracts.Events;
 
 namespace NetCoreKit.Samples.Notifier
 {
@@ -44,7 +43,7 @@ namespace NetCoreKit.Samples.Notifier
     {
       _logger.LogInformation("OnStarted has been called.");
 
-      _eventBus.Subscribe<ProjectCreated>().Wait();
+      _eventBus.Subscribe("project").Wait();
     }
 
     private void OnStopping()
@@ -61,24 +60,6 @@ namespace NetCoreKit.Samples.Notifier
     }
   }
 
-  public class ProjectCreatedProfile : Profile
-  {
-    public ProjectCreatedProfile()
-    {
-      this.MapMySelf(typeof(ProjectCreated));
-    }
-  }
-
-  public class ProjectCreated : EventBase, INotification
-  {
-    public ProjectCreated(string name)
-    {
-      Name = name;
-    }
-
-    public string Name { get; set; }
-  }
-
   public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
   {
     private readonly ILogger _logger;
@@ -91,7 +72,6 @@ namespace NetCoreKit.Samples.Notifier
     public Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
     {
       _logger.LogInformation($"@ Project Created Event -{@event.OccurredOn}-{@event.EventVersion}. Now I will do something cool in this worker...");
-
       return Task.FromResult(@event);
     }
   }

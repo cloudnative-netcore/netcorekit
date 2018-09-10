@@ -1,7 +1,7 @@
 using MediatR;
 using NetCoreKit.Domain;
 
-namespace NetCoreKit.Samples.TodoAPI.Domain
+namespace NetCoreKit.Samples.Contracts.Events
 {
   public class ProjectCreated : EventBase, INotification
   {
@@ -10,6 +10,6 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
       Name = name;
     }
 
-    public string Name { get; set; }
+    public string Name { get; }
   }
 }

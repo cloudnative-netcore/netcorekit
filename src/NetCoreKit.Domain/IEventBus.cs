@@ -4,8 +4,8 @@ namespace NetCoreKit.Domain
 {
   public interface IEventBus
   {
-    Task Publish(IEvent @event);
-    Task Subscribe<T>() where T : IEvent;
-    Task SubscribeAsync<TEvent>() where TEvent : IEvent;
+    Task Publish(IEvent @event, params string[] topics);
+    Task Subscribe(params string[] topics);
+    Task SubscribeAsync(params string[] topics);
   }
 }

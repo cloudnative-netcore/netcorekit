@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetCoreKit.Domain;
+using NetCoreKit.Samples.Contracts.Events;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
@@ -34,7 +35,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     public Project AddTask(Task task)
     {
       Tasks.Add(task.SetProject(this));
-      AddEvent(new TaskCreated());
+      AddEvent(new TaskCreated(task.Title));
       return this;
     }
 
