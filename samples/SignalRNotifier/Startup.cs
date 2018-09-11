@@ -20,6 +20,16 @@ namespace NetCoreKit.Samples.SignalRNotifier
       services.AddSignalR();
       services.AddSingleton<IHostedService, ProjectHostService>();
 
+      services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+      {
+        builder
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowAnyOrigin()
+          .AllowCredentials()
+          .SetIsOriginAllowedToAllowWildcardSubdomains();
+      }));
+
       return BuildServiceProvider(services);
     }
 
@@ -29,6 +39,8 @@ namespace NetCoreKit.Samples.SignalRNotifier
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseCors("CorsPolicy");
 
       app.UseSignalR(routes =>
       {

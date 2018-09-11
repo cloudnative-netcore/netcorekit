@@ -1,0 +1,12 @@
+@using Blazor.Extensions
+@page "/notification"
+@inherits WebNotifier.Pages.NotificationComponent
+
+<h1>Notification.</h1>
+
+<ul id="message-list">
+  @foreach (var msg in Messages)
+  {
+    <li>@msg</li>
+  }
+</ul>
