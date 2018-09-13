@@ -42,7 +42,6 @@ namespace NetCoreKit.Samples.Notifier
     private void OnStarted()
     {
       _logger.LogInformation("OnStarted has been called.");
-
       _eventBus.Subscribe("project").Wait();
     }
 
@@ -60,7 +59,7 @@ namespace NetCoreKit.Samples.Notifier
     }
   }
 
-  public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
+  /*public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
   {
     private readonly ILogger _logger;
 
@@ -74,5 +73,5 @@ namespace NetCoreKit.Samples.Notifier
       _logger.LogInformation($"@ Project Created Event -{@event.OccurredOn}-{@event.EventVersion}. Now I will do something cool in this worker...");
       return Task.FromResult(@event);
     }
-  }
+  }*/
 }

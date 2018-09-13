@@ -28,7 +28,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
     }
   }
 
-  public class EventSubscriber : INotificationHandler<ProjectCreated>
+  /*public class EventSubscriber : INotificationHandler<ProjectCreated>
   {
     public async System.Threading.Tasks.Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
     {
@@ -37,5 +37,5 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 
       await System.Threading.Tasks.Task.FromResult(@event);
     }
-  }
+  }*/
 }

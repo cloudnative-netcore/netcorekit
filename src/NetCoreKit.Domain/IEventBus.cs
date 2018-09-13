@@ -1,8 +1,9 @@
+using System;
 using System.Threading.Tasks;
 
 namespace NetCoreKit.Domain
 {
-  public interface IEventBus
+  public interface IEventBus : IDisposable
   {
     Task Publish(IEvent @event, params string[] topics);
     Task Subscribe(params string[] topics);

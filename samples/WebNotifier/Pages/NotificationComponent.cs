@@ -13,7 +13,7 @@ namespace WebNotifier.Pages
     protected override async Task OnInitAsync()
     {
       _connection = new HubConnectionBuilder()
-        .WithUrl("https://localhost:44398/project",
+        .WithUrl($"{ApiClient.SignalRBaseUrl}/project",
           opt =>
           {
             opt.LogLevel = SignalRLogLevel.Trace;
@@ -21,25 +21,35 @@ namespace WebNotifier.Pages
           })
         .Build();
 
-      _connection.On<object>("projectCreatedNotify", HandleProjectCreated);
-      _connection.On<object>("taskAddedToProjectNotify", HandleTaskCreated);
+      _connection.On<ProjectCreated>("projectCreatedNotify", HandleProjectCreated);
+      _connection.On<TaskCreated>("taskAddedToProjectNotify", HandleTaskCreated);
 
       _connection.OnClose(exc => Task.CompletedTask);
       await _connection.StartAsync();
     }
 
-    private Task HandleProjectCreated(object msg)
+    private Task HandleProjectCreated(ProjectCreated msg)
     {
-      Messages.Add(msg.ToString());
+      Messages.Add($"Project: {msg.Name}");
       StateHasChanged();
       return Task.CompletedTask;
     }
 
-    private Task HandleTaskCreated(object msg)
+    private Task HandleTaskCreated(TaskCreated msg)
     {
-      Messages.Add(msg.ToString());
+      Messages.Add($"Task: {msg.Title}");
       StateHasChanged();
       return Task.CompletedTask;
     }
+  }
+
+  public class ProjectCreated
+  {
+    public string Name { get; set; }
+  }
+
+  public class TaskCreated
+  {
+    public string Title { get; set; }
   }
 }

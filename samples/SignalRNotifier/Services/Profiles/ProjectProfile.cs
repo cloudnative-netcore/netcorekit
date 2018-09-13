@@ -8,8 +8,8 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Profiles
   {
     public ProjectProfile()
     {
-      this.MapMySelf<ProjectCreated>();
-      this.MapMySelf<TaskCreated>();
+      this.MapToNotification<ProjectCreated, Notifications.ProjectCreated>();
+      this.MapToNotification<TaskCreated, Notifications.TaskCreated>();
     }
   }
 }

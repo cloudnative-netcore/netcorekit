@@ -14,7 +14,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     protected IDbContextTransaction Transaction;
     private ConcurrentDictionary<Type, object> _repositories;
 
-
     public EfUnitOfWork(DbContext context)
     {
       _context = context;
@@ -41,10 +40,10 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       set => _context.Database.SetCommandTimeout(value);
     }
 
-    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+    /*public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
       return _context.Database.BeginTransactionAsync(cancellationToken);
-    }
+    }*/
 
     public virtual int SaveChanges() => _context.SaveChanges();
 
@@ -70,7 +69,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
     public void Dispose()
     {
-      Transaction?.Dispose();
+      // Transaction?.Dispose();
       _context?.Dispose();
     }
   }

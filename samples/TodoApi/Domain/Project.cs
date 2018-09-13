@@ -6,6 +6,7 @@ using NetCoreKit.Samples.Contracts.Events;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
+
   public class Project : AggregateRootBase
   {
     private Project()

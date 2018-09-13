@@ -24,11 +24,14 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
       CancellationToken cancellationToken,
       RequestHandlerDelegate<TResponse> next)
     {
-      var response = await next();
+      using (_unitOfWork)
+      {
+        var response = await next();
 
-      await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-      return response;
+        return response;
+      }
     }
   }
 }

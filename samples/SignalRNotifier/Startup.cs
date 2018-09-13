@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetCoreKit.Infrastructure.Bus.Kafka;
+using NetCoreKit.Samples.Contracts.Events;
 using NetCoreKit.Samples.SignalRNotifier.Services.Hubs;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -15,7 +17,13 @@ namespace NetCoreKit.Samples.SignalRNotifier
   {
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
-      services.AddMediatR(typeof(Startup), typeof(EventBus));
+      services.AddMediatR(
+        typeof(Startup),
+        typeof(EventBus),
+        typeof(ProjectCreated));
+
+      Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Startup)));
+
       services.AddKafkaEventBus();
       services.AddSignalR();
       services.AddSingleton<IHostedService, ProjectHostService>();

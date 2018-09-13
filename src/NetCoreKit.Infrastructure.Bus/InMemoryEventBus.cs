@@ -30,5 +30,9 @@ namespace NetCoreKit.Infrastructure.Bus
       // because this is in-memory so that we don't have anything to do here
       await Task.FromResult(true);
     }
+
+    public void Dispose()
+    {
+    }
   }
 }

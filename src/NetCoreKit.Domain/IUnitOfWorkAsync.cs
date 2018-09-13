@@ -1,13 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace NetCoreKit.Domain
 {
   public interface IUnitOfWorkAsync : IRepositoryFactory, IDisposable
   {
-    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
+    // Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int ExecuteSqlCommand(string sql, params object[] parameters);

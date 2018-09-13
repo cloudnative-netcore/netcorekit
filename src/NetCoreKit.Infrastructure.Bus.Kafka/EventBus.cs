@@ -10,12 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCoreKit.Domain;
+using NetCoreKit.Infrastructure.Mappers;
 using Newtonsoft.Json;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
 {
   /// <summary>
-  ///   Source: https://github.com/ivanpaulovich/event-sourcing-jambo
+  /// Source: https://github.com/ivanpaulovich/event-sourcing-jambo
+  /// Notes: don't upgrade Confluent.Kafka to 0.11.5, there is a bug that doesn't fire out any event 
   /// </summary>
   public class EventBus : IEventBus
   {
@@ -32,31 +34,49 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
 
       _brokerList = options.Value.Brokers;
       _producer = new Producer<string, string>(
-        new Dictionary<string, object>
-        {
-          {
-            "bootstrap.servers",
-            _brokerList
-          }
-        },
+        new Dictionary<string, object> {["bootstrap.servers"] = _brokerList},
         new StringSerializer(Encoding.UTF8), new StringSerializer(Encoding.UTF8));
+
+      _producer.Flush(TimeSpan.FromSeconds(10));
 
       _logger = factory.CreateLogger<EventBus>();
     }
 
     public async Task Publish(IEvent @event, params string[] topics)
     {
-      if (topics.Length <= 0) throw new CoreException("Topic to publish should be at least one.");
+      if (topics.Length <= 0) throw new CoreException("Publish - Topic to publish should be at least one.");
 
       var data = JsonConvert.SerializeObject(@event, Formatting.Indented);
       foreach (var topic in topics)
-        _ = await _producer.ProduceAsync(topic, @event.GetType().AssemblyQualifiedName, data);
+      {
+        var result = _producer.ProduceAsync(topic, @event.GetType().AssemblyQualifiedName, data);
+        await Task.WhenAll(
+          result.ContinueWith(task =>
+          {
+            if (task.Result.Error.HasError)
+              _logger.LogInformation($"Publish - IS ERROR RESULT {result.Result.Error.Reason}");
+            else
+              _logger.LogInformation("Publish - Delivered {0}\nPartition: {0}, Offset: {1}", task.Result.Value,
+                task.Result.Partition, task.Result.Offset);
+
+            if (task.IsFaulted)
+              _logger.LogInformation("Publish - IS FAULTED");
+
+            if (task.Exception != null)
+              _logger.LogInformation(result.Exception?.Message);
+
+            if (task.IsCanceled)
+              _logger.LogInformation("Publish - IS CANCELLED");
+          }));
+
+        _logger.LogTrace($"Publish - Events are writted to Kafka. Topic name: {topic}.");
+      }
     }
 
     public async Task Subscribe(params string[] topics)
     {
       if (topics.Length <= 0)
-        throw new CoreException("Topics to subscribe should be at least one.");
+        throw new CoreException("Subscribe - Topics to subscribe should be at least one.");
 
       using (var consumer = new Consumer<string, string>(
         ConstructConfig(_brokerList, true),
@@ -65,43 +85,43 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       {
         consumer.OnPartitionEOF += (_, end)
           => _logger.LogInformation(
-            $"Reached end of topic {end.Topic} partition {end.Partition}, next message will be at offset {end.Offset}");
+            $"Subscribe - Reached end of topic {end.Topic} partition {end.Partition}, next message will be at offset {end.Offset}");
 
         consumer.OnError += (_, error)
-          => _logger.LogError($"Error: {error}");
+          => _logger.LogError($"Subscribe - Error: {error}");
 
         consumer.OnConsumeError += (_, msg)
           => _logger.LogError(
-            $"Error consuming from topic/partition/offset {msg.Topic}/{msg.Partition}/{msg.Offset}: {msg.Error}");
+            $"Subscribe - Error consuming from topic/partition/offset {msg.Topic}/{msg.Partition}/{msg.Offset}: {msg.Error}");
 
         consumer.OnOffsetsCommitted += (_, commit) =>
         {
-          _logger.LogInformation($"[{string.Join(", ", commit.Offsets)}]");
+          _logger.LogInformation($"Subscribe - [{string.Join(", ", commit.Offsets)}]");
 
           if (commit.Error)
-            _logger.LogError($"Failed to commit offsets: {commit.Error}");
-          _logger.LogInformation($"Successfully committed offsets: [{string.Join(", ", commit.Offsets)}]");
+            _logger.LogError($"Subscribe- Failed to commit offsets: {commit.Error}");
+          _logger.LogInformation($"Subscribe - Successfully committed offsets: [{string.Join(", ", commit.Offsets)}]");
         };
 
         consumer.OnPartitionsAssigned += (_, partitions) =>
         {
           _logger.LogInformation(
-            $"Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
+            $"Subscribe - Assigned partitions: [{string.Join(", ", partitions)}], member id: {consumer.MemberId}");
           consumer.Assign(partitions);
         };
 
         consumer.OnPartitionsRevoked += (_, partitions) =>
         {
-          _logger.LogInformation($"Revoked partitions: [{string.Join(", ", partitions)}]");
+          _logger.LogInformation($"Subscribe - Revoked partitions: [{string.Join(", ", partitions)}]");
           consumer.Unassign();
         };
 
         consumer.OnStatistics += (_, json)
-          => _logger.LogInformation($"Statistics: {json}");
+          => _logger.LogInformation($"Subscribe - Statistics: {json}");
 
         consumer.Subscribe(topics);
 
-        _logger.LogInformation($"Subscribed to: [{string.Join(", ", consumer.Subscription)}]");
+        _logger.LogInformation($"Subscribe - Subscribed to: [{string.Join(", ", consumer.Subscription)}]");
 
         var cancelled = false;
         Console.CancelKeyPress += (_, e) =>
@@ -110,20 +130,21 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           cancelled = true;
         };
 
-        _logger.LogInformation("Ctrl-C to exit.");
+        _logger.LogInformation("Subscribe - Ctrl-C to exit.");
         while (!cancelled)
         {
           if (!consumer.Consume(out var msg, TimeSpan.FromSeconds(1))) continue;
-          _logger.LogInformation($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
+          _logger.LogInformation($"Subscribe - Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
           var eventType = Type.GetType(msg.Key);
           if (eventType == null) continue;
 
-          var @event = (INotification)JsonConvert.DeserializeObject(msg.Value, eventType);
+          var @event = (IEvent)JsonConvert.DeserializeObject(msg.Value, eventType);
           using (var scope = _serviceProvider.CreateScope())
           {
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-            await mediator.Publish(@event);
+            var noti = @event.MapTo<IEvent, INotification>();
+            await mediator.Publish(noti);
           }
         }
       }
@@ -132,7 +153,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
     public async Task SubscribeAsync(params string[] topics)
     {
       if (topics.Length <= 0)
-        throw new CoreException("Topics to subscribe should be at least one.");
+        throw new CoreException("SubscribeAsync - Topics to subscribe should be at least one.");
 
       using (var consumer = new Consumer<string, string>(
         ConstructConfig(_brokerList, true),
@@ -141,7 +162,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       {
         consumer.OnMessage += async (o, e) =>
         {
-          _logger.LogInformation($"Topic: {e.Topic} Partition: {e.Partition} Offset: {e.Offset} {e.Value}");
+          _logger.LogInformation($"SubscribeAsync - Topic: {e.Topic} Partition: {e.Partition} Offset: {e.Offset} {e.Value}");
 
           var eventType = Type.GetType(e.Key);
           if (eventType == null)
@@ -156,10 +177,10 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         };
 
         consumer.OnError += (_, e)
-          => _logger.LogError("Error: " + e.Reason);
+          => _logger.LogError("SubscribeAsync - Error: " + e.Reason);
 
         consumer.OnConsumeError += (_, e)
-          => _logger.LogError("Consume error: " + e.Error.Reason);
+          => _logger.LogError("SubscribeAsync - Consume error: " + e.Error.Reason);
 
         consumer.Subscribe(topics);
 
@@ -175,18 +196,24 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       await Task.FromResult(true);
     }
 
+    public void Dispose()
+    {
+      _producer?.Dispose();
+    }
+
     private static IDictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit)
     {
       return new Dictionary<string, object>
       {
         ["group.id"] = "netcorekit-consumer",
+        ["bootstrap.servers"] = brokerList,
         ["enable.auto.commit"] = enableAutoCommit,
         ["auto.commit.interval.ms"] = 5000,
         ["statistics.interval.ms"] = 60000,
-        ["bootstrap.servers"] = brokerList,
+        //["debug"] = "all",
         ["default.topic.config"] = new Dictionary<string, object>
         {
-          ["auto.offset.reset"] = "smallest"
+          ["auto.offset.reset"] = "latest"
         }
       };
     }
