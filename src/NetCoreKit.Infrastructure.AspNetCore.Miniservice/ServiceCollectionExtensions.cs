@@ -26,6 +26,7 @@ using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
 using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
+using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using Newtonsoft.Json.Serialization;
@@ -80,7 +81,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         services.AddHttpPolly<RestClient>();
 
         // #3
-        services.AddCleanArch(config.LoadApplicationAssemblies());
+        services.AddDomainEventBus();
+        services.AddCleanArch(config.LoadFullAssemblies());
 
         // #4
         services.AddRouting(o => o.LowercaseUrls = true);

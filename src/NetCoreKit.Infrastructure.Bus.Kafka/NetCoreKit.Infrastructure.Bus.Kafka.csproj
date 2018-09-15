@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.6.1" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Confluent.Kafka" Version="0.11.4" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
@@ -13,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
   </ItemGroup>
 

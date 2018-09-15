@@ -8,13 +8,8 @@ namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Db
   {
     public void Build(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<Project>(b =>
+      modelBuilder.Entity<Domain.Project>(b =>
       {
-        /*var navigation =
-          b.Metadata.FindNavigation(nameof(Project.Tasks));
-
-        navigation.SetPropertyAccessMode(PropertyAccessMode.Field);*/
-
         b.HasMany(t => t.Tasks)
           .WithOne(a => a.Project)
           .HasForeignKey(k => k.ProjectId)

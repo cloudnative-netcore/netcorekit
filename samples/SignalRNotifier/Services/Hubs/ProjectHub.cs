@@ -2,7 +2,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using NetCoreKit.Domain;
+using NetCoreKit.Infrastructure.Bus.Kafka;
+using Project.Proto;
 
 namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
 {
@@ -14,9 +15,9 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
     INotificationHandler<Notifications.ProjectCreated>,
     INotificationHandler<Notifications.TaskCreated>
   {
-    private readonly IEventBus _eventBus;
+    private readonly IDispatchedEventBus _eventBus;
 
-    public ProjectHostService(IHubContext<ProjectHub> context, IEventBus eventBus)
+    public ProjectHostService(IHubContext<ProjectHub> context, IDispatchedEventBus eventBus)
     {
       _eventBus = eventBus;
       Clients = context.Clients;
@@ -36,7 +37,7 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
 
     protected override Task ExecuteAsync(CancellationToken cancellationToken)
     {
-      _eventBus.Subscribe("project").Wait(cancellationToken);
+      _eventBus.Subscribe<ProjectCreatedMsg>("project").Wait(cancellationToken);
       return Task.CompletedTask;
     }
   }

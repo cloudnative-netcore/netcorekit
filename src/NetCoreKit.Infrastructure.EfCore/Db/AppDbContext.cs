@@ -39,7 +39,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-      var eventBus = this.GetService<IEventBus>();
+      var eventBus = this.GetService<IDomainEventBus>();
 
       var result = base.SaveChangesAsync(cancellationToken);
 
@@ -51,7 +51,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 
     public override int SaveChanges()
     {
-      var eventBus = this.GetService<IEventBus>();
+      var eventBus = this.GetService<IDomainEventBus>();
 
       var result = base.SaveChanges();
 
@@ -65,7 +65,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
     ///   Source:
     ///   https://github.com/ardalis/CleanArchitecture/blob/master/src/CleanArchitecture.Infrastructure/Data/AppDbContext.cs
     /// </summary>
-    private void SaveChangesWithEvents(IEventBus eventBus)
+    private void SaveChangesWithEvents(IDomainEventBus domainEventBus)
     {
       var entitiesWithEvents = ChangeTracker.Entries<IAggregateRoot>()
         .Select(e => e.Entity)
@@ -77,7 +77,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
         var events = entity.GetUncommittedEvents().ToArray();
         entity.GetUncommittedEvents().Clear();
         foreach (var domainEvent in events)
-          eventBus.Publish(domainEvent, $"{entity.GetType().Name.ToLowerInvariant()}");
+          domainEventBus.Publish(new EventEnvelope(domainEvent));
       }
     }
 

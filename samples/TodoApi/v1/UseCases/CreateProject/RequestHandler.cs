@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NetCoreKit.Domain;
-using NetCoreKit.Samples.Contracts.Events;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Extensions;
 
@@ -20,15 +19,15 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
     public async Task<CreateProjectResponse> Handle(CreateProjectRequest request,
       CancellationToken cancellationToken)
     {
-      var projectRepository = _uow.Repository<Project>();
+      var projectRepository = _uow.Repository<Domain.Project>();
 
-      var result = await projectRepository.AddAsync(Project.Load(request.Name));
+      var result = await projectRepository.AddAsync(Domain.Project.Load(request.Name));
 
       return new CreateProjectResponse {Result = result.ToDto()};
     }
   }
 
-  /*public class EventSubscriber : INotificationHandler<ProjectCreated>
+  public class EventSubscriber : INotificationHandler<ProjectCreated>
   {
     public async System.Threading.Tasks.Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
     {
@@ -37,5 +36,5 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 
       await System.Threading.Tasks.Task.FromResult(@event);
     }
-  }*/
+  }
 }

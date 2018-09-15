@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.AspNetCore.Miniservice</id>
@@ -39,7 +39,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.1" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Scrutor" Version="3.0.1" />
-    <PackageReference Include="System.Reactive" Version="4.0.0" />
+    <PackageReference Include="System.Reactive" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +47,7 @@
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore.CleanArch\NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure.EfCore\NetCoreKit.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
     <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />

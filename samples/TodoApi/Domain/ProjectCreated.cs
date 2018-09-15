@@ -1,8 +1,9 @@
+using MediatR;
 using NetCoreKit.Domain;
 
-namespace NetCoreKit.Samples.Contracts.Events
+namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-  public class ProjectCreated : EventBase
+  public class ProjectCreated : EventBase, INotification
   {
     public ProjectCreated(string name)
     {

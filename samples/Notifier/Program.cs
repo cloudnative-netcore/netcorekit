@@ -33,9 +33,9 @@ namespace NetCoreKit.Samples.Notifier
         })
         .ConfigureServices((hostContext, services) =>
         {
+          Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Program)));
           services.AddMediatR();
           services.AddKafkaEventBus();
-          Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Program)));
 
           var config = services.BuildServiceProvider().GetService<IConfiguration>();
 

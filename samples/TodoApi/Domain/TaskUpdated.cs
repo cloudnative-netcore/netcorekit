@@ -1,6 +1,6 @@
 using NetCoreKit.Domain;
 
-namespace NetCoreKit.Samples.Contracts.Events
+namespace NetCoreKit.Samples.TodoAPI.Domain
 {
   public class TaskUpdated : EventBase
   {

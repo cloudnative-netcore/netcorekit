@@ -20,8 +20,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
     public override async Task<UpdateTaskResponse> Handle(UpdateTaskRequest request,
       CancellationToken cancellationToken)
     {
-      var commandRepository = CommandFactory.Repository<Project>();
-      var queryRepository = QueryFactory.QueryEfRepository<Project>();
+      var commandRepository = CommandFactory.Repository<Domain.Project>();
+      var queryRepository = QueryFactory.QueryEfRepository<Domain.Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
       if (project == null) throw new Exception($"Couldn't find project#{request.ProjectId}.");

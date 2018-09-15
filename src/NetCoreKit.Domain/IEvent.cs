@@ -15,13 +15,13 @@ namespace NetCoreKit.Domain
     public DateTime OccurredOn { get; protected set; } = GenerateDateTime();
   }
 
-  public class MessageReceivedEventArgs : EventArgs
+  public class EventEnvelope : EventBase
   {
-    public MessageReceivedEventArgs(object message)
+    public EventEnvelope(IEvent @event)
     {
-      Message = message;
+      Event = @event;
     }
 
-    public object Message { get; set; }
+    public IEvent Event { get;  }
   }
 }

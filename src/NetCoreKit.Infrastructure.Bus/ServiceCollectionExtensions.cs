@@ -5,9 +5,9 @@ namespace NetCoreKit.Infrastructure.Bus
 {
   public static class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddInMemoryEventBus(this IServiceCollection services)
+    public static IServiceCollection AddDomainEventBus(this IServiceCollection services)
     {
-      services.AddSingleton<IEventBus, InMemoryEventBus>();
+      services.AddSingleton<IDomainEventBus, DomainDomainEventBus>();
       return services;
     }
   }

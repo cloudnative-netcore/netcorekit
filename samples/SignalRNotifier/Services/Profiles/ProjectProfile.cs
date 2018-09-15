@@ -1,6 +1,6 @@
 using AutoMapper;
 using NetCoreKit.Infrastructure.Mappers;
-using NetCoreKit.Samples.Contracts.Events;
+using Project.Proto;
 
 namespace NetCoreKit.Samples.SignalRNotifier.Services.Profiles
 {
@@ -8,8 +8,8 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Profiles
   {
     public ProjectProfile()
     {
-      this.MapToNotification<ProjectCreated, Notifications.ProjectCreated>();
-      this.MapToNotification<TaskCreated, Notifications.TaskCreated>();
+      this.MapToNotification<ProjectCreatedMsg, Notifications.ProjectCreated>();
+      //this.MapToNotification<TaskCreated, Notifications.TaskCreated>();
     }
   }
 }

@@ -26,8 +26,8 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.AddTask
 
     public override async Task<AddTaskResponse> Handle(AddTaskRequest request, CancellationToken cancellationToken)
     {
-      var commandRepository = CommandFactory.Repository<Project>();
-      var queryRepository = QueryFactory.QueryEfRepository<Project>();
+      var commandRepository = CommandFactory.Repository<Domain.Project>();
+      var queryRepository = QueryFactory.QueryEfRepository<Domain.Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
       if (project == null)

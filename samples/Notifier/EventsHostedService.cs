@@ -1,11 +1,13 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NetCoreKit.Domain;
-using NetCoreKit.Samples.Contracts.Events;
+using NetCoreKit.Infrastructure.Bus.Kafka;
+using NetCoreKit.Infrastructure.Mappers;
+using Project.Proto;
 
 namespace NetCoreKit.Samples.Notifier
 {
@@ -13,12 +15,12 @@ namespace NetCoreKit.Samples.Notifier
   {
     private readonly ILogger _logger;
     private readonly IApplicationLifetime _appLifetime;
-    private readonly IEventBus _eventBus;
+    private readonly IDispatchedEventBus _eventBus;
 
     public EventsHostedService(
       ILogger<EventsHostedService> logger,
       IApplicationLifetime appLifetime,
-      IEventBus eventBus)
+      IDispatchedEventBus eventBus)
     {
       _logger = logger;
       _appLifetime = appLifetime;
@@ -42,7 +44,7 @@ namespace NetCoreKit.Samples.Notifier
     private void OnStarted()
     {
       _logger.LogInformation("OnStarted has been called.");
-      _eventBus.Subscribe("project").Wait();
+      _eventBus.Subscribe<ProjectCreatedMsg>("project").Wait();
     }
 
     private void OnStopping()
@@ -59,7 +61,23 @@ namespace NetCoreKit.Samples.Notifier
     }
   }
 
-  /*public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
+  public class ProjectProfile : Profile
+  {
+    public ProjectProfile()
+    {
+      this.MapToNotification<ProjectCreatedMsg, ProjectCreated>();
+      //this.MapToNotification<TaskCreated, Notifications.TaskCreated>();
+    }
+  }
+
+  public class ProjectCreated : INotification
+  {
+    public string Name { get; set; }
+    public DateTime OccurredOn { get; set; }
+    public int EventVersion { get; set; }
+  }
+
+  public class ProjectCreatedSubscriber : INotificationHandler<ProjectCreated>
   {
     private readonly ILogger _logger;
 
@@ -73,5 +91,5 @@ namespace NetCoreKit.Samples.Notifier
       _logger.LogInformation($"@ Project Created Event -{@event.OccurredOn}-{@event.EventVersion}. Now I will do something cool in this worker...");
       return Task.FromResult(@event);
     }
-  }*/
+  }
 }

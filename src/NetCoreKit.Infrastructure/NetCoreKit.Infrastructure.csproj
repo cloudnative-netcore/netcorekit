@@ -29,4 +29,10 @@
     <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Google.Protobuf">
+      <HintPath>C:\Users\Thang Chung\.nuget\packages\google.protobuf\3.6.1\lib\netstandard1.0\Google.Protobuf.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

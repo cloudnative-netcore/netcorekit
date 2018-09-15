@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetCoreKit.Domain;
-using NetCoreKit.Samples.Contracts.Events;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
