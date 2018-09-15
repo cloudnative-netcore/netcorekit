@@ -7,7 +7,7 @@ namespace NetCoreKit.Infrastructure.Bus
   {
     public static IServiceCollection AddDomainEventBus(this IServiceCollection services)
     {
-      services.AddSingleton<IDomainEventBus, DomainDomainEventBus>();
+      services.AddSingleton<IDomainEventBus, DomainEventBus>();
       return services;
     }
   }

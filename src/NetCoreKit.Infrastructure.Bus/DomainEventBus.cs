@@ -5,11 +5,11 @@ using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-  public class DomainDomainEventBus : IDomainEventBus
+  public class DomainEventBus : IDomainEventBus
   {
     private readonly IMediator _mediator;
 
-    public DomainDomainEventBus(IMediator mediator)
+    public DomainEventBus(IMediator mediator)
     {
       _mediator = mediator;
     }

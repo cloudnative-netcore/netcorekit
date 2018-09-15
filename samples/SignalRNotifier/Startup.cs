@@ -19,7 +19,7 @@ namespace NetCoreKit.Samples.SignalRNotifier
     {
       services.AddMediatR(
         typeof(Startup),
-        typeof(DomainDomainEventBus)
+        typeof(DomainEventBus)
         /*typeof(ProjectCreated)*/);
 
       Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Startup)));

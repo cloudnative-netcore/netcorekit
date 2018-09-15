@@ -23,7 +23,6 @@ namespace NetCoreKit.Samples.TodoAPI
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
       );
-
     }
 
     public void Configure(IApplicationBuilder app)
