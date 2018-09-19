@@ -1,25 +1,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: todolistdb-v1
+  name: signalrnotifier-v1
   namespace: default
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: todolistdb
+        app: signalrnotifier
         version: v1
     spec:
       containers:
-      - name: todolistdb
-        image: vndg/cs-mysqldb:latest
+      - name: signalrnotifier
+        image: vndg/signalrnotifier:latest
         imagePullPolicy: IfNotPresent
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: P@ssw0rd
+        - name: Hosts__BasePath
+          value: /notifier/
+        - name: EventBus__Brokers
+          value: kafka:9092
         ports:
-        - containerPort: 3306
+        - containerPort: 5002
         resources:
           requests:
             memory: "64Mi"

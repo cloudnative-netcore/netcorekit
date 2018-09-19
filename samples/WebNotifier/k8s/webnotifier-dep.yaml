@@ -1,25 +1,25 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: todolistdb-v1
+  name: webnotifier-v1
   namespace: default
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: todolistdb
+        app: webnotifier
         version: v1
     spec:
       containers:
-      - name: todolistdb
-        image: vndg/cs-mysqldb:latest
+      - name: webnotifier
+        image: vndg/webnotifier:latest
         imagePullPolicy: IfNotPresent
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: P@ssw0rd
+        - name: Hosts__BasePath
+          value: /
         ports:
-        - containerPort: 3306
+        - containerPort: 5003
         resources:
           requests:
             memory: "64Mi"

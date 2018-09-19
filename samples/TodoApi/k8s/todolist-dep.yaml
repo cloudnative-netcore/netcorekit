@@ -14,10 +14,12 @@ spec:
       containers:
       - name: todolist
         image: vndg/todoapi:latest
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: Hosts__BasePath
-          value: /
+          value: /api/
+        - name: EventBus__Brokers
+          value: kafka:9092
         ports:
         - containerPort: 5001
         livenessProbe:
@@ -26,4 +28,10 @@ spec:
             port: 5001
           initialDelaySeconds: 10
           periodSeconds: 5
----
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

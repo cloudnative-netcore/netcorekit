@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Bus.Kafka;
 using NetCoreKit.Samples.SignalRNotifier.Services.Hubs;
@@ -43,9 +45,24 @@ namespace NetCoreKit.Samples.SignalRNotifier
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+      var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
+      var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
+
+      loggerFactory.AddConsole(config.GetSection("Logging"));
+      loggerFactory.AddDebug();
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
+      }
+
+      var basePath = config.GetBasePath();
+
+      if (!string.IsNullOrEmpty(basePath))
+      {
+        var logger = loggerFactory.CreateLogger("init");
+        logger.LogInformation($"Using PATH BASE '{basePath}'");
+        app.UsePathBase(basePath);
       }
 
       app.UseCors("CorsPolicy");

@@ -1,14 +1,14 @@
 FROM microsoft/dotnet:2.1.3-aspnetcore-runtime-alpine AS base
 WORKDIR /app
 
-ENV ASPNETCORE_URLS http://+:5002
-EXPOSE 5002
+ENV ASPNETCORE_URLS http://+:5003
+EXPOSE 5003
 
 FROM microsoft/dotnet:2.1.401-sdk-alpine AS build
 WORKDIR .
 COPY . .
 
-WORKDIR /samples/SignalRNotifier
+WORKDIR /samples/WebNotifier
 
 RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
@@ -19,4 +19,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "NetCoreKit.Samples.SignalRNotifier.dll"]
+ENTRYPOINT ["dotnet", "WebNotifier.dll"]

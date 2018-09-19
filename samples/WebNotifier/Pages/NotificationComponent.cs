@@ -2,18 +2,24 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazor.Extensions;
 using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.Extensions.Configuration;
 
 namespace WebNotifier.Pages
 {
   public class NotificationComponent : BlazorComponent
   {
+    [Inject] public IConfiguration Config { get; set; }
+
     private HubConnection _connection;
+
     public List<string> Messages { get; set; } = new List<string>();
 
     protected override async Task OnInitAsync()
     {
+      var url = Config["SignalR_Base_Url"] ?? "http://localhost:5002";
+
       _connection = new HubConnectionBuilder()
-        .WithUrl($"{ApiClient.SignalRBaseUrl}/project",
+        .WithUrl($"{url}/project",
           opt =>
           {
             opt.LogLevel = SignalRLogLevel.Trace;

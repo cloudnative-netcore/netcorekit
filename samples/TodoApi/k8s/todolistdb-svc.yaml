@@ -10,8 +10,7 @@ spec:
   - protocol: TCP
     port: 3306
     targetPort: 3306
-    nodePort: 32223
+    nodePort: 32336
   type: NodePort
   selector:
     app: todolistdb
----
