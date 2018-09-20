@@ -15,11 +15,8 @@ spec:
       - name: webnotifier
         image: vndg/webnotifier:latest
         imagePullPolicy: IfNotPresent
-        env:
-        - name: Hosts__BasePath
-          value: /
         ports:
-        - containerPort: 5003
+        - containerPort: 80
         resources:
           requests:
             memory: "64Mi"
