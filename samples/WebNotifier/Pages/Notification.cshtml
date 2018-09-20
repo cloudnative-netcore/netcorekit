@@ -1,12 +1,30 @@
 @using Blazor.Extensions
 @page "/notification"
 @inherits WebNotifier.Pages.NotificationComponent
-
-<h1>Notification.</h1>
-
-<ul id="message-list">
-  @foreach (var msg in Messages)
+<h3>Notification:</h3>
+@if (Messages.Count <= 0)
+{
+  <p>N/A</p>
+}
+<ul>
+  @foreach (var m in Messages)
   {
-    <li>@msg</li>
+    <li>@m</li>
   }
 </ul>
+
+<h3>Projects:</h3>
+@if (Projects.Count <= 0)
+{
+  <p>N/A</p>
+}
+@foreach (var p in Projects)
+{
+  <h5>@p.Name #@p.Id</h5>
+  <ul>
+    @foreach (var t in p.Tasks)
+    {
+      <li>@t.Title #@t.Id</li>
+    }
+  </ul>
+}

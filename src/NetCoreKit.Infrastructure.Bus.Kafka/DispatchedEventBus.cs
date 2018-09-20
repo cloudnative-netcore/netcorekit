@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Confluent.Kafka;
 using Google.Protobuf;
 using MediatR;
@@ -9,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.Mappers;
+using Null = Confluent.Kafka.Null;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
 {
@@ -141,7 +146,25 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           {
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
             var noti = msg.Value.MapTo<TMessage, INotification>();
-            await mediator.Publish(noti);
+
+            var msgField = msg.Value.Descriptor.FindFieldByName("Key");
+            var msgValue = msgField.Accessor.GetValue(msg.Value);
+
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            var callerAssemblies = new StackTrace().GetFrames()
+              .Select(x => x.GetMethod().ReflectedType.Assembly).Distinct()
+              .Where(x => x.GetReferencedAssemblies().Any(y => y.FullName == currentAssembly.FullName));
+
+            var initialAssembly = callerAssemblies.Last();
+
+            var notific = initialAssembly.DefinedTypes
+              .FirstOrDefault(x => x.AssemblyQualifiedName.Contains(msgValue.ToString()));
+
+            var obj = (INotification)Activator.CreateInstance(notific);
+
+            var abc = Mapper.Map(msg.Value, obj);
+
+            await mediator.Publish(abc);
           }
         }
       }

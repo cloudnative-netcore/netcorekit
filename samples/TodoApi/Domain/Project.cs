@@ -15,7 +15,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     private Project(string name)
     {
       Name = name;
-      AddEvent(new ProjectCreated(name));
+      AddEvent(new ProjectCreated(Id, name));
     }
 
     public string Name { get; private set; }
@@ -35,7 +35,7 @@ namespace NetCoreKit.Samples.TodoAPI.Domain
     public Project AddTask(Task task)
     {
       Tasks.Add(task.SetProject(this));
-      AddEvent(new TaskCreated(task.Title));
+      AddEvent(new TaskCreated(task.Id, task.Title, Id));
       return this;
     }
 

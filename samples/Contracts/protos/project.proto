@@ -5,6 +5,16 @@ package project.proto;
 import "google/protobuf/timestamp.proto";
 
 message ProjectCreatedMsg {
-  string Name = 1;
-  google.protobuf.Timestamp OccurredOn = 2;
+  string Key = 1;
+  string Id = 2;
+  string Name = 3;
+  google.protobuf.Timestamp OccurredOn = 4;
+}
+
+message TaskCreatedMsg {
+  string Key = 1;
+  string Id = 2;
+  string Title = 3;
+  string ProjectId = 4;
+  google.protobuf.Timestamp OccurredOn = 5;
 }

@@ -2,13 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using NetCoreKit.Domain;
-using NetCoreKit.Infrastructure.Bus;
-using NetCoreKit.Infrastructure.Bus.Kafka;
-using NetCoreKit.Infrastructure.Mappers;
-using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Extensions;
-using Project.Proto;
-using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 {
@@ -29,35 +23,6 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
       var result = await projectRepository.AddAsync(Domain.Project.Load(request.Name));
 
       return new CreateProjectResponse {Result = result.ToDto()};
-    }
-  }
-
-  public class KafkaEnvelopeEventHandler : INotificationHandler<NotificationEnvelope>
-  {
-    private readonly IDispatchedEventBus _eventBus;
-
-    public KafkaEnvelopeEventHandler(IDispatchedEventBus eventBus)
-    {
-      _eventBus = eventBus;
-    }
-
-    public async Task Handle(NotificationEnvelope notify, CancellationToken cancellationToken)
-    {
-      if (!(notify.Event is ProjectCreated)) return;
-
-      var msg = notify.Event.MapTo<IEvent, ProjectCreatedMsg>();
-      await _eventBus.Publish(msg, "project");
-    }
-  }
-
-  public class EventSubscriber : INotificationHandler<ProjectCreated>
-  {
-    public async System.Threading.Tasks.Task Handle(ProjectCreated @event, CancellationToken cancellationToken)
-    {
-      // do something with @event
-      //...
-
-      await System.Threading.Tasks.Task.FromResult(@event);
     }
   }
 }

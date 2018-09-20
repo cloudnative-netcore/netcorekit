@@ -1,22 +1,24 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Blazor.Extensions;
 using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.Extensions.Configuration;
 
 namespace WebNotifier.Pages
 {
   public class NotificationComponent : BlazorComponent
   {
-    [Inject] public IConfiguration Config { get; set; }
+    [Inject] public Configuration Config { get; set; }
 
     private HubConnection _connection;
 
+    public List<ProjectModel> Projects { get; set; } = new List<ProjectModel>();
     public List<string> Messages { get; set; } = new List<string>();
 
     protected override async Task OnInitAsync()
     {
-      var url = Config["SignalR_Base_Url"] ?? "http://localhost:5002";
+      var url = Config.SignalRBaseUrl ?? "http://localhost:5002";
 
       _connection = new HubConnectionBuilder()
         .WithUrl($"{url}/project",
@@ -27,35 +29,77 @@ namespace WebNotifier.Pages
           })
         .Build();
 
-      _connection.On<ProjectCreated>("projectCreatedNotify", HandleProjectCreated);
-      _connection.On<TaskCreated>("taskAddedToProjectNotify", HandleTaskCreated);
+      _connection.On<ProjectCreatedDto>("projectCreatedNotify", HandleProjectCreated);
+      _connection.On<TaskCreatedDto>("taskAddedToProjectNotify", HandleTaskCreated);
 
       _connection.OnClose(exc => Task.CompletedTask);
       await _connection.StartAsync();
     }
 
-    private Task HandleProjectCreated(ProjectCreated msg)
+    private Task HandleProjectCreated(ProjectCreatedDto msg)
     {
-      Messages.Add($"Project: {msg.Name}");
+      Messages.Add($"{msg.Name} project created at {msg.OccurredOn}.");
+
+      if (Projects.Any(p => p.Id == msg.Id)) return Task.CompletedTask;
+
+      Projects.Add(new ProjectModel
+      {
+        Id = msg.Id,
+        Name = msg.Name
+      });
+
       StateHasChanged();
+
       return Task.CompletedTask;
     }
 
-    private Task HandleTaskCreated(TaskCreated msg)
+    private Task HandleTaskCreated(TaskCreatedDto msg)
     {
-      Messages.Add($"Task: {msg.Title}");
+      Messages.Add($"Task {msg.Title} created at {msg.OccurredOn}.");
+
+      var tasks = Projects.SelectMany(p => p.Tasks);
+      if (tasks.Any(t => t.Id == msg.Id))
+        return Task.CompletedTask;
+
+      var project = Projects.FirstOrDefault(p => p.Id == msg.ProjectId);
+      if(project == null)
+        return Task.CompletedTask;
+
+      project.Tasks.Add(new ProjectModel.TaskModel
+      {
+        Id = msg.Id,
+        Title = msg.Title
+      });
+
       StateHasChanged();
       return Task.CompletedTask;
     }
   }
 
-  public class ProjectCreated
+  public class ProjectModel
   {
+    public Guid Id { get; set; }
     public string Name { get; set; }
+    public List<TaskModel> Tasks { get; set; } = new List<TaskModel>();
+    public class TaskModel
+    {
+      public Guid Id { get; set; }
+      public string Title { get; set; }
+    }
   }
 
-  public class TaskCreated
+  public class ProjectCreatedDto
   {
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public DateTime OccurredOn { get; set; }
+  }
+
+  public class TaskCreatedDto
+  {
+    public Guid Id { get; set; }
+    public Guid ProjectId { get; set; }
     public string Title { get; set; }
+    public DateTime OccurredOn { get; set; }
   }
 }

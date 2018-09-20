@@ -37,7 +37,8 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
 
     protected override Task ExecuteAsync(CancellationToken cancellationToken)
     {
-      _eventBus.Subscribe<ProjectCreatedMsg>("project").Wait(cancellationToken);
+      Task.Run(() => _eventBus.Subscribe<ProjectCreatedMsg>("project-created"), cancellationToken);
+      Task.Run(() => _eventBus.Subscribe<TaskCreatedMsg>("task-created"), cancellationToken);
       return Task.CompletedTask;
     }
   }
