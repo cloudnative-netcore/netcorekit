@@ -142,29 +142,27 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
 
           if (msg.Value == null) continue;
 
+          var keyField = msg.Value.Descriptor.FindFieldByName("Key");
+          var key = keyField.Accessor.GetValue(msg.Value);
+
+          var currentAssembly = Assembly.GetExecutingAssembly();
+          var callerAssemblies = new StackTrace()
+            .GetFrames()
+            ?.Select(x => x.GetMethod().ReflectedType?.Assembly).Distinct()
+            .Where(x => x.GetReferencedAssemblies().Any(y => y.FullName == currentAssembly.FullName));
+          var callerAssembly = callerAssemblies?.Last();
+
+          var notifyType = callerAssembly
+            ?.DefinedTypes
+            .FirstOrDefault(x => x.AssemblyQualifiedName.Contains(key.ToString()));
+
+          var notify = (INotification)Activator.CreateInstance(notifyType);
+          var notifyInstance = Mapper.Map(msg.Value, notify);
+
           using (var scope = _serviceProvider.CreateScope())
           {
             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-            var noti = msg.Value.MapTo<TMessage, INotification>();
-
-            var msgField = msg.Value.Descriptor.FindFieldByName("Key");
-            var msgValue = msgField.Accessor.GetValue(msg.Value);
-
-            var currentAssembly = Assembly.GetExecutingAssembly();
-            var callerAssemblies = new StackTrace().GetFrames()
-              .Select(x => x.GetMethod().ReflectedType.Assembly).Distinct()
-              .Where(x => x.GetReferencedAssemblies().Any(y => y.FullName == currentAssembly.FullName));
-
-            var initialAssembly = callerAssemblies.Last();
-
-            var notific = initialAssembly.DefinedTypes
-              .FirstOrDefault(x => x.AssemblyQualifiedName.Contains(msgValue.ToString()));
-
-            var obj = (INotification)Activator.CreateInstance(notific);
-
-            var abc = Mapper.Map(msg.Value, obj);
-
-            await mediator.Publish(abc);
+            await mediator.Publish(notifyInstance);
           }
         }
       }
