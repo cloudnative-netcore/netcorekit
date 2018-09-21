@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetCoreKit.Samples.TodoAPI.Migrations
 {
-    public partial class InitTodoDb : Migration
+    public partial class InitToDoDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

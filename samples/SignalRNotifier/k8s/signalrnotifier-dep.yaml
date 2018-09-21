@@ -17,9 +17,9 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: Hosts__BasePath
-          value: /notifier/
+          value: /
         - name: EventBus__Brokers
-          value: kafka:9092
+          value: PLAINTEXT://kafka-cp-kafka:9092
         ports:
         - containerPort: 5002
         resources:

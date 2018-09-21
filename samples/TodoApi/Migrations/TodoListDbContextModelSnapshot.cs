@@ -14,7 +14,8 @@ namespace NetCoreKit.Samples.TodoAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932");
+                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("NetCoreKit.Samples.TodoAPI.Domain.Project", b =>
                 {

@@ -17,9 +17,9 @@ namespace NetCoreKit.Samples.TodoAPI
       services.AddMiniService<TodoListDbContext>(
         svc =>
         {
-          svc.AddEfSqlLiteDb();
-          //svc.AddEfCoreMySqlDb();
-          //svc.AddExternalSystemHealthChecks();
+          // svc.AddEfSqlLiteDb();
+          svc.AddEfCoreMySqlDb();
+          svc.AddExternalSystemHealthChecks();
           svc.AddKafkaEventBus();
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }

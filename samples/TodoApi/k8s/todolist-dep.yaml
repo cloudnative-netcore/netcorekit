@@ -17,17 +17,17 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: Hosts__BasePath
-          value: /api/
+          value: /
         - name: EventBus__Brokers
-          value: kafka:9092
+          value: PLAINTEXT://kafka-cp-kafka:9092
         ports:
         - containerPort: 5001
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 5001
-          initialDelaySeconds: 10
-          periodSeconds: 5
+        #livenessProbe:
+        #  httpGet:
+        #    path: /healthz
+        #    port: 5001
+        #  initialDelaySeconds: 10
+        #  periodSeconds: 5
         resources:
           requests:
             memory: "64Mi"
