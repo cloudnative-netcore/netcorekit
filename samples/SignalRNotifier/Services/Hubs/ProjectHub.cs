@@ -40,21 +40,19 @@ namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
       await Clients.All.SendAsync("taskAddedToProjectNotify", notification, cancellationToken);
     }
 
-    protected override Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-      Task.Run(() =>
+      await Task.Run(() =>
       {
         _logger.LogInformation("[NCK] Start to subscribe to project-created...");
         return _eventBus.Subscribe<ProjectCreatedMsg>("project-created");
       }, cancellationToken);
 
-      Task.Run(() =>
+      await Task.Run(() =>
       {
         _logger.LogInformation("[NCK] Start to subscribe to task-created...");
         return _eventBus.Subscribe<TaskCreatedMsg>("task-created");
       }, cancellationToken);
-
-      return Task.CompletedTask;
     }
   }
 }

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: signalrnotifier
-  namespace: default
+  namespace: kafka
   labels:
     app: signalrnotifier
 spec:

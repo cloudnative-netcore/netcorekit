@@ -42,7 +42,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       if (topics.Length <= 0) throw new CoreException("[NCK] Publish - Topic to publish should be at least one.");
 
       using (var producer = new Producer<Null, TMessage>(
-        new Dictionary<string, object> {["bootstrap.servers"] = _brokerList},
+        ConstructConfig(_brokerList, true),
         null,
         new ProtoSerializer<TMessage>()))
       {
@@ -180,7 +180,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         //["debug"] = "all",
         ["default.topic.config"] = new Dictionary<string, object>
         {
-          ["auto.offset.reset"] = "latest"
+          ["auto.offset.reset"] = "smallest"
         }
       };
     }

@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: signalrnotifier-v1
-  namespace: default
+  namespace: kafka
 spec:
   replicas: 1
   template:
@@ -19,7 +19,7 @@ spec:
         - name: Hosts__BasePath
           value: /
         - name: EventBus__Brokers
-          value: PLAINTEXT://kafka-cp-kafka:9092
+          value: kafka-server:9092
         ports:
         - containerPort: 5002
         resources:

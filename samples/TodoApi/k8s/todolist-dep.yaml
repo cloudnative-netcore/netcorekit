@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: todolist-v1
-  namespace: default
+  namespace: kafka
 spec:
   replicas: 1
   template:
@@ -19,15 +19,15 @@ spec:
         - name: Hosts__BasePath
           value: /
         - name: EventBus__Brokers
-          value: PLAINTEXT://kafka-cp-kafka:9092
+          value: kafka-server:9092
         ports:
         - containerPort: 5001
-        #livenessProbe:
-        #  httpGet:
-        #    path: /healthz
-        #    port: 5001
-        #  initialDelaySeconds: 10
-        #  periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 5
         resources:
           requests:
             memory: "64Mi"
