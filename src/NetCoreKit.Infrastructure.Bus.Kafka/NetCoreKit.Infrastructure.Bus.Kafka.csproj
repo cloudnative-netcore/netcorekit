@@ -1,15 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <id>NetCoreKit.Infrastructure.Bus.Kafka</id>
+    <version>0.0.0</version>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>NetCoreKit.Infrastructure.Bus.Kafka</AssemblyName>
+    <RootNamespace>NetCoreKit.Infrastructure.Bus.Kafka</RootNamespace>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Title>The kafka bus infrastructure library for Cloud Native .NET Core Kit.</Title>
+    <Description>Supports Kafka Bus for NetCoreKit.Infrastructure.Bus.</Description>
+    <Authors>Thang Chung</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Google.Protobuf" Version="3.6.1" />
+    <PackageReference Include="librdkafka.redist" Version="0.11.5" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Confluent.Kafka" Version="0.11.4" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

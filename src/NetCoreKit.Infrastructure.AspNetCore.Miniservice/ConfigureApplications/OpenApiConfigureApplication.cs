@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureApplications

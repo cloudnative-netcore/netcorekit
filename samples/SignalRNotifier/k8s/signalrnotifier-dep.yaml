@@ -19,13 +19,6 @@ spec:
         - name: Hosts__BasePath
           value: /
         - name: EventBus__Brokers
-          value: kafka-server:9092
+          value: "kafka-cp-kafka:9092"
         ports:
         - containerPort: 5002
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"

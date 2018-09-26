@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
+namespace NetCoreKit.Infrastructure.AspNetCore.Rest
 {
   public static class ServiceCollectionExtensions
   {

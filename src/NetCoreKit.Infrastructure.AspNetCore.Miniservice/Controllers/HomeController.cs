@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using NetCoreKit.Infrastructure.AspNetCore.Extensions;
+using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Controllers
 {

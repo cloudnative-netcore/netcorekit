@@ -1,3 +1,5 @@
+using NetCoreKit.Infrastructure.AspNetCore.Rest;
+
 namespace NetCoreKit.Infrastructure.AspNetCore
 {
   public abstract class ProxyServiceBase

@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: kafka-server
+  name: kafka-server-v1
   namespace: kafka
 spec:
   replicas: 1
@@ -12,26 +12,33 @@ spec:
     metadata:
       labels:
         app: kafka-server
+        version: v1
     spec:
+      terminationGracePeriodSeconds: 10
+      hostNetwork: true
       containers:
       - name: kafka-server
         image: spotify/kafka
         ports:
         - name: kafka
           containerPort: 9092
+          hostPort: 9092
         - name: zookeeper
           containerPort: 2181
+          hostPort: 2181
         env:
         - name: ADVERTISED_HOST
-          value: "kafka-server"
+          value: "127.0.0.1"
         - name: ADVERTISED_PORT
           value: "9092"
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: kafka-server
   namespace: kafka
+  labels:
+    app: kafka-server
 spec:
   selector:
     app: kafka-server

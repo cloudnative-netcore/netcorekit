@@ -7,9 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Bus.Kafka;
+using NetCoreKit.Infrastructure.Bus.Redis;
 using NetCoreKit.Samples.SignalRNotifier.Services.Hubs;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -26,7 +28,8 @@ namespace NetCoreKit.Samples.SignalRNotifier
 
       Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Startup)));
 
-      services.AddKafkaEventBus();
+      // services.AddKafkaEventBus();
+      services.AddRedisBus();
       services.AddSignalR();
       services.AddSingleton<IHostedService, ProjectHostService>();
 
@@ -77,7 +80,25 @@ namespace NetCoreKit.Samples.SignalRNotifier
     {
       var resolver = services.BuildServiceProvider();
       var config = resolver.GetRequiredService<IConfiguration>();
-      services.Configure<KafkaOptions>(config);
+      var env = resolver.GetRequiredService<IHostingEnvironment>();
+      var kafkaOptions = config.GetSection("EventBus");
+      //if (env.IsDevelopment())
+      {
+        services.Configure<KafkaOptions>(o => { o.Brokers = kafkaOptions.GetValue<string>("Brokers"); });
+      }
+      /*else
+      {
+        var serviceName = kafkaOptions
+          .GetValue("ServiceName", "kafka")
+          .Replace("-", "_")
+          .ToUpperInvariant();
+
+        var ip = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST");
+        var port = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT");
+
+        services.Configure<KafkaOptions>(o => { o.Brokers = $"{ip}:{port}"; });
+      }*/
+
       return resolver;
     }
   }

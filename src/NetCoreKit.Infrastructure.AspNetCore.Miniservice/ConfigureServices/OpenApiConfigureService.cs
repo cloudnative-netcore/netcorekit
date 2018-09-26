@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;

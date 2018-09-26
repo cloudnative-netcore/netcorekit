@@ -1,4 +1,4 @@
-using System.Threading;
+/*using System.Threading;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Bus;
@@ -8,7 +8,7 @@ using NetCoreKit.Samples.TodoAPI.Domain;
 using Project.Proto;
 using Task = System.Threading.Tasks.Task;
 
-namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
+namespace NetCoreKit.Samples.TodoAPI.v1.Services
 {
   public class KafkaEnvelopeEventHandler : INotificationHandler<NotificationEnvelope>
   {
@@ -35,4 +35,4 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
       }
     }
   }
-}
+} */

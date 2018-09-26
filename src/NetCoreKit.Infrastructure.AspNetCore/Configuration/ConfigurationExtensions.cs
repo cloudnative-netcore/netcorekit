@@ -2,9 +2,9 @@ using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Extensions
+namespace NetCoreKit.Infrastructure.AspNetCore.Configuration
 {
-  public static class HostUriExtensions
+  public static class ConfigurationExtensions
   {
     public static string GetHostUri(this IConfiguration config, IHostingEnvironment env, string groupName)
     {

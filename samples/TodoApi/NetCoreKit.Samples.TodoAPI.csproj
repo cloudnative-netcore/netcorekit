@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus.Kafka\NetCoreKit.Infrastructure.Bus.Kafka.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.EfCore.MySql\NetCoreKit.Infrastructure.EfCore.MySql.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.EfCore.SqlServer\NetCoreKit.Infrastructure.EfCore.SqlServer.csproj" />

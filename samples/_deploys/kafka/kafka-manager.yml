@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: kafka-manager
+  name: kafka-manager-v1
   namespace: kafka
 spec:
   replicas: 1
@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: kafka-manager
+        version: v1
     spec:
       containers:
       - name: kafka-manager
@@ -20,16 +21,18 @@ spec:
         - containerPort: 80
         env:
         - name: ZK_HOSTS
-          value: "kafka-server.kafka:2181"
+          value: "kafka-cp-zookeeper.kafka:2181"
         command:
         - ./bin/kafka-manager
         - -Dhttp.port=80
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: kafka-manager
   namespace: kafka
+  labels:
+    app: kafka-manager
 spec:
   selector:
     app: kafka-manager

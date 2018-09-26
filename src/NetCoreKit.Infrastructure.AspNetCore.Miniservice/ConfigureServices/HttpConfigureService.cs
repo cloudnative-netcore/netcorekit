@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
+using NetCoreKit.Infrastructure.AspNetCore.Rest;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices
 {

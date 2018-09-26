@@ -1,14 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <id>NetCoreKit.Infrastructure.Bus</id>
+    <id>NetCoreKit.Infrastructure.Bus.Redis</id>
     <version>0.0.0</version>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>NetCoreKit.Infrastructure.Bus</AssemblyName>
-    <RootNamespace>NetCoreKit.Infrastructure.Bus</RootNamespace>
+    <AssemblyName>NetCoreKit.Infrastructure.Bus.Redis</AssemblyName>
+    <RootNamespace>NetCoreKit.Infrastructure.Bus.Redis</RootNamespace>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Title>The bus infrastructure library for Cloud Native .NET Core Kit.</Title>
-    <Description>Supports a very abstraction of the in-memory and utilities for working with the bus.</Description>
+    <Title>The redis bus infrastructure library for Cloud Native .NET Core Kit.</Title>
+    <Description>Supports Redis Bus for NetCoreKit.Infrastructure.Bus.</Description>
     <Authors>Thang Chung</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
@@ -18,15 +18,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="System.Reactive" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />
     <PackageReference Include="MediatR" Version="5.1.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.6.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.505" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
     <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
   </ItemGroup>
 

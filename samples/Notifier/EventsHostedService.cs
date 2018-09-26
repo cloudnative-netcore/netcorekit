@@ -5,7 +5,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NetCoreKit.Infrastructure.Bus.Kafka;
+using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Mappers;
 using Project.Proto;
 
@@ -44,7 +44,7 @@ namespace NetCoreKit.Samples.Notifier
     private void OnStarted()
     {
       _logger.LogInformation("OnStarted has been called.");
-      _eventBus.Subscribe<ProjectCreatedMsg>("project").Wait();
+      _eventBus.SubscribeAsync<ProjectCreatedMsg>("project").Wait();
     }
 
     private void OnStopping()

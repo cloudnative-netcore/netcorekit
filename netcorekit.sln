@@ -22,6 +22,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{92D6FD73-B95C-4CBB-A48E-047672EB4E77}"
+	ProjectSection(SolutionItems) = preProject
+		samples\readme.md = samples\readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1317E2B0-8834-4770-9759-9CD0D9E84D28}"
 EndProject
@@ -57,6 +60,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.Contracts", "samples\Contracts\NetCoreKit.Samples.Contracts.csproj", "{C7C5DA44-023A-4138-8F13-D7FA2EB58F74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.WebNotifier", "samples\WebNotifier\NetCoreKit.Samples.WebNotifier.csproj", "{02E8D785-5013-47B2-BFC6-371874C8BA64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.Bus.Redis", "src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj", "{94E34AF7-42CA-4BBC-B444-FC17915B4D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -202,6 +207,14 @@ Global
 		{02E8D785-5013-47B2-BFC6-371874C8BA64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02E8D785-5013-47B2-BFC6-371874C8BA64}.Release|x86.ActiveCfg = Release|Any CPU
 		{02E8D785-5013-47B2-BFC6-371874C8BA64}.Release|x86.Build.0 = Release|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Debug|x86.Build.0 = Debug|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Release|x86.ActiveCfg = Release|Any CPU
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -225,6 +238,7 @@ Global
 		{9894E768-600D-452E-9F9E-6612D7AA6421} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 		{C7C5DA44-023A-4138-8F13-D7FA2EB58F74} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 		{02E8D785-5013-47B2-BFC6-371874C8BA64} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
+		{94E34AF7-42CA-4BBC-B444-FC17915B4D55} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}

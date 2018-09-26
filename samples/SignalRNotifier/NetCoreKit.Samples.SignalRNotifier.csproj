@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus.Kafka\NetCoreKit.Infrastructure.Bus.Kafka.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
     <ProjectReference Include="..\Contracts\NetCoreKit.Samples.Contracts.csproj" />
   </ItemGroup>

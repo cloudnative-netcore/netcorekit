@@ -7,11 +7,11 @@ metadata:
     app: todolist
 spec:
   ports:
-  - port: 80
+  - port: 32501
     targetPort: 5001
     nodePort: 32501
     protocol: TCP
     name: http
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: todolist

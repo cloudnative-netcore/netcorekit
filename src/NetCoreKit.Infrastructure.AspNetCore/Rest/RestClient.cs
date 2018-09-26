@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace NetCoreKit.Infrastructure.AspNetCore
+namespace NetCoreKit.Infrastructure.AspNetCore.Rest
 {
   public class RestClient
   {

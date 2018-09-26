@@ -3,7 +3,8 @@
 ```bash
 > git clone https://github.com/confluentinc/cp-helm-charts.git
 > kubectl ns create kafka
-> helm install cp-helm-charts --name kafka --namespace kafka
+> helm install . --name kafka --namespace kafka
+> # helm install cp-helm-charts --name kafka --namespace kafka
 ```
 
 ### Setup kafka-topics-ui
