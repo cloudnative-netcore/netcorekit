@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: webnotifier-v1
-  namespace: kafka
+  namespace: netcorekit
 spec:
   replicas: 1
   template:

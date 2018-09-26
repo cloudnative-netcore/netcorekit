@@ -70,6 +70,7 @@ public class DbHealthCheckAndMigration : IExternalSystem
 
   public Task<bool> Connect()
   {
-    return Task.Run(() => _svcProvider.MigrateDbContext() != null);
+    return Task.Run(() => true);
+    // return Task.Run(() => _svcProvider.MigrateDbContext() != null);
   }
 }

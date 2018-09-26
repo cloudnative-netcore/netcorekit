@@ -3,7 +3,7 @@
 - MySQL
 
 ```bash
-> helm install --name mysql --namespace kafka stable/mysql --set mysqlRootPassword=P@ssw0rd --set mysqlPassword=P@ssw0rd --set mysqlDatabase=maindb
+> helm install --name mysql --namespace netcorekit stable/mysql --set mysqlRootPassword=P@ssw0rd --set mysqlPassword=P@ssw0rd --set mysqlDatabase=maindb
 ```
 
 - Redis

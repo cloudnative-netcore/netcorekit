@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: todolist-v1
-  namespace: kafka
+  namespace: netcorekit
 spec:
   replicas: 1
   template:
@@ -20,6 +20,10 @@ spec:
           value: /
         - name: EventBus__Brokers
           value: "kafka-cp-kafka:9092"
+        - name: Redis__Connection
+          value: "redis-master.redis:6379"
+        - name: Redis__Password
+          value: "letmein"
         ports:
         - containerPort: 5001
         livenessProbe:

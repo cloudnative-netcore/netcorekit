@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.AspNetCore.Miniservice</id>
@@ -32,6 +32,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.2.4" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.133" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.133" />
