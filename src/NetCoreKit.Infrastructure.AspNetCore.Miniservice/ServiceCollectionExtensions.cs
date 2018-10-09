@@ -33,6 +33,7 @@ using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using Newtonsoft.Json.Serialization;
+using StackExchange.Profiling;
 using Swashbuckle.AspNetCore.Swagger;
 using static NetCoreKit.Utils.Helpers.IdHelper;
 
@@ -86,6 +87,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         // #3
         services.AddDomainEventBus();
         services.AddCleanArch(config.LoadFullAssemblies());
+
+        services.AddMemoryCache();
+        services.AddResponseCaching();
 
         // #4
         services.AddRouting(o => o.LowercaseUrls = true);
@@ -203,6 +207,13 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
           {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
           });
+
+        if (config.GetValue("OpenApi:EnabledProfiler", false))
+        {
+          services.AddMiniProfiler(options =>
+            options.RouteBasePath = "/profiler"
+          );
+        }
       }
 
       return services;
@@ -300,12 +311,18 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       app.UseMiddleware<LogHandlerMiddleware>();
 
+      app.UseResponseCaching();
+
       // #2
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
-        // app.UseMiniProfiler();
+
+        if (config.GetValue("OpenApi:EnabledProfiler", false))
+        {
+          app.UseMiniProfiler();
+        }
       }
       else
       {
@@ -354,6 +371,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       });
 
       app.UseMiddleware<ErrorHandlerMiddleware>();
+
+      if (config.GetValue("OpenApi:EnabledProfiler", false))
+      {
+        app.UseMiddleware<MiniProfilerMiddleware>();
+      }
 
       // #3
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -408,7 +430,14 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
               c.OAuth2RedirectUrl($"{currentHostUri}/swagger/oauth2-redirect.html");
             }
 
-            // c.IndexStream = () => typeof(MiniServiceExtensions).GetTypeInfo().Assembly.GetManifestResourceStream("VND.Fw.Infrastructure.AspNetCore.Swagger.index.html");
+            if (config.GetValue("OpenApi:EnabledProfiler", false))
+            {
+              c.IndexStream = () =>
+                typeof(ServiceCollectionExtensions)
+                  .GetTypeInfo()
+                  .Assembly
+                  .GetManifestResourceStream("NetCoreKit.Infrastructure.AspNetCore.Miniservice.Swagger.index.html");
+            }
           });
 
       return app;
