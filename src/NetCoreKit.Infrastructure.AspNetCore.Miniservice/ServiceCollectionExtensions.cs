@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +25,7 @@ using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
-using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ConfigureServices;
+using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
@@ -42,15 +43,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     public static IServiceCollection AddMiniService<TDbContext>(
       this IServiceCollection services,
       Action<IServiceCollection> preScopeAction = null,
-      Action<IServiceCollection, IServiceProvider> inScopeAction = null,
+      Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null,
       Func<IEnumerable<KeyValuePair<string, object>>> extendServiceParamsFunc = null)
       where TDbContext : DbContext
     {
       services.AddScoped(sp => new ServiceParams().ExtendServiceParams(extendServiceParamsFunc?.Invoke()));
-
-      // let outside register database provider or else
-      preScopeAction?.Invoke(services);
-      services.AddScoped<DbHealthCheckAndMigration>();
 
       using (var scope = services.BuildServiceProvider().GetService<IServiceScopeFactory>().CreateScope())
       {
@@ -59,20 +56,24 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         var env = svcProvider.GetRequiredService<IHostingEnvironment>();
         var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
 
+        // let registering the database providers or others from the outside
+        preScopeAction?.Invoke(services);
+        // services.AddScoped<DbHealthCheckAndMigration>();
+
         // #1
         services.AddDbContextPool<TDbContext>((sp, o) =>
         {
           var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
           var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
           extendOptionsBuilder.Extend(o, connStringFactory,
-            config.LoadApplicationAssemblies().FirstOrDefault().GetName().Name);
+            config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
         });
 
         services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
         services.AddGenericRepository();
 
         // let outside inject more logic (like more healthcheck endpoints...)
-        inScopeAction?.Invoke(services, svcProvider);
+        afterDbScopeAction?.Invoke(services, svcProvider);
 
         // #2
         services.AddHttpContextAccessor();
@@ -103,7 +104,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         {
           o.ReportApiVersions = true;
           o.AssumeDefaultVersionWhenUnspecified = true;
-          o.DefaultApiVersion = ApiVersionConfigureService.ParseApiVersion(config.GetValue<string>("API_VERSION"));
+          o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
         });
 
         // #5
@@ -132,7 +133,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             })
             .AddJwtBearer(options =>
             {
-              options.Authority = AuthNConfigureService.GetAuthUri(config, env);
+              options.Authority = GetAuthUri(config, env);
               options.RequireHttpsMetadata = false;
               options.Audience = serviceParams.GetAudience();
             });
@@ -159,8 +160,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             c.DescribeAllEnumsAsStrings();
 
             foreach (var description in provider.ApiVersionDescriptions)
-              c.SwaggerDoc(description.GroupName,
-                OpenApiConfigureService.CreateInfoForApiVersion(config, description));
+              c.SwaggerDoc(
+                description.GroupName,
+                CreateInfoForApiVersion(config, description));
 
             // c.IncludeXmlComments (XmlCommentsFilePath);
 
@@ -169,8 +171,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
               {
                 Type = "oauth2",
                 Flow = "implicit",
-                AuthorizationUrl = $"{OpenApiConfigureService.GetExternalAuthUri(config)}/connect/authorize",
-                TokenUrl = $"{OpenApiConfigureService.GetExternalAuthUri(config)}/connect/token",
+                AuthorizationUrl = $"{GetExternalAuthUri(config)}/connect/authorize",
+                TokenUrl = $"{GetExternalAuthUri(config)}/connect/token",
                 Scopes = serviceParams.GetScopes()
               });
 
@@ -218,6 +220,74 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       });
     }
 
+    public static ApiVersion ParseApiVersion(string serviceVersion)
+    {
+      if (string.IsNullOrEmpty(serviceVersion))
+      {
+        throw new Exception("[CS] ServiceVersion is null or empty.");
+      }
+
+      const string pattern = @"(.)|(-)";
+      var results = Regex.Split(serviceVersion, pattern)
+        .Where(x => x != string.Empty && x != "." && x != "-")
+        .ToArray();
+
+      if (results == null || results.Count() < 2)
+      {
+        throw new Exception("[CS] Could not parse ServiceVersion.");
+      }
+
+      if (results.Count() > 2)
+      {
+        return new ApiVersion(
+          Convert.ToInt32(results[0]),
+          Convert.ToInt32(results[1]),
+          results[2]);
+      }
+
+      return new ApiVersion(
+        Convert.ToInt32(results[0]),
+        Convert.ToInt32(results[1]));
+    }
+
+    public static string GetAuthUri(IConfiguration config, IHostingEnvironment env)
+    {
+      return config.GetHostUri(env, "Auth");
+    }
+
+    public static string GetExternalAuthUri(IConfiguration config)
+    {
+      return config.GetExternalHostUri("Auth");
+    }
+
+    public static Info CreateInfoForApiVersion(IConfiguration config, ApiVersionDescription description)
+    {
+      var info = new Info()
+      {
+        Title = $"{config.GetValue("OpenApi:Title", "API")} {description.ApiVersion}",
+        Version = description.ApiVersion.ToString(),
+        Description = config.GetValue("OpenApi:Description", "An application with Swagger, Swashbuckle, and API versioning."),
+        Contact = new Contact()
+        {
+          Name = config.GetValue("OpenApi:ContactName", "Vietnam Devs"),
+          Email = config.GetValue("OpenApi:ContactEmail", "vietnam.devs.group@gmail.com")
+        },
+        TermsOfService = config.GetValue("OpenApi:TermOfService", "Shareware"),
+        License = new License()
+        {
+          Name = config.GetValue("OpenApi:LicenseName", "MIT"),
+          Url = config.GetValue("OpenApi:LicenseUrl", "https://opensource.org/licenses/MIT")
+        }
+      };
+
+      if (description.IsDeprecated)
+      {
+        info.Description += " This API version has been deprecated.";
+      }
+
+      return info;
+    }
+
     public static IApplicationBuilder UseMiniService(this IApplicationBuilder app)
     {
       var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
@@ -261,9 +331,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             if (exception is BadHttpRequestException badHttpRequestException)
             {
               problemDetails.Title = "Invalid request";
-              problemDetails.Status = (int)typeof(BadHttpRequestException).GetProperty(
-                  "StatusCode", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?.GetValue(badHttpRequestException);
+              problemDetails.Status = (int)typeof(BadHttpRequestException)
+                .GetProperty("StatusCode", BindingFlags.NonPublic | BindingFlags.Instance)
+                  ?.GetValue(badHttpRequestException);
               problemDetails.Detail = badHttpRequestException.Message;
             }
             else
@@ -274,6 +344,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             }
 
             // TODO: log the exception etc..
+            // ...
 
             context.Response.StatusCode = problemDetails.Status.Value;
             context.Response.WriteJson(problemDetails, "application/problem+json");

@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{EE8515E4-F600-4699-A652-FE8E241B9A83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.TodoAPI", "samples\TodoApi\NetCoreKit.Samples.TodoAPI.csproj", "{07F7005A-062E-478D-93C0-3B7E1C42389E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.TodoApi", "samples\TodoApi\NetCoreKit.Samples.TodoApi.csproj", "{07F7005A-062E-478D-93C0-3B7E1C42389E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure", "src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj", "{EE16B7AA-67D5-463E-A24F-6221DBD80A5F}"
 EndProject
@@ -61,7 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.Contract
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.WebNotifier", "samples\WebNotifier\NetCoreKit.Samples.WebNotifier.csproj", "{02E8D785-5013-47B2-BFC6-371874C8BA64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.Bus.Redis", "src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj", "{94E34AF7-42CA-4BBC-B444-FC17915B4D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus.Redis", "src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj", "{94E34AF7-42CA-4BBC-B444-FC17915B4D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

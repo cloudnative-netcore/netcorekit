@@ -23,5 +23,10 @@
 - Build all solutions
 - Run multiple projects `NetCoreKit.Samples.TodoAPI`, `NetCoreKit.Samples.SignalRNotifier`, and `NetCoreKit.Samples.WebNotifier`
 
+- Run one-off tasks (e.g. database migration)
+
+```bash
+> kubectl apply -f samples/TodoApi/k8s/todolist-job.yaml
+```
 
 **Notes**: Change configuration in appsettings.Development.json with your configuration on your local machine.

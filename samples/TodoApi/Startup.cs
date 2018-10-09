@@ -20,7 +20,7 @@ namespace NetCoreKit.Samples.TodoAPI
         {
           //svc.AddEfSqlLiteDb();
           svc.AddEfCoreMySqlDb();
-          svc.AddExternalSystemHealthChecks();
+          //svc.AddExternalSystemHealthChecks();
           // svc.AddKafkaEventBus();
           svc.AddRedisBus();
         },
