@@ -43,7 +43,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Rest
     public async Task<TReturnMessage> PostAsync<TReturnMessage>(string serviceUrl, object dataObject = null)
       where TReturnMessage : class, new()
     {
-      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      EnrichHeaderInfo(_client, _openTracingInfo);
       var content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
 
       var response = await _client.PostAsync(serviceUrl, GetStringContent(content));
@@ -59,7 +59,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Rest
     public async Task<TReturnMessage> PutAsync<TReturnMessage>(string serviceUrl, object dataObject = null)
       where TReturnMessage : class, new()
     {
-      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      EnrichHeaderInfo(_client, _openTracingInfo);
       var content = dataObject != null ? JsonConvert.SerializeObject(dataObject) : "{}";
 
       var response = await _client.PutAsync(serviceUrl, GetStringContent(content));
@@ -73,7 +73,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Rest
 
     public async Task<bool> DeleteAsync(string serviceUrl)
     {
-      var enrichClient = EnrichHeaderInfo(_client, _openTracingInfo);
+      EnrichHeaderInfo(_client, _openTracingInfo);
 
       var response = await _client.DeleteAsync(serviceUrl);
       response.EnsureSuccessStatusCode();
