@@ -31,7 +31,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
     public DispatchedEventBus(IServiceProvider serviceProvider, IOptions<KafkaOptions> options, ILoggerFactory factory)
     {
       _serviceProvider = serviceProvider;
-      _brokerList = options.Value.Brokers;
+      _brokerList = options.Value.Fqdn;
       //_logger = factory.CreateLogger<DispatchedEventBus>();
       Console.WriteLine($"[NCK] Init DispatchedEventBus with {_brokerList}.");
     }

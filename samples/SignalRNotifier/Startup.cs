@@ -81,10 +81,10 @@ namespace NetCoreKit.Samples.SignalRNotifier
       var resolver = services.BuildServiceProvider();
       var config = resolver.GetRequiredService<IConfiguration>();
       var env = resolver.GetRequiredService<IHostingEnvironment>();
-      var kafkaOptions = config.GetSection("EventBus");
+      var kafkaOptions = config.GetSection("Kafka");
       //if (env.IsDevelopment())
       {
-        services.Configure<KafkaOptions>(o => { o.Brokers = kafkaOptions.GetValue<string>("Brokers"); });
+        services.Configure<KafkaOptions>(o => { o.Fqdn = kafkaOptions.GetValue<string>("FQDN"); });
       }
       /*else
       {
@@ -96,7 +96,7 @@ namespace NetCoreKit.Samples.SignalRNotifier
         var ip = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST");
         var port = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT");
 
-        services.Configure<KafkaOptions>(o => { o.Brokers = $"{ip}:{port}"; });
+        services.Configure<KafkaOptions>(o => { o.Fqdn = $"{ip}:{port}"; });
       }*/
 
       return resolver;

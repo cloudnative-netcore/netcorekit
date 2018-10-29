@@ -1,5 +1,4 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NetCoreKit.Infrastructure.EfCore.Db;
 
@@ -8,31 +7,25 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
   public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
   {
     private readonly IConfiguration _config;
-    private readonly IHostingEnvironment _env;
 
-    public DatabaseConnectionStringFactory(
-      IConfiguration config,
-      IHostingEnvironment env)
+    public DatabaseConnectionStringFactory(IConfiguration config)
     {
       _config = config;
-      _env = env;
     }
 
     public string Create()
     {
-      if (_env.IsDevelopment())
-      {
-        return _config.GetConnectionString("mysqldb");
-      }
+      var connPattern = _config.GetConnectionString("MySqlDb");
+      var connConfigs = _config.GetValue<string>("MySqlDb:FQDN").Split(':');
+      var fqdn = connConfigs.First();
+      var port = connConfigs.Except(new[] {fqdn}).First();
 
-      var serviceName = _config.GetValue<string>("k8s:mysqldb:ServiceName").ToUpperInvariant();
       return string.Format(
-        _config.GetConnectionString("mysqldb"),
-        Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST"),
-        Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT"),
-        _config.GetValue<string>("k8s:mysqldb:UserName"),
-        _config.GetValue<string>("k8s:mysqldb:Password"),
-        _config.GetValue<string>("k8s:mysqldb:Database"));
+        connPattern,
+        fqdn, port,
+        _config.GetValue<string>("MySqlDb:UserName"),
+        _config.GetValue<string>("MySqlDb:Password"),
+        _config.GetValue<string>("MySqlDb:Database"));
     }
   }
 }

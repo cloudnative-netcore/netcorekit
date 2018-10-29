@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:2.1.3-aspnetcore-runtime-alpine AS base
+FROM microsoft/dotnet:2.1.5-aspnetcore-runtime-alpine AS base
 WORKDIR /app
 
 ENV ASPNETCORE_URLS http://+:5002
 EXPOSE 5002
 
-FROM microsoft/dotnet:2.1.401-sdk-alpine AS build
+FROM microsoft/dotnet:2.1.403-sdk-alpine AS build
 WORKDIR .
 COPY . .
 

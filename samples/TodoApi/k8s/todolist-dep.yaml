@@ -18,7 +18,7 @@ spec:
         env:
         - name: Hosts__BasePath
           value: /
-        - name: EventBus__Brokers
+        - name: EventBus__FQDN
           value: "kafka-cp-kafka:9092"
         - name: Redis__Connection
           value: "redis-master.redis:6379"

@@ -14,10 +14,10 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       {
         var config = scope.ServiceProvider.GetService<IConfiguration>();
         var env = scope.ServiceProvider.GetService<IHostingEnvironment>();
-        var kafkaOptions = config.GetSection("EventBus");
+        var kafkaOptions = config.GetSection("Kafka");
         //if (env.IsDevelopment())
         {
-          services.Configure<KafkaOptions>(o => { o.Brokers = kafkaOptions.GetValue<string>("Brokers"); });
+          services.Configure<KafkaOptions>(o => { o.Fqdn = kafkaOptions.GetValue<string>("FQDN"); });
         }
         /*else
         {
@@ -29,7 +29,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
           var ip = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST");
           var port = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT");
 
-          services.Configure<KafkaOptions>(o => { o.Brokers = $"{ip}:{port}"; });
+          services.Configure<KafkaOptions>(o => { o.Fqdn = $"{ip}:{port}"; });
         }*/
 
         services.AddSingleton<IDispatchedEventBus, DispatchedEventBus>();
