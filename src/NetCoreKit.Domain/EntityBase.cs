@@ -49,7 +49,6 @@ namespace NetCoreKit.Domain
       if (!_handlers.ContainsKey(payload.GetType())) return this;
       _handlers[payload.GetType()]?.Invoke(payload);
       Version++;
-
       return this;
     }
 
@@ -71,10 +70,7 @@ namespace NetCoreKit.Domain
 
     public IAggregateRoot RemoveEvent(IEvent @event)
     {
-      if (_uncommittedEvents.Find(e => e == @event) != null)
-      {
-        _uncommittedEvents.Remove(@event);
-      }
+      if (_uncommittedEvents.Find(e => e == @event) != null) _uncommittedEvents.Remove(@event);
       return this;
     }
   }

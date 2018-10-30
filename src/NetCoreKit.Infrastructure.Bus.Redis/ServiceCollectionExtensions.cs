@@ -15,7 +15,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
 
         services.Configure<RedisOptions>(o =>
         {
-          o.Connection = redisOptions.GetValue<string>("FQDN");
+          o.Fqdn = redisOptions.GetValue<string>("FQDN");
           o.Password = redisOptions.GetValue<string>("Password");
         });
 

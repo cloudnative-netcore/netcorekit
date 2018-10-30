@@ -20,6 +20,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
       _serviceProvider = serviceProvider;
       _logger = factory.CreateLogger<DispatchedEventBus>();
     }
+
     public async Task PublishAsync<TMessage>(TMessage msg, params string[] topics) where TMessage : IMessage<TMessage>
     {
       var redis = _redisStore.RedisCache;

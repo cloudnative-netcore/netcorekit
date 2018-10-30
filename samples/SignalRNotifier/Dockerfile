@@ -1,8 +1,8 @@
 FROM microsoft/dotnet:2.1.5-aspnetcore-runtime-alpine AS base
 WORKDIR /app
 
-ENV ASPNETCORE_URLS http://+:5002
-EXPOSE 5002
+ENV ASPNETCORE_URLS http://+:80
+EXPOSE 80
 
 FROM microsoft/dotnet:2.1.403-sdk-alpine AS build
 WORKDIR .

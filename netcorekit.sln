@@ -63,6 +63,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.WebNotif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus.Redis", "src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj", "{94E34AF7-42CA-4BBC-B444-FC17915B4D55}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{B955EE6A-DBD9-474A-AE34-E1960E887F0F}"
+	ProjectSection(SolutionItems) = preProject
+		samples\protos\project.proto = samples\protos\project.proto
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -239,6 +244,7 @@ Global
 		{C7C5DA44-023A-4138-8F13-D7FA2EB58F74} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 		{02E8D785-5013-47B2-BFC6-371874C8BA64} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 		{94E34AF7-42CA-4BBC-B444-FC17915B4D55} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{B955EE6A-DBD9-474A-AE34-E1960E887F0F} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}

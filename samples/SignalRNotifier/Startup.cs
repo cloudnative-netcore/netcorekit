@@ -8,9 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.AspNetCore.Configuration;
-using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.Bus;
-using NetCoreKit.Infrastructure.Bus.Kafka;
 using NetCoreKit.Infrastructure.Bus.Redis;
 using NetCoreKit.Samples.SignalRNotifier.Services.Hubs;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -23,12 +21,10 @@ namespace NetCoreKit.Samples.SignalRNotifier
     {
       services.AddMediatR(
         typeof(Startup),
-        typeof(DomainEventBus)
-        /*typeof(ProjectCreated)*/);
+        typeof(DomainEventBus));
 
       Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Startup)));
 
-      // services.AddKafkaEventBus();
       services.AddRedisBus();
       services.AddSignalR();
       services.AddSingleton<IHostedService, ProjectHostService>();
@@ -79,26 +75,12 @@ namespace NetCoreKit.Samples.SignalRNotifier
     private static IServiceProvider BuildServiceProvider(IServiceCollection services)
     {
       var resolver = services.BuildServiceProvider();
-      var config = resolver.GetRequiredService<IConfiguration>();
-      var env = resolver.GetRequiredService<IHostingEnvironment>();
-      var kafkaOptions = config.GetSection("Kafka");
-      //if (env.IsDevelopment())
-      {
-        services.Configure<KafkaOptions>(o => { o.Fqdn = kafkaOptions.GetValue<string>("FQDN"); });
-      }
-      /*else
-      {
-        var serviceName = kafkaOptions
-          .GetValue("ServiceName", "kafka")
-          .Replace("-", "_")
-          .ToUpperInvariant();
+      //var config = resolver.GetRequiredService<IConfiguration>();
+      //var env = resolver.GetRequiredService<IHostingEnvironment>();
 
-        var ip = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_HOST");
-        var port = Environment.GetEnvironmentVariable($"{serviceName}_SERVICE_PORT");
-
-        services.Configure<KafkaOptions>(o => { o.Fqdn = $"{ip}:{port}"; });
-      }*/
-
+      // TODO: let register options here
+      // ...
+      
       return resolver;
     }
   }

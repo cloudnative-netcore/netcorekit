@@ -8,7 +8,7 @@ metadata:
 spec:
   ports:
   - port: 32502
-    targetPort: 5002
+    targetPort: 80
     nodePort: 32502
     protocol: TCP
     name: http

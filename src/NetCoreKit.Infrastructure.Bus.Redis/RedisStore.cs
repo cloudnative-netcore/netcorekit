@@ -14,7 +14,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
       {
         EndPoints =
         {
-          redisOptions.Value.Connection
+          redisOptions.Value.Fqdn
         },
         Password = redisOptions.Value.Password
       };
@@ -29,7 +29,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
 
   public class RedisOptions
   {
-    public string Connection { get; set; } = "127.0.0.1:6379";
+    public string Fqdn { get; set; } = "127.0.0.1:6379";
     public string Password { get; set; } = "letmein";
   }
 }

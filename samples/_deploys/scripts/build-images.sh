@@ -1,12 +1,8 @@
-TAG=${TAG:=$(git rev-parse --short HEAD)}
-NAMESPACE=${NAMESPACE:="vndg"}
-echo "${NAMESPACE} and ${TAG}"
+chmod +x ./samples/TodoApi/build_image.sh
+./samples/TodoApi/build_image.sh
 
-echo "Build TODO API..."
-docker build -f samples/TodoApi/Dockerfile -t vndg/todoapi:$(git rev-parse --short HEAD) -t vndg/todoapi:latest .
+chmod +x ./samples/SignalRNotifier/build_image.sh
+./samples/SignalRNotifier/build_image.sh
 
-echo "Build SignalR..."
-docker build -f samples/SignalRNotifier/Dockerfile -t vndg/signalrnotifier:$(git rev-parse --short HEAD) -t vndg/signalrnotifier:latest .
-
-echo "Build Web Notifier..."
-docker build -f samples/WebNotifier/Dockerfile -t vndg/webnotifier:$(git rev-parse --short HEAD) -t vndg/webnotifier:latest .
+chmod +x ./samples/WebNotifier/build_image.sh
+./samples/WebNotifier/build_image.sh
