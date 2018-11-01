@@ -23,6 +23,9 @@ spec:
         - name: Redis__FQDN
           value: "redis-master.redis:6379"
         - name: Redis__Password
-          value: "letmein"
+          valueFrom:
+            secretKeyRef:
+              name: signalrnotifier-secrets
+              key: RedisPassword
         ports:
         - containerPort: 80
