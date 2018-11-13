@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems
 {
+  [Obsolete]
   public class DbHealthCheckAndMigration : IExternalSystem
   {
     private readonly IServiceProvider _svcProvider;
@@ -15,7 +16,6 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems
     public Task<bool> Connect()
     {
       return Task.Factory.StartNew(() => true);
-      // return Task.Factory.StartNew(() => _svcProvider.MigrateDbContext() != null);
     }
   }
 }

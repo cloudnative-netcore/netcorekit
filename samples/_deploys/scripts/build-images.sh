@@ -1,4 +1,4 @@
-chmod +x ./samples/TodoApi/build_image.sh
+chmod +x ./samples/TodoApi/App_Build/build_image.sh
 ./samples/TodoApi/build_image.sh
 
 chmod +x ./samples/SignalRNotifier/build_image.sh

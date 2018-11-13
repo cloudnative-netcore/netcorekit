@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Bus
@@ -7,7 +8,7 @@ namespace NetCoreKit.Infrastructure.Bus
   {
     public static IServiceCollection AddDomainEventBus(this IServiceCollection services)
     {
-      services.AddSingleton<IDomainEventBus, DomainEventBus>();
+      services.Replace(ServiceDescriptor.Singleton<IDomainEventBus, DomainEventBus>());
       return services;
     }
   }

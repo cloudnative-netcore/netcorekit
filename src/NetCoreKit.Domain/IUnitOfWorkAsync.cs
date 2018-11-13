@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 
 namespace NetCoreKit.Domain
 {
-  public interface IUnitOfWorkAsync : IRepositoryFactory, IDisposable
+  public interface IUnitOfWorkAsync : IRepositoryAsyncFactory, IDisposable
   {
-    // Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int ExecuteSqlCommand(string sql, params object[] parameters);

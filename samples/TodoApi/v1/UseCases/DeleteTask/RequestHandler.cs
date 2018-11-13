@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
-using NetCoreKit.Samples.TodoAPI.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.DeleteTask
 {
@@ -19,7 +18,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.DeleteTask
     public override async Task<DeleteTaskResponse> Handle(DeleteTaskRequest request,
       CancellationToken cancellationToken)
     {
-      var projectRepository = CommandFactory.Repository<Domain.Project>();
+      var projectRepository = CommandFactory.RepositoryAsync<Domain.Project>();
       var queryRepository = QueryFactory.QueryEfRepository<Domain.Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);

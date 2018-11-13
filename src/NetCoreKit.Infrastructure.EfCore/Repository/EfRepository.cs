@@ -21,8 +21,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     }
   }
 
-  public class EfRepositoryAsync<TEntity>
-    : EfRepositoryAsync<DbContext, TEntity>, IEfRepositoryAsync<TEntity>
+  public class EfRepositoryAsync<TEntity> : EfRepositoryAsync<DbContext, TEntity>, IEfRepositoryAsync<TEntity>
     where TEntity : class, IAggregateRoot
   {
     public EfRepositoryAsync(DbContext dbContext) : base(dbContext)
@@ -30,8 +29,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     }
   }
 
-  public class EfQueryRepository<TEntity>
-    : EfQueryRepository<DbContext, TEntity>, IEfQueryRepository<TEntity>
+  public class EfQueryRepository<TEntity> : EfQueryRepository<DbContext, TEntity>, IEfQueryRepository<TEntity>
     where TEntity : class, IAggregateRoot
   {
     public EfQueryRepository(DbContext dbContext) : base(dbContext)
@@ -68,7 +66,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     {
       var entry = _dbContext.Entry(entity);
       entry.State = EntityState.Modified;
-      // var entry = _dbSet.Update(entity);
       return await Task.FromResult(entry.Entity);
     }
   }

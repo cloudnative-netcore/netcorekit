@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.EfCore.Repository
@@ -11,7 +10,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
   public class EfUnitOfWork : IUnitOfWorkAsync
   {
     private readonly DbContext _context;
-    protected IDbContextTransaction Transaction;
     private ConcurrentDictionary<Type, object> _repositories;
 
     public EfUnitOfWork(DbContext context)
@@ -19,7 +17,7 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       _context = context;
     }
 
-    public virtual IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IAggregateRoot
+    public virtual IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot
     {
       if (_repositories == null)
       {
@@ -39,11 +37,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       get => _context.Database.GetCommandTimeout();
       set => _context.Database.SetCommandTimeout(value);
     }
-
-    /*public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
-    {
-      return _context.Database.BeginTransactionAsync(cancellationToken);
-    }*/
 
     public virtual int SaveChanges() => _context.SaveChanges();
 
@@ -69,7 +62,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
 
     public void Dispose()
     {
-      // Transaction?.Dispose();
       _context?.Dispose();
     }
   }

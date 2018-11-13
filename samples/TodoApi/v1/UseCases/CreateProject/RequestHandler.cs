@@ -18,7 +18,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
     public async Task<CreateProjectResponse> Handle(CreateProjectRequest request,
       CancellationToken cancellationToken)
     {
-      var projectRepository = _uow.Repository<Domain.Project>();
+      var projectRepository = _uow.RepositoryAsync<Domain.Project>();
 
       var result = await projectRepository.AddAsync(Domain.Project.Load(request.Name));
 

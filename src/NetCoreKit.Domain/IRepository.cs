@@ -3,14 +3,9 @@ using System.Threading.Tasks;
 
 namespace NetCoreKit.Domain
 {
-  public interface IRepositoryFactory
+  public interface IRepositoryAsyncFactory
   {
-    IRepositoryAsync<TEntity> Repository<TEntity>() where TEntity : class, IAggregateRoot;
-  }
-
-  public interface IQueryRepositoryFactory
-  {
-    IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IAggregateRoot;
+    IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot;
   }
 
   public interface IRepositoryAsync<TEntity> where TEntity : IAggregateRoot
@@ -18,6 +13,11 @@ namespace NetCoreKit.Domain
     Task<TEntity> AddAsync(TEntity entity);
     Task<TEntity> UpdateAsync(TEntity entity);
     Task<TEntity> DeleteAsync(TEntity entity);
+  }
+
+  public interface IQueryRepositoryFactory
+  {
+    IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IAggregateRoot;
   }
 
   public interface IQueryRepository<out TEntity> where TEntity : IAggregateRoot

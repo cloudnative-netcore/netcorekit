@@ -1,27 +1,11 @@
 using System;
-using System.Collections.Generic;
 
 namespace NetCoreKit.Domain
 {
-  public class Criterion : ValueObjectBase
+  public class Criterion
   {
     private const int MaxPageSize = 50;
     private const int ConfigurablePageSize = 10;
-
-    /*public Criterion(int currentPage, int pageSize, PaginationOption defaultPagingOption, string sortBy = "", string sortOrder = "")
-        {
-            if (currentPage <= 0)
-                throw new Exception("CurrentPage could not be less than zero.");
-
-            if (pageSize <= 0)
-                throw new Exception("PageSize could not be less than zero.");
-
-            CurrentPage = currentPage - 1;
-            PageSize = pageSize;
-            DefaultPagingOption = defaultPagingOption;
-            SortBy = sortBy;
-            SortOrder = sortOrder;
-        } */
 
     public Criterion()
     {
@@ -60,14 +44,6 @@ namespace NetCoreKit.Domain
 
       CurrentPage = currentPage;
       return this;
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-      yield return CurrentPage;
-      yield return PageSize;
-      yield return SortBy;
-      yield return SortOrder;
     }
   }
 }

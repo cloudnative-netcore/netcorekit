@@ -40,6 +40,7 @@ namespace NetCoreKit.Infrastructure.EfCore
 
     public static IServiceCollection AddEfSqlLiteDb(this IServiceCollection services)
     {
+      // default if we don't declare any db provider
       services.AddScoped<IDatabaseConnectionStringFactory, NoOpDatabaseConnectionStringFactory>();
       services.AddScoped<IExtendDbContextOptionsBuilder, InMemoryDbContextOptionsBuilderFactory>();
       return services;

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.EfCore.MySql.Options;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
@@ -26,18 +25,8 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
           sqlOptions =>
           {
             sqlOptions.MigrationsAssembly(assemblyName);
-
-            sqlOptions.ServerVersion(
-              new Version(
-                _options.Major,
-                _options.Minor,
-                _options.Build),
-              ServerType.MySql);
-
-            sqlOptions.EnableRetryOnFailure(
-              15,
-              TimeSpan.FromSeconds(30),
-              null);
+            sqlOptions.ServerVersion(_options.DbInfo);
+            sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
           })
         .EnableSensitiveDataLogging();
     }

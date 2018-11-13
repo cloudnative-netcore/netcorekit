@@ -7,4 +7,16 @@ namespace NetCoreKit.Domain
   {
     Task Publish(IEvent @event);
   }
+
+  public class MemoryDomainEventBus : IDomainEventBus
+  {
+    public void Dispose()
+    {
+    }
+
+    public Task Publish(IEvent @event)
+    {
+      return Task.CompletedTask;
+    }
+  }
 }

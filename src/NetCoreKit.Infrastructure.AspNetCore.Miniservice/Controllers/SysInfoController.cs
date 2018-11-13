@@ -11,11 +11,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Controllers
   [Route("")]
   [ApiVersionNeutral]
   [ApiExplorerSettings(IgnoreApi = true)]
-  public class SystemInfoController : Controller
+  public class SysInfoController : Controller
   {
     private readonly IConfiguration _config;
 
-    public SystemInfoController(IConfiguration config)
+    public SysInfoController(IConfiguration config)
     {
       _config = config;
     }

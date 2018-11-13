@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
-using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Extensions;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
@@ -20,7 +19,7 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
     public override async Task<UpdateTaskResponse> Handle(UpdateTaskRequest request,
       CancellationToken cancellationToken)
     {
-      var commandRepository = CommandFactory.Repository<Domain.Project>();
+      var commandRepository = CommandFactory.RepositoryAsync<Domain.Project>();
       var queryRepository = QueryFactory.QueryEfRepository<Domain.Project>();
 
       var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);

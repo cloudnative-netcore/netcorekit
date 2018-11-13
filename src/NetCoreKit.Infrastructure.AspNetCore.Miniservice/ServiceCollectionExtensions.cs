@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
@@ -29,7 +30,6 @@ using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
-using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using Newtonsoft.Json.Serialization;
@@ -62,54 +62,67 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         // services.AddScoped<DbHealthCheckAndMigration>();
 
         // #1
-        services.AddDbContextPool<TDbContext>((sp, o) =>
+        if (config.GetValue("EfCore:Enabled", false))
         {
-          var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
-          var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
-          extendOptionsBuilder.Extend(o, connStringFactory,
-            config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
-        });
+          services.AddDbContextPool<TDbContext>((sp, o) =>
+          {
+            var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
+            var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
+            extendOptionsBuilder.Extend(o, connStringFactory,
+              config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
+          });
 
-        services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
-        services.AddGenericRepository();
+          services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
+          services.AddGenericRepository();
+        }
 
         // let outside inject more logic (like more healthcheck endpoints...)
         afterDbScopeAction?.Invoke(services, svcProvider);
 
         // #2
-        services.AddHttpContextAccessor();
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-        services.AddSingleton<IUrlHelper>(
-          fac => new UrlHelper(fac.GetService<IActionContextAccessor>().ActionContext));
-        services.AddHttpPolly<RestClient>();
+        if (config.GetValue("FaultTolerance:Enabled", false))
+        {
+          services.AddHttpContextAccessor();
+          services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+          services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+          services.AddSingleton<IUrlHelper>(
+            fac => new UrlHelper(fac.GetService<IActionContextAccessor>().ActionContext));
+          services.AddHttpPolly<RestClient>();
+        }
 
         // #3
-        services.AddDomainEventBus();
-        services.AddCleanArch(config.LoadFullAssemblies());
+        services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
+
+        if (config.GetValue("CleanArchitecture:Enabled", false))
+        {
+          services.AddCleanArch(config.LoadFullAssemblies());
+        }
 
         services.AddMemoryCache();
         services.AddResponseCaching();
 
         // #4
-        services.AddRouting(o => o.LowercaseUrls = true);
-        services
-          .AddMvcCore()
-          .AddVersionedApiExplorer(
-            o =>
-            {
-              o.GroupNameFormat = "'v'VVV";
-              o.SubstituteApiVersionInUrl = true;
-            })
-          .AddJsonFormatters(o => o.ContractResolver = new CamelCasePropertyNamesContractResolver())
-          .AddDataAnnotations();
-
-        services.AddApiVersioning(o =>
+        if (config.GetValue("ApiVersion:Enabled", false))
         {
-          o.ReportApiVersions = true;
-          o.AssumeDefaultVersionWhenUnspecified = true;
-          o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
-        });
+          services.AddRouting(o => o.LowercaseUrls = true);
+          services
+            .AddMvcCore()
+            .AddVersionedApiExplorer(
+              o =>
+              {
+                o.GroupNameFormat = "'v'VVV";
+                o.SubstituteApiVersionInUrl = true;
+              })
+            .AddJsonFormatters(o => o.ContractResolver = new CamelCasePropertyNamesContractResolver())
+            .AddDataAnnotations();
+
+          services.AddApiVersioning(o =>
+          {
+            o.ReportApiVersions = true;
+            o.AssumeDefaultVersionWhenUnspecified = true;
+            o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
+          });
+        }
 
         // #5
         var mvcBuilder = services.AddMvc();
@@ -125,7 +138,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         });
 
         // #7
-        if (config.GetValue("EnableAuthN", false))
+        if (config.GetValue("AuthN:Enabled", false))
         {
           JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -150,11 +163,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         }
 
         // #8
-        if (config.GetSection("OpenApi") == null)
-          throw new Exception("Please add OpenApi configuration or disabled OpenAPI.");
-
         if (config.GetValue("OpenApi:Enabled", false))
         {
+          if (config.GetSection("OpenApi") == null)
+            throw new Exception("Please add OpenApi configuration or disabled OpenAPI.");
+
           services.Configure<OpenApiOptions>(config.GetSection("OpenApi"));
 
           services.AddSwaggerGen(c =>
@@ -170,7 +183,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
             // c.IncludeXmlComments (XmlCommentsFilePath);
 
-            if (config.GetValue("EnableAuthN", false))
+            if (config.GetValue("AuthN:Enabled", false))
               c.AddSecurityDefinition("oauth2", new OAuth2Scheme
               {
                 Type = "oauth2",
@@ -182,7 +195,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
             c.EnableAnnotations();
 
-            if (config.GetValue("EnableAuthN", false))
+            if (config.GetValue("AuthN:Enabled", false))
               c.OperationFilter<SecurityRequirementsOperationFilter>();
 
             c.OperationFilter<DefaultValuesOperationFilter>();
@@ -208,7 +221,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
           });
 
-        if (config.GetValue("OpenApi:EnabledProfiler", false))
+        if (config.GetValue("OpenApi:Profiler:Enabled", false))
         {
           services.AddMiniProfiler(options =>
             options.RouteBasePath = "/profiler"
@@ -319,7 +332,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
 
-        if (config.GetValue("OpenApi:EnabledProfiler", false))
+        if (config.GetValue("OpenApi:Profiler:Enabled", false))
         {
           app.UseMiniProfiler();
         }
@@ -350,7 +363,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
               problemDetails.Title = "Invalid request";
               problemDetails.Status = (int)typeof(BadHttpRequestException)
                 .GetProperty("StatusCode", BindingFlags.NonPublic | BindingFlags.Instance)
-                  ?.GetValue(badHttpRequestException);
+                ?.GetValue(badHttpRequestException);
               problemDetails.Detail = badHttpRequestException.Message;
             }
             else
@@ -372,7 +385,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       app.UseMiddleware<ErrorHandlerMiddleware>();
 
-      if (config.GetValue("OpenApi:EnabledProfiler", false))
+      if (config.GetValue("OpenApi:Profiler:Enabled", false))
       {
         app.UseMiddleware<MiniProfilerMiddleware>();
       }
@@ -399,7 +412,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       app.UseCors("CorsPolicy");
 
       // #7
-      if (config.GetValue("EnableAuthN", false)) app.UseAuthentication();
+      if (config.GetValue("AuthN:Enabled", false)) app.UseAuthentication();
 
       // #8
       app.UseMvc();
@@ -410,7 +423,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       if (config.GetValue("OpenApi:Enabled", false)) app.UseSwagger();
 
-      if (config.GetValue("OpenApi:EnabledUI", false))
+      if (config.GetValue("OpenApi:UI:Enabled", false))
         app.UseSwaggerUI(
           c =>
           {
@@ -422,7 +435,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
                 $"{basePath}swagger/{description.GroupName}/swagger.json",
                 description.GroupName.ToUpperInvariant());
 
-            if (config.GetValue("EnableAuthN", false))
+            if (config.GetValue("AuthN:Enabled", false))
             {
               c.OAuthClientId("swagger_id");
               c.OAuthClientSecret("secret".Sha256());
@@ -430,7 +443,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
               c.OAuth2RedirectUrl($"{currentHostUri}/swagger/oauth2-redirect.html");
             }
 
-            if (config.GetValue("OpenApi:EnabledProfiler", false))
+            if (config.GetValue("OpenApi:Profiler:Enabled", false))
             {
               c.IndexStream = () =>
                 typeof(ServiceCollectionExtensions)
