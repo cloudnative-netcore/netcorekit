@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,18 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
-using NetCoreKit.Infrastructure.AspNetCore.Configuration;
-using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
-using NetCoreKit.Infrastructure.EfCore;
-using NetCoreKit.Infrastructure.EfCore.Db;
+using NetCoreKit.Infrastructure.Mongo;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -31,12 +26,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
   public static partial class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddMiniService<TDbContext>(
+    public static IServiceCollection AddMongoMiniService(
       this IServiceCollection services,
       Action<IServiceCollection> preScopeAction = null,
       Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null,
       Func<IEnumerable<KeyValuePair<string, object>>> extendServiceParamsFunc = null)
-      where TDbContext : DbContext
     {
       services.AddScoped(sp => new ServiceParams().ExtendServiceParams(extendServiceParamsFunc?.Invoke()));
 
@@ -49,23 +43,13 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
         // let registering the database providers or others from the outside
         preScopeAction?.Invoke(services);
-        // services.AddScoped<DbHealthCheckAndMigration>();
 
         // #1
-        if (config.GetValue("EfCore:Enabled", false))
+        if (config.GetValue("Mongo:Enabled", false))
         {
-          if (config.GetValue<bool>("Mongo:Enabled")) throw new Exception("Please turn off MongoDb settings.");
-
-          services.AddDbContextPool<TDbContext>((sp, o) =>
-          {
-            var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
-            var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
-            extendOptionsBuilder.Extend(o, connStringFactory,
-              config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
-          });
-
-          services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
-          services.AddGenericRepository();
+          if (config.GetValue<bool>("EfCore:Enabled"))
+            throw new Exception("Please turn off EfCore settings.");
+          services.AddMongoDb();
         }
 
         // let outside inject more logic (like more healthcheck endpoints...)
@@ -221,86 +205,6 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       }
 
       return services;
-    }
-
-    private static IServiceCollection AddExternalSystemHealthChecks(this IServiceCollection services,
-      Func<IServiceProvider, IEnumerable<IExternalSystem>> extendExternalSystem = null)
-    {
-      return services.AddScoped(p =>
-      {
-        var results = extendExternalSystem?.Invoke(p);
-        return results == null
-          ? new List<IExternalSystem> {p.GetService<DbHealthCheckAndMigration>()}
-          : results.Append(p.GetService<DbHealthCheckAndMigration>());
-      });
-    }
-
-    private static ApiVersion ParseApiVersion(string serviceVersion)
-    {
-      if (string.IsNullOrEmpty(serviceVersion))
-      {
-        throw new Exception("[CS] ServiceVersion is null or empty.");
-      }
-
-      const string pattern = @"(.)|(-)";
-      var results = Regex.Split(serviceVersion, pattern)
-        .Where(x => x != string.Empty && x != "." && x != "-")
-        .ToArray();
-
-      if (results == null || results.Count() < 2)
-      {
-        throw new Exception("[CS] Could not parse ServiceVersion.");
-      }
-
-      if (results.Count() > 2)
-      {
-        return new ApiVersion(
-          Convert.ToInt32(results[0]),
-          Convert.ToInt32(results[1]),
-          results[2]);
-      }
-
-      return new ApiVersion(
-        Convert.ToInt32(results[0]),
-        Convert.ToInt32(results[1]));
-    }
-
-    private static string GetAuthUri(IConfiguration config, IHostingEnvironment env)
-    {
-      return config.GetHostUri(env, "Auth");
-    }
-
-    private static string GetExternalAuthUri(IConfiguration config)
-    {
-      return config.GetExternalHostUri("Auth");
-    }
-
-    private static Info CreateInfoForApiVersion(IConfiguration config, ApiVersionDescription description)
-    {
-      var info = new Info()
-      {
-        Title = $"{config.GetValue("OpenApi:Title", "API")} {description.ApiVersion}",
-        Version = description.ApiVersion.ToString(),
-        Description = config.GetValue("OpenApi:Description", "An application with Swagger, Swashbuckle, and API versioning."),
-        Contact = new Contact()
-        {
-          Name = config.GetValue("OpenApi:ContactName", "Vietnam Devs"),
-          Email = config.GetValue("OpenApi:ContactEmail", "vietnam.devs.group@gmail.com")
-        },
-        TermsOfService = config.GetValue("OpenApi:TermOfService", "Shareware"),
-        License = new License()
-        {
-          Name = config.GetValue("OpenApi:LicenseName", "MIT"),
-          Url = config.GetValue("OpenApi:LicenseUrl", "https://opensource.org/licenses/MIT")
-        }
-      };
-
-      if (description.IsDeprecated)
-      {
-        info.Description += " This API version has been deprecated.";
-      }
-
-      return info;
     }
   }
 }

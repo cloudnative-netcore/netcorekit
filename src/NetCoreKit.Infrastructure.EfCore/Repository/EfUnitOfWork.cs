@@ -32,32 +32,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
       return (IRepositoryAsync<TEntity>)_repositories[type];
     }
 
-    public int? CommandTimeout
-    {
-      get => _context.Database.GetCommandTimeout();
-      set => _context.Database.SetCommandTimeout(value);
-    }
-
     public virtual int SaveChanges() => _context.SaveChanges();
 
     public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
       return _context.SaveChangesAsync(cancellationToken);
-    }
-
-    public virtual int ExecuteSqlCommand(string sql, params object[] parameters)
-    {
-      return _context.Database.ExecuteSqlCommand(sql, parameters);
-    }
-
-    public virtual async Task<int> ExecuteSqlCommandAsync(string sql, params object[] parameters)
-    {
-      return await _context.Database.ExecuteSqlCommandAsync(sql, parameters);
-    }
-
-    public virtual async Task<int> ExecuteSqlCommandAsync(string sql, CancellationToken cancellationToken, params object[] parameters)
-    {
-      return await _context.Database.ExecuteSqlCommandAsync(sql, cancellationToken, parameters);
     }
 
     public void Dispose()
