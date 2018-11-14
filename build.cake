@@ -18,6 +18,7 @@ var libs = new List<string>{
     "./src/NetCoreKit.Infrastructure.EfCore/NetCoreKit.Infrastructure.EfCore.csproj",
     "./src/NetCoreKit.Infrastructure.EfCore.SqlServer/NetCoreKit.Infrastructure.EfCore.SqlServer.csproj",
     "./src/NetCoreKit.Infrastructure.EfCore.MySql/NetCoreKit.Infrastructure.EfCore.MySql.csproj",
+    "./src/NetCoreKit.Infrastructure.Mongo/NetCoreKit.Infrastructure.Mongo.csproj",
     "./src/NetCoreKit.Infrastructure.Bus/NetCoreKit.Infrastructure.Bus.csproj",
     "./src/NetCoreKit.Infrastructure.Bus.Kafka/NetCoreKit.Infrastructure.Bus.Kafka.csproj",
     "./src/NetCoreKit.Infrastructure.Bus.Redis/NetCoreKit.Infrastructure.Bus.Redis.csproj"
