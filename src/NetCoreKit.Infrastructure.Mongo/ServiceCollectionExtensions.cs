@@ -25,7 +25,7 @@ namespace NetCoreKit.Infrastructure.Mongo
         services.AddScoped(repoType, implRepoType);
 
         var queryRepoType = typeof(IQueryRepository<>).MakeGenericType(entity);
-        var implQueryRepoType = typeof(MongoQueryRepository<>).MakeGenericType(entity);
+        var implQueryRepoType = typeof(MongoRepositoryAsync<>).MakeGenericType(entity);
         services.AddScoped(queryRepoType, implQueryRepoType);
       }
 

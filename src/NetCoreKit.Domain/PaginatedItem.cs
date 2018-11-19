@@ -4,14 +4,14 @@ namespace NetCoreKit.Domain
 {
   public class PaginatedItem<TResponse> : ValueObjectBase
   {
-    public PaginatedItem(int totalItems, int totalPages, IReadOnlyList<TResponse> items)
+    public PaginatedItem(long totalItems, long totalPages, IReadOnlyList<TResponse> items)
     {
       TotalItems = totalItems;
       TotalPages = totalPages;
       Items = items;
     }
 
-    public int TotalItems { get; }
+    public long TotalItems { get; }
 
     public long TotalPages { get; }
 

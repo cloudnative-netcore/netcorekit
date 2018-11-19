@@ -6,13 +6,13 @@ namespace NetCoreKit.Domain
   {
     private const int MaxPageSize = 50;
     private const int ConfigurablePageSize = 10;
+    private const string DefaultSortBy = "Id";
+    private const string DefaultSortOrder = "desc";
 
     public Criterion()
     {
-      CurrentPage = 0;
+      CurrentPage = 1;
       PageSize = ConfigurablePageSize;
-      SortBy = "Id";
-      SortOrder = "desc";
     }
 
     public int CurrentPage { get; set; }
@@ -21,12 +21,22 @@ namespace NetCoreKit.Domain
     public int PageSize
     {
       get => _pageSize;
-	    set => _pageSize = (value > MaxPageSize) ? MaxPageSize :
-		    (value < ConfigurablePageSize ? ConfigurablePageSize : value);
+	    set => _pageSize = (value > MaxPageSize) ? MaxPageSize : (value < 1 ? 1 : value);
     }
 
-    public string SortBy { get; private set; }
-    public string SortOrder { get; private set; }
+    private string _sortBy = DefaultSortBy;
+    public string SortBy
+    {
+      get => _sortBy;
+      set => _sortBy = string.IsNullOrEmpty(value) ? DefaultSortBy : value;
+    }
+
+    private string _sortOrder = DefaultSortOrder;
+    public string SortOrder
+    {
+      get => _sortOrder;
+      set => _sortOrder = string.IsNullOrEmpty(value) ? DefaultSortOrder : value;
+    }
 
     public Criterion SetPageSize(int pageSize)
     {
