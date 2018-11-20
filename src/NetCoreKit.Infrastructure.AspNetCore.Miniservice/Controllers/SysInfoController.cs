@@ -20,7 +20,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Controllers
       _config = config;
     }
 
-    [HttpGet("/system-info")]
+    [HttpGet("/sysinfo")]
     public IActionResult Index()
     {
       // Source: http://michaco.net/blog/EnvironmentVariablesAndConfigurationInASPNETCoreApps

@@ -34,18 +34,14 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     public static IServiceCollection AddMiniService<TDbContext>(
       this IServiceCollection services,
       Action<IServiceCollection> preScopeAction = null,
-      Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null,
-      Func<IEnumerable<KeyValuePair<string, object>>> extendServiceParamsFunc = null)
+      Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null)
       where TDbContext : DbContext
     {
-      services.AddScoped(sp => new ServiceParams().ExtendServiceParams(extendServiceParamsFunc?.Invoke()));
-
       using (var scope = services.BuildServiceProvider().GetService<IServiceScopeFactory>().CreateScope())
       {
         var svcProvider = scope.ServiceProvider;
         var config = svcProvider.GetRequiredService<IConfiguration>();
         var env = svcProvider.GetRequiredService<IHostingEnvironment>();
-        var serviceParams = svcProvider.GetRequiredService<ServiceParams>();
 
         // let registering the database providers or others from the outside
         preScopeAction?.Invoke(services);
@@ -143,12 +139,12 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             {
               options.Authority = GetAuthUri(config, env);
               options.RequireHttpsMetadata = false;
-              options.Audience = serviceParams.GetAudience();
+              options.Audience = config.GetAudience();
             });
 
           services.AddAuthorization(c =>
           {
-            foreach (var claimToScope in serviceParams.GetClaims())
+            foreach (var claimToScope in config.GetClaims())
               c.AddPolicy(claimToScope.Key, p => p.RequireClaim("scope", claimToScope.Value));
           });
         }
@@ -181,7 +177,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
                 Flow = "implicit",
                 AuthorizationUrl = $"{GetExternalAuthUri(config)}/connect/authorize",
                 TokenUrl = $"{GetExternalAuthUri(config)}/connect/token",
-                Scopes = serviceParams.GetScopes()
+                Scopes = config.GetScopes()
               });
 
             c.EnableAnnotations();
@@ -279,19 +275,19 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     {
       var info = new Info()
       {
-        Title = $"{config.GetValue("OpenApi:Title", "API")} {description.ApiVersion}",
+        Title = $"{config.GetValue("OpenApi:ApiInfo:Title", "API")} {description.ApiVersion}",
         Version = description.ApiVersion.ToString(),
-        Description = config.GetValue("OpenApi:Description", "An application with Swagger, Swashbuckle, and API versioning."),
+        Description = config.GetValue("OpenApi:ApiInfo:Description", "An application with Swagger, Swashbuckle, and API versioning."),
         Contact = new Contact()
         {
-          Name = config.GetValue("OpenApi:ContactName", "Vietnam Devs"),
-          Email = config.GetValue("OpenApi:ContactEmail", "vietnam.devs.group@gmail.com")
+          Name = config.GetValue("OpenApi:ApiInfo:ContactName", "Vietnam Devs"),
+          Email = config.GetValue("OpenApi:ApiInfo:ContactEmail", "vietnam.devs.group@gmail.com")
         },
-        TermsOfService = config.GetValue("OpenApi:TermOfService", "Shareware"),
+        TermsOfService = config.GetValue("OpenApi:ApiInfo:TermOfService", "Shareware"),
         License = new License()
         {
-          Name = config.GetValue("OpenApi:LicenseName", "MIT"),
-          Url = config.GetValue("OpenApi:LicenseUrl", "https://opensource.org/licenses/MIT")
+          Name = config.GetValue("OpenApi:ApiInfo:LicenseName", "MIT"),
+          Url = config.GetValue("OpenApi:ApiInfo:LicenseUrl", "https://opensource.org/licenses/MIT")
         }
       };
 
