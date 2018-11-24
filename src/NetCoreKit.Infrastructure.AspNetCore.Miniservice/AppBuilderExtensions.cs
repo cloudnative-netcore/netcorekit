@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Extensions;
 using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
+using NetCoreKit.Infrastructure.Features;
 using StackExchange.Profiling;
 using static NetCoreKit.Utils.Helpers.IdHelper;
 
@@ -25,6 +26,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
       var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
       var env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
+      var feature = app.ApplicationServices.GetRequiredService<IFeature>();
 
       // #1
       loggerFactory.AddConsole(config.GetSection("Logging"));
@@ -40,10 +42,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
 
-        if (config.GetValue("OpenApi:Profiler:Enabled", false))
-        {
+        if (feature.IsEnabled("OpenApi:Profiler"))
           app.UseMiniProfiler();
-        }
       }
       else
       {
@@ -93,10 +93,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       app.UseMiddleware<ErrorHandlerMiddleware>();
 
-      if (config.GetValue("OpenApi:Profiler:Enabled", false))
-      {
+      if (feature.IsEnabled("OpenApi:Profiler"))
         app.UseMiddleware<MiniProfilerMiddleware>();
-      }
 
       // #3
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -121,7 +119,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       app.UseCors("CorsPolicy");
 
       // #7
-      if (config.GetValue("AuthN:Enabled", false))
+      if (feature.IsEnabled("AuthN"))
         app.UseAuthentication();
 
       // #8
@@ -131,10 +129,10 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       basePath = config.GetBasePath();
       var currentHostUri = config.GetExternalCurrentHostUri();
 
-      if (config.GetValue("OpenApi:Enabled", false))
+      if (feature.IsEnabled("OpenApi"))
         app.UseSwagger();
 
-      if (config.GetValue("OpenApi:UI:Enabled", false))
+      if (feature.IsEnabled("OpenApi:UI"))
         app.UseSwaggerUI(
           c =>
           {
@@ -146,7 +144,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
                 $"{basePath}swagger/{description.GroupName}/swagger.json",
                 description.GroupName.ToUpperInvariant());
 
-            if (config.GetValue("AuthN:Enabled", false))
+            if (feature.IsEnabled("AuthN"))
             {
               c.OAuthClientId("swagger_id");
               c.OAuthClientSecret("secret".Sha256());
@@ -154,7 +152,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
               c.OAuth2RedirectUrl($"{currentHostUri}/swagger/oauth2-redirect.html");
             }
 
-            if (config.GetValue("OpenApi:Profiler:Enabled", false))
+            if (feature.IsEnabled("OpenApi:Profiler"))
             {
               c.IndexStream = () =>
                 typeof(ServiceCollectionExtensions)

@@ -24,7 +24,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     private static AuthNOptions GetAuthNOptions(IConfiguration config)
     {
       var options = new AuthNOptions();
-      config.GetSection("AuthN").Bind(options);
+      config.GetSection("Features:AuthN").Bind(options);
       return options;
     }
   }

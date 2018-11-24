@@ -1,20 +1,24 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
+using NetCoreKit.Infrastructure.EfCore;
+using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.Features;
-using NetCoreKit.Infrastructure.Mongo;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
   public static partial class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddMongoMiniService(
+    public static IServiceCollection AddEfCoreMiniService<TDbContext>(
       this IServiceCollection services,
       Action<IServiceCollection> preScopeAction = null,
       Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null)
+      where TDbContext : DbContext
     {
       services.AddFeatureToggle();
 
@@ -27,13 +31,23 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
         // let registering the database providers or others from the outside
         preScopeAction?.Invoke(services);
+        // services.AddScoped<DbHealthCheckAndMigration>();
 
         // #1
-        if (feature.IsEnabled("Mongo"))
+        if (feature.IsEnabled("EfCore"))
         {
-          if (feature.IsEnabled("EfCore"))
-            throw new Exception("Please turn off EfCore settings.");
-          services.AddMongoDb();
+          if (feature.IsEnabled("Mongo")) throw new Exception("Please turn off MongoDb settings.");
+
+          services.AddDbContextPool<TDbContext>((sp, o) =>
+          {
+            var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
+            var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
+            extendOptionsBuilder.Extend(o, connStringFactory,
+              config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
+          });
+
+          services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
+          services.AddGenericRepository();
         }
 
         // let outside inject more logic (like more healthcheck endpoints...)

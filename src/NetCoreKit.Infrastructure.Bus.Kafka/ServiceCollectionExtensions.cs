@@ -14,7 +14,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
       {
         var config = scope.ServiceProvider.GetService<IConfiguration>();
         var env = scope.ServiceProvider.GetService<IHostingEnvironment>();
-        var kafkaOptions = config.GetSection("Kafka");
+        var kafkaOptions = config.GetSection("Features:Kafka");
         //if (env.IsDevelopment())
         {
           services.Configure<KafkaOptions>(o => { o.Fqdn = kafkaOptions.GetValue<string>("FQDN"); });

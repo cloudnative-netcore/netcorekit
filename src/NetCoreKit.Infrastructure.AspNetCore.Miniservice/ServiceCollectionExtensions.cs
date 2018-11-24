@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
@@ -22,8 +21,7 @@ using NetCoreKit.Infrastructure.AspNetCore.Miniservice.ExternalSystems;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
-using NetCoreKit.Infrastructure.EfCore;
-using NetCoreKit.Infrastructure.EfCore.Db;
+using NetCoreKit.Infrastructure.Features;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -31,191 +29,234 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
   public static partial class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddMiniService<TDbContext>(
+    public static IServiceCollection AddMiniService(
       this IServiceCollection services,
       Action<IServiceCollection> preScopeAction = null,
       Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null)
-      where TDbContext : DbContext
     {
+      services.AddFeatureToggle();
+
       using (var scope = services.BuildServiceProvider().GetService<IServiceScopeFactory>().CreateScope())
       {
         var svcProvider = scope.ServiceProvider;
         var config = svcProvider.GetRequiredService<IConfiguration>();
         var env = svcProvider.GetRequiredService<IHostingEnvironment>();
+        var feature = svcProvider.GetRequiredService<IFeature>();
 
         // let registering the database providers or others from the outside
         preScopeAction?.Invoke(services);
         // services.AddScoped<DbHealthCheckAndMigration>();
 
-        // #1
-        if (config.GetValue("EfCore:Enabled", false))
-        {
-          if (config.GetValue<bool>("Mongo:Enabled")) throw new Exception("Please turn off MongoDb settings.");
-
-          services.AddDbContextPool<TDbContext>((sp, o) =>
-          {
-            var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
-            var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
-            extendOptionsBuilder.Extend(o, connStringFactory,
-              config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
-          });
-
-          services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
-          services.AddGenericRepository();
-        }
-
         // let outside inject more logic (like more healthcheck endpoints...)
         afterDbScopeAction?.Invoke(services, svcProvider);
 
-        // #2
-        if (config.GetValue("RestClient:Enabled", false))
-        {
-          services.AddHttpContextAccessor();
-          services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-          services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-          services.AddSingleton<IUrlHelper>(fac => new UrlHelper(fac.GetService<IActionContextAccessor>().ActionContext));
-          services.AddHttpPolly<RestClient>();
-        }
+        // RestClient out of the box
+        services.AddRestClientCore();
 
-        // #3
+        // DomainEventBus for handling the published event from the domain object
         services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
 
-        if (config.GetValue("CleanArchitecture:Enabled", false))
-        {
+        // #3
+        if (feature.IsEnabled("CleanArch"))
           services.AddCleanArch(config.LoadFullAssemblies());
-        }
 
-        services.AddMemoryCache();
-        services.AddResponseCaching();
+        services.AddCacheCore();
 
         // #4
-        if (config.GetValue("ApiVersion:Enabled", false))
-        {
-          services.AddRouting(o => o.LowercaseUrls = true);
-          services
-            .AddMvcCore()
-            .AddVersionedApiExplorer(
-              o =>
-              {
-                o.GroupNameFormat = "'v'VVV";
-                o.SubstituteApiVersionInUrl = true;
-              })
-            .AddJsonFormatters(o => o.ContractResolver = new CamelCasePropertyNamesContractResolver())
-            .AddDataAnnotations();
-
-          services.AddApiVersioning(o =>
-          {
-            o.ReportApiVersions = true;
-            o.AssumeDefaultVersionWhenUnspecified = true;
-            o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
-          });
-        }
+        if (feature.IsEnabled("ApiVersion"))
+          services.AddApiVersionCore(config);
 
         // #5
-        var mvcBuilder = services.AddMvc();
-        if (config.LoadFullAssemblies() != null && config.LoadFullAssemblies().Any())
-          foreach (var assembly in config.LoadFullAssemblies())
-            mvcBuilder = mvcBuilder.AddApplicationPart(assembly);
-        mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        services.AddMvcCore(config);
 
         // #6
-        services.Configure<ApiBehaviorOptions>(options =>
-        {
-          options.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
-        });
+        services.AddDetailExceptionCore();
 
         // #7
-        if (config.GetValue("AuthN:Enabled", false))
-        {
-          JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-          services
-            .AddAuthentication(options =>
-            {
-              options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-              options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-              options.Authority = GetAuthUri(config, env);
-              options.RequireHttpsMetadata = false;
-              options.Audience = config.GetAudience();
-            });
-
-          services.AddAuthorization(c =>
-          {
-            foreach (var claimToScope in config.GetClaims())
-              c.AddPolicy(claimToScope.Key, p => p.RequireClaim("scope", claimToScope.Value));
-          });
-        }
+        if (feature.IsEnabled("AuthN"))
+          services.AddAuthNCore(config, env);
 
         // #8
-        if (config.GetValue("OpenApi:Enabled", false))
-        {
-          if (config.GetSection("OpenApi") == null)
-            throw new Exception("Please add OpenApi configuration or disabled OpenAPI.");
-
-          services.Configure<OpenApiOptions>(config.GetSection("OpenApi"));
-
-          services.AddSwaggerGen(c =>
-          {
-            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-
-            c.DescribeAllEnumsAsStrings();
-
-            foreach (var description in provider.ApiVersionDescriptions)
-              c.SwaggerDoc(
-                description.GroupName,
-                CreateInfoForApiVersion(config, description));
-
-            // c.IncludeXmlComments (XmlCommentsFilePath);
-
-            if (config.GetValue("AuthN:Enabled", false))
-              c.AddSecurityDefinition("oauth2", new OAuth2Scheme
-              {
-                Type = "oauth2",
-                Flow = "implicit",
-                AuthorizationUrl = $"{GetExternalAuthUri(config)}/connect/authorize",
-                TokenUrl = $"{GetExternalAuthUri(config)}/connect/token",
-                Scopes = config.GetScopes()
-              });
-
-            c.EnableAnnotations();
-
-            if (config.GetValue("AuthN:Enabled", false))
-              c.OperationFilter<SecurityRequirementsOperationFilter>();
-
-            c.OperationFilter<DefaultValuesOperationFilter>();
-            c.SchemaFilter<SwaggerExcludeSchemaFilter>();
-            c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-          });
-        }
+        if (feature.IsEnabled("OpenApi"))
+          services.AddOpenApiCore(config, feature);
 
         // #9
-        services.AddCors(options =>
-        {
-          options.AddPolicy("CorsPolicy",
-            policy => policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials());
-        });
+        services.AddCorsCore();
 
         // #10
-        if (!env.IsDevelopment())
-          services.Configure<ForwardedHeadersOptions>(options =>
-          {
-            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-          });
+        services.AddHeaderForwardCore(env);
 
-        if (config.GetValue("OpenApi:Profiler:Enabled", false))
-        {
-          services.AddMiniProfiler(options =>
-            options.RouteBasePath = "/profiler"
-          );
-        }
+        if (feature.IsEnabled("OpenApi:Profiler"))
+          services.AddApiProfilerCore();
       }
 
+      return services;
+    }
+
+    public static IServiceCollection AddRestClientCore(this IServiceCollection services)
+    {
+      services.AddHttpContextAccessor();
+      services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+      services.AddSingleton<IUrlHelper>(fac => new UrlHelper(fac.GetService<IActionContextAccessor>().ActionContext));
+      services.AddHttpPolly<RestClient>();
+
+      return services;
+    }
+
+    public static IServiceCollection AddCacheCore(this IServiceCollection services)
+    {
+      services.AddMemoryCache();
+      services.AddResponseCaching();
+
+      return services;
+    }
+
+    public static IServiceCollection AddApiVersionCore(this IServiceCollection services, IConfiguration config)
+    {
+      services.AddRouting(o => o.LowercaseUrls = true);
+      services
+        .AddMvcCore()
+        .AddVersionedApiExplorer(
+          o =>
+          {
+            o.GroupNameFormat = "'v'VVV";
+            o.SubstituteApiVersionInUrl = true;
+          })
+        .AddJsonFormatters(o => o.ContractResolver = new CamelCasePropertyNamesContractResolver())
+        .AddDataAnnotations();
+
+      services.AddApiVersioning(o =>
+      {
+        o.ReportApiVersions = true;
+        o.AssumeDefaultVersionWhenUnspecified = true;
+        o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
+      });
+
+      return services;
+    }
+
+    public static IServiceCollection AddMvcCore(this IServiceCollection services, IConfiguration config)
+    {
+      var mvcBuilder = services.AddMvc();
+      if (config.LoadFullAssemblies() != null && config.LoadFullAssemblies().Any())
+        foreach (var assembly in config.LoadFullAssemblies())
+          mvcBuilder = mvcBuilder.AddApplicationPart(assembly);
+      mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+      return services;
+    }
+
+    public static IServiceCollection AddDetailExceptionCore(this IServiceCollection services)
+    {
+      services.Configure<ApiBehaviorOptions>(options =>
+      {
+        options.InvalidModelStateResponseFactory = ctx => new ValidationProblemDetailsResult();
+      });
+
+      return services;
+    }
+
+    public static IServiceCollection AddAuthNCore(this IServiceCollection services, IConfiguration config, IHostingEnvironment env)
+    {
+      JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+      services
+        .AddAuthentication(options =>
+        {
+          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+          options.Authority = GetAuthUri(config, env);
+          options.RequireHttpsMetadata = false;
+          options.Audience = config.GetAudience();
+        });
+
+      services.AddAuthorization(c =>
+      {
+        foreach (var claimToScope in config.GetClaims())
+          c.AddPolicy(claimToScope.Key, p => p.RequireClaim("scope", claimToScope.Value));
+      });
+
+      return services;
+    }
+
+    public static IServiceCollection AddOpenApiCore(this IServiceCollection services, IConfiguration config, IFeature feature)
+    {
+      if (config.GetSection("Features:OpenApi") == null)
+        throw new CoreException("Please add OpenApi configuration or disabled OpenAPI.");
+
+      services.Configure<OpenApiOptions>(config.GetSection("Features:OpenApi"));
+
+      services.AddSwaggerGen(c =>
+      {
+        var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+        c.DescribeAllEnumsAsStrings();
+
+        foreach (var description in provider.ApiVersionDescriptions)
+          c.SwaggerDoc(
+            description.GroupName,
+            CreateInfoForApiVersion(config, description));
+
+        // c.IncludeXmlComments (XmlCommentsFilePath);
+
+        if (feature.IsEnabled("AuthN"))
+          c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+          {
+            Type = "oauth2",
+            Flow = "implicit",
+            AuthorizationUrl = $"{GetExternalAuthUri(config)}/connect/authorize",
+            TokenUrl = $"{GetExternalAuthUri(config)}/connect/token",
+            Scopes = config.GetScopes()
+          });
+
+        c.EnableAnnotations();
+
+        if (feature.IsEnabled("AuthN"))
+          c.OperationFilter<SecurityRequirementsOperationFilter>();
+
+        c.OperationFilter<DefaultValuesOperationFilter>();
+        c.SchemaFilter<SwaggerExcludeSchemaFilter>();
+        c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+      });
+
+      return services;
+    }
+
+    public static IServiceCollection AddCorsCore(this IServiceCollection services)
+    {
+      services.AddCors(options =>
+      {
+        options.AddPolicy("CorsPolicy",
+          policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+      });
+
+      return services;
+    }
+
+    public static IServiceCollection AddHeaderForwardCore(this IServiceCollection services, IHostingEnvironment env)
+    {
+      if (!env.IsDevelopment())
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+          options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        });
+
+      return services;
+    }
+
+    public static IServiceCollection AddApiProfilerCore(this IServiceCollection services)
+    {
+      services.AddMiniProfiler(options =>
+        options.RouteBasePath = "/profiler"
+      );
+      
       return services;
     }
 
@@ -235,7 +276,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     {
       if (string.IsNullOrEmpty(serviceVersion))
       {
-        throw new Exception("[CS] ServiceVersion is null or empty.");
+        throw new CoreException("[CS] ServiceVersion is null or empty.");
       }
 
       const string pattern = @"(.)|(-)";
@@ -245,7 +286,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       if (results == null || results.Count() < 2)
       {
-        throw new Exception("[CS] Could not parse ServiceVersion.");
+        throw new CoreException("[CS] Could not parse ServiceVersion.");
       }
 
       if (results.Count() > 2)
@@ -275,19 +316,19 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
     {
       var info = new Info()
       {
-        Title = $"{config.GetValue("OpenApi:ApiInfo:Title", "API")} {description.ApiVersion}",
+        Title = $"{config.GetValue("Features:OpenApi:ApiInfo:Title", "API")} {description.ApiVersion}",
         Version = description.ApiVersion.ToString(),
-        Description = config.GetValue("OpenApi:ApiInfo:Description", "An application with Swagger, Swashbuckle, and API versioning."),
+        Description = config.GetValue("Features:OpenApi:ApiInfo:Description", "An application with Swagger, Swashbuckle, and API versioning."),
         Contact = new Contact()
         {
-          Name = config.GetValue("OpenApi:ApiInfo:ContactName", "Vietnam Devs"),
-          Email = config.GetValue("OpenApi:ApiInfo:ContactEmail", "vietnam.devs.group@gmail.com")
+          Name = config.GetValue("Features:OpenApi:ApiInfo:ContactName", "Vietnam Devs"),
+          Email = config.GetValue("Features:OpenApi:ApiInfo:ContactEmail", "vietnam.devs.group@gmail.com")
         },
-        TermsOfService = config.GetValue("OpenApi:ApiInfo:TermOfService", "Shareware"),
+        TermsOfService = config.GetValue("Features:OpenApi:ApiInfo:TermOfService", "Shareware"),
         License = new License()
         {
-          Name = config.GetValue("OpenApi:ApiInfo:LicenseName", "MIT"),
-          Url = config.GetValue("OpenApi:ApiInfo:LicenseUrl", "https://opensource.org/licenses/MIT")
+          Name = config.GetValue("Features:OpenApi:ApiInfo:LicenseName", "MIT"),
+          Url = config.GetValue("Features:OpenApi:ApiInfo:LicenseUrl", "https://opensource.org/licenses/MIT")
         }
       };
 

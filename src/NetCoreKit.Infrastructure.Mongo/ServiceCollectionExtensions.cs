@@ -29,7 +29,7 @@ namespace NetCoreKit.Infrastructure.Mongo
         services.AddScoped(queryRepoType, implQueryRepoType);
       }
 
-      services.Configure<MongoSettings>(config.GetSection("Mongo"));
+      services.Configure<MongoSettings>(config.GetSection("Features:Mongo"));
       services.AddScoped<MongoContext>();
 
       services.AddScoped<IUnitOfWorkAsync, MongoUnitOfWorkAsync>();

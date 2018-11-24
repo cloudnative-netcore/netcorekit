@@ -11,7 +11,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
       using (var scope = resolver.CreateScope())
       {
         var config = scope.ServiceProvider.GetService<IConfiguration>();
-        var redisOptions = config.GetSection("Redis");
+        var redisOptions = config.GetSection("Features:Redis");
 
         services.Configure<RedisOptions>(o =>
         {
