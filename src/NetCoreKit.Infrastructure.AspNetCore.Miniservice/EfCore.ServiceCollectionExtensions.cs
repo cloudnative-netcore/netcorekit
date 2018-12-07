@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using BeatPulse.Core;
+using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   public static partial class ServiceCollectionExtensions
   {
     public static IServiceCollection AddEfCoreMiniService<TDbContext>(this IServiceCollection services,
+      Action<BeatPulseContext> beatPulseCtx = null,
       Action<IServiceCollection> preDbWorkHook = null,
       Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
       where TDbContext : DbContext
@@ -77,6 +80,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
         if (feature.IsEnabled("OpenApi:Profiler"))
           services.AddApiProfilerCore();
+
+        services.AddBeatPulse(beatPulseCtx);
+
+        if (feature.IsEnabled("HealthUI"))
+          services.AddBeatPulseUI();
       }
 
       return services;

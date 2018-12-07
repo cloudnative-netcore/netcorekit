@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection;
+using BeatPulse.UI;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -93,6 +94,15 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
       app.UseMiddleware<ErrorHandlerMiddleware>();
 
+      app
+        .UseBeatPulse(options =>
+        {
+          options.ConfigurePath("healthz") //default hc
+            .ConfigureTimeout(1500) // default -1 infinitely
+            .ConfigureDetailedOutput(true, true); //default (true,false)
+        })
+        .UseBeatPulseUI();
+
       if (feature.IsEnabled("OpenApi:Profiler"))
         app.UseMiddleware<MiniProfilerMiddleware>();
 
@@ -132,7 +142,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       if (feature.IsEnabled("OpenApi"))
         app.UseSwagger();
 
-      if (feature.IsEnabled("OpenApi:UI"))
+      if (feature.IsEnabled("OpenApi:OpenApiUI"))
         app.UseSwaggerUI(
           c =>
           {
@@ -153,13 +163,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
             }
 
             if (feature.IsEnabled("OpenApi:Profiler"))
-            {
               c.IndexStream = () =>
                 typeof(ServiceCollectionExtensions)
                   .GetTypeInfo()
                   .Assembly
                   .GetManifestResourceStream("NetCoreKit.Infrastructure.AspNetCore.Miniservice.Swagger.index.html");
-            }
           });
 
       return app;

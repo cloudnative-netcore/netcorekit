@@ -1,4 +1,6 @@
 using System;
+using BeatPulse.Core;
+using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   public static partial class ServiceCollectionExtensions
   {
     public static IServiceCollection AddMiniService(this IServiceCollection services,
-      Action<IServiceCollection, IServiceProvider> preHook = null)
+      Action<IServiceCollection, IServiceProvider> preHook = null,
+      Action<BeatPulseContext> beatPulseCtx = null)
     {
       services.AddFeatureToggle();
 
@@ -53,6 +56,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
         if (feature.IsEnabled("OpenApi:Profiler"))
           services.AddApiProfilerCore();
+
+        services.AddBeatPulse(beatPulseCtx);
+
+        if (feature.IsEnabled("HealthUI"))
+          services.AddBeatPulseUI();
       }
 
       return services;

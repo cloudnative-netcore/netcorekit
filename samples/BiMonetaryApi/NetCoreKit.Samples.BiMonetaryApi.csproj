@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -6,9 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BeatPulse" Version="3.0.0" />
-    <PackageReference Include="BeatPulse.MongoDb" Version="3.0.0" />
-    <PackageReference Include="BeatPulse.UI" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

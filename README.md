@@ -6,6 +6,22 @@
 
 A set of cloud-native tools and utilities for .NET Core.
 
+### Features
+
+- Simple libraries. No frameworks. Little abstraction.
+- Opt-in and out of the box [features](https://github.com/cloudnative-netcore/netcorekit/wiki/Miniservice-template-guidance) with [Feature Toggles](https://martinfowler.com/articles/feature-toggles.html) technique.
+- Generic repository for data persistence.
+- Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
+- Resilience and health check out of the box.
+- Easy for configuration management.
+- [Domain-driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) in mind.
+- Simply [Clean Architecture](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) supports.
+- Authentication/Authorization with OAuth 2.0 and OpenID Connect.
+- Clean and demystify error, debug logs.
+- API versioning from Docker container to WebAPI. 
+- Documentation template with OpenAPI documentation.
+- Work natively with Kubernetes or even with Service Mesh(Istio).
+
 ## Less code to get starting
 
 Small, lightweight, cloud-native out of the box, and much more simple to get starting with miniservices approach. [Why miniservices?](https://thenewstack.io/miniservices-a-realistic-alternative-to-microservices)
@@ -69,22 +85,6 @@ public class Startup
 - More advance usage is at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project.
 
 </details>
-
-### Features
-
-- Simple libraries. No frameworks. Little abstraction.
-- Modular (Easy to swap out Utils, Domain, AspNetCore, Clean Architecture, Open API, Entity Framework Core, Event Bus...)
-- Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
-- Resilience and health check out of the box.
-- Easy for configuration management.
-- Simply clean architecture supports.
-- Authentication/Authorization with OAuth 2.0 and OpenID Connect.
-- Clean and demystify error, debug logs.
-- API versioning from Docker container to WebAPI. 
-- Documentation template with OpenAPI documentation.
-- Work natively with Kubernetes or even with Service Mesh.
-
-More information about the number of features can be find at [List of features](https://github.com/cloudnative-netcore/netcorekit/wiki/Miniservice-template-guidance)
 
 ### Contributing
 

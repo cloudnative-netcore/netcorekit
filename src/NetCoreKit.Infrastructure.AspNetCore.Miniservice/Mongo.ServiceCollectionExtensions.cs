@@ -1,4 +1,6 @@
 using System;
+using BeatPulse.Core;
+using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   public static partial class ServiceCollectionExtensions
   {
     public static IServiceCollection AddMongoMiniService(this IServiceCollection services,
+      Action<BeatPulseContext> beatPulseCtx = null,
       Action<IServiceCollection> preDbWorkHook = null,
       Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
     {
@@ -64,6 +67,11 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 
         if (feature.IsEnabled("OpenApi:Profiler"))
           services.AddApiProfilerCore();
+
+        services.AddBeatPulse(beatPulseCtx);
+
+        if (feature.IsEnabled("HealthUI"))
+          services.AddBeatPulseUI();
       }
 
       return services;
