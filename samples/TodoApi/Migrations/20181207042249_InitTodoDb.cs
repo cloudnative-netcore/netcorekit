@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace NetCoreKit.Samples.TodoAPI.Migrations
+namespace NetCoreKit.Samples.TodoApi.Migrations
 {
-    public partial class InitToDoDb : Migration
+    public partial class InitTodoDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
+using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.Features;
@@ -16,8 +17,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   {
     public static IServiceCollection AddEfCoreMiniService<TDbContext>(
       this IServiceCollection services,
-      Action<IServiceCollection> preScopeAction = null,
-      Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null)
+      Action<IServiceCollection> preDbWorkHook = null,
+      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
       where TDbContext : DbContext
     {
       services.AddFeatureToggle();
@@ -30,8 +31,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         var feature = svcProvider.GetRequiredService<IFeature>();
 
         // let registering the database providers or others from the outside
-        preScopeAction?.Invoke(services);
-        // services.AddScoped<DbHealthCheckAndMigration>();
+        preDbWorkHook?.Invoke(services);
 
         // #1
         if (feature.IsEnabled("EfCore"))
@@ -51,7 +51,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         }
 
         // let outside inject more logic (like more healthcheck endpoints...)
-        afterDbScopeAction?.Invoke(services, svcProvider);
+        postDbWorkHook?.Invoke(services, svcProvider);
 
         // RestClient out of the box
         services.AddRestClientCore();

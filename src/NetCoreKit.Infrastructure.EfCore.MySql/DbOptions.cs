@@ -1,4 +1,4 @@
-namespace NetCoreKit.Infrastructure.EfCore.MySql.Options
+namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
   public class DbOptions
   {
@@ -8,5 +8,8 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql.Options
     public string UserName { get; set; }
     public string Password { get; set; }
     public string DbInfo { get; set; } = "5.7.14-mysql";
+    public string ConnString { get; set; } = "server={0};port={1};uid={2};pwd={3};database={4}";
+    public string FQDN { get; set; }
+
   }
 }

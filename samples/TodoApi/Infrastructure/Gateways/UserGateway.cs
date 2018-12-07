@@ -2,12 +2,10 @@ using System;
 using System.Threading.Tasks;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Dtos;
-using NetCoreKit.Utils.Attributes;
 using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Gateways
 {
-  [AutoScanAwareness]
   public class UserGateway : IUserGateway
   {
     public Task<AuthorDto> GetAuthorAsync()

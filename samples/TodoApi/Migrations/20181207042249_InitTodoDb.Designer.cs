@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 
-namespace NetCoreKit.Samples.TodoAPI.Migrations
+namespace NetCoreKit.Samples.TodoApi.Migrations
 {
     [DbContext(typeof(TodoListDbContext))]
-    [Migration("20180921105440_InitToDoDb")]
-    partial class InitToDoDb
+    [Migration("20181207042249_InitTodoDb")]
+    partial class InitTodoDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("NetCoreKit.Samples.TodoAPI.Domain.Project", b =>

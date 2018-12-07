@@ -2,7 +2,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NetCoreKit.Infrastructure.EfCore.Db;
-using NetCoreKit.Infrastructure.EfCore.MySql.Options;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
@@ -13,7 +12,7 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
       var svcProvider = services.BuildServiceProvider();
       var config = svcProvider.GetRequiredService<IConfiguration>();
 
-      services.Configure<DbOptions>(config.GetSection("k8s:mysqldb"));
+      services.Configure<DbOptions>(config.GetSection("Features:EfCore:MySqlDb"));
 
       services.Replace(
         ServiceDescriptor.Scoped<

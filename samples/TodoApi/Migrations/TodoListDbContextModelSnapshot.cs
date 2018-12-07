@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 
-namespace NetCoreKit.Samples.TodoAPI.Migrations
+namespace NetCoreKit.Samples.TodoApi.Migrations
 {
     [DbContext(typeof(TodoListDbContext))]
     partial class TodoListDbContextModelSnapshot : ModelSnapshot
@@ -14,7 +14,7 @@ namespace NetCoreKit.Samples.TodoAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("NetCoreKit.Samples.TodoAPI.Domain.Project", b =>

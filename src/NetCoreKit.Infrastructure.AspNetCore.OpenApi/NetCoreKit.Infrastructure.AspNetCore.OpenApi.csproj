@@ -19,6 +19,15 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
 </Project>

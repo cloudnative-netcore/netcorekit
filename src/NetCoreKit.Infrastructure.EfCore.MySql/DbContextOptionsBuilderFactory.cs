@@ -2,7 +2,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetCoreKit.Infrastructure.EfCore.Db;
-using NetCoreKit.Infrastructure.EfCore.MySql.Options;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {

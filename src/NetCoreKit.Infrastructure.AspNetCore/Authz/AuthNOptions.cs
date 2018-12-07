@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice.Options
+namespace NetCoreKit.Infrastructure.AspNetCore.Authz
 {
   public class AuthNOptions
   {

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
-using NetCoreKit.Samples.TodoAPI.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Db
 {

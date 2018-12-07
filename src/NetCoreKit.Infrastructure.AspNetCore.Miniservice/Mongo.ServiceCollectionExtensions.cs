@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
+using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.Features;
 using NetCoreKit.Infrastructure.Mongo;
 
@@ -13,8 +14,8 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   {
     public static IServiceCollection AddMongoMiniService(
       this IServiceCollection services,
-      Action<IServiceCollection> preScopeAction = null,
-      Action<IServiceCollection, IServiceProvider> afterDbScopeAction = null)
+      Action<IServiceCollection> preDbWorkHook = null,
+      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
     {
       services.AddFeatureToggle();
 
@@ -26,7 +27,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         var feature = svcProvider.GetRequiredService<IFeature>();
 
         // let registering the database providers or others from the outside
-        preScopeAction?.Invoke(services);
+        preDbWorkHook?.Invoke(services);
 
         // #1
         if (feature.IsEnabled("Mongo"))
@@ -37,7 +38,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         }
 
         // let outside inject more logic (like more healthcheck endpoints...)
-        afterDbScopeAction?.Invoke(services, svcProvider);
+        postDbWorkHook?.Invoke(services, svcProvider);
 
         // RestClient out of the box
         services.AddRestClientCore();

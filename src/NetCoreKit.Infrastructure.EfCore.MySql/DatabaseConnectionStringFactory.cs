@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
@@ -7,25 +8,27 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
   public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
   {
     private readonly IConfiguration _config;
+    private readonly DbOptions _dbOption;
 
-    public DatabaseConnectionStringFactory(IConfiguration config)
+    public DatabaseConnectionStringFactory(IConfiguration config, IOptions<DbOptions> options)
     {
       _config = config;
+      _dbOption = options.Value;
     }
 
     public string Create()
     {
-      var connPattern = _config.GetConnectionString("MySqlDb");
-      var connConfigs = _config.GetValue<string>("MySqlDb:FQDN").Split(':');
-      var fqdn = connConfigs.First();
-      var port = connConfigs.Except(new[] {fqdn}).First();
+      var connPattern = _dbOption.ConnString;
+      var connConfigs = _dbOption.FQDN?.Split(':');
+      var fqdn = connConfigs?.First();
+      var port = connConfigs?.Except(new[] {fqdn}).First();
 
       return string.Format(
         connPattern,
         fqdn, port,
-        _config.GetValue<string>("MySqlDb:UserName"),
-        _config.GetValue<string>("MySqlDb:Password"),
-        _config.GetValue<string>("MySqlDb:Database"));
+        _dbOption.UserName,
+        _dbOption.Password,
+        _dbOption.Database);
     }
   }
 }

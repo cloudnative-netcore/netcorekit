@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using NetCoreKit.Infrastructure.AspNetCore.Authz;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Configuration
 {
@@ -48,6 +50,38 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Configuration
         .GetSection("Hosts")
         ?.GetSection("Externals")
         ?.GetValue<string>("CurrentUri");
+    }
+
+    public static Dictionary<string, string> GetScopes(this IConfiguration config)
+    {
+      return GetAuthNOptions(config).Scopes;
+    }
+
+    public static Dictionary<string, string> GetClaims(this IConfiguration config)
+    {
+      return GetAuthNOptions(config).ClaimToScopeMap;
+    }
+
+    public static string GetAudience(this IConfiguration config)
+    {
+      return GetAuthNOptions(config).Audience;
+    }
+
+    public static AuthNOptions GetAuthNOptions(this IConfiguration config)
+    {
+      var options = new AuthNOptions();
+      config.GetSection("Features:AuthN").Bind(options);
+      return options;
+    }
+
+    public static string GetAuthUri(this IConfiguration config, IHostingEnvironment env)
+    {
+      return config.GetHostUri(env, "Auth");
+    }
+
+    public static string GetExternalAuthUri(this IConfiguration config)
+    {
+      return config.GetExternalHostUri("Auth");
     }
   }
 }

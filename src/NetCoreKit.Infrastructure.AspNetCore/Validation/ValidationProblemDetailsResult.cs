@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NetCoreKit.Infrastructure.AspNetCore.Extensions;
+using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using static NetCoreKit.Utils.Helpers.IdHelper;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Validation
