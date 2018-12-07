@@ -2,6 +2,10 @@ image: Visual Studio 2017
 install:
 - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
 
+branches:
+  only:
+  - master
+
 init:
   - git config --global core.autocrlf true
 
@@ -24,6 +28,12 @@ assembly_info:
 
 configuration:
   - Debug
+
+before_build:
+  # Display .NET Core version
+  - cmd: dotnet --version
+  # Display minimal restore text
+  - cmd: dotnet restore --verbosity m
 
 build_script:
   - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.1.403
