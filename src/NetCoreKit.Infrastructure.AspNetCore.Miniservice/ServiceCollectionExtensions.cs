@@ -11,8 +11,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
 {
   public static partial class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddMiniService(
-      this IServiceCollection services,
+    public static IServiceCollection AddMiniService(this IServiceCollection services,
       Action<IServiceCollection, IServiceProvider> preHook = null)
     {
       services.AddFeatureToggle();
@@ -24,43 +23,32 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
         var env = svcProvider.GetRequiredService<IHostingEnvironment>();
         var feature = svcProvider.GetRequiredService<IFeature>();
 
-        // let registering the database providers or others from the outside
         preHook?.Invoke(services, svcProvider);
 
-        // RestClient out of the box
         services.AddRestClientCore();
 
-        // DomainEventBus for handling the published event from the domain object
         services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
 
-        // #3
         if (feature.IsEnabled("CleanArch"))
           services.AddCleanArch(config.LoadFullAssemblies());
 
         services.AddCacheCore();
 
-        // #4
         if (feature.IsEnabled("ApiVersion"))
           services.AddApiVersionCore(config);
 
-        // #5
         services.AddMvcCore(config);
 
-        // #6
         services.AddDetailExceptionCore();
 
-        // #7
         if (feature.IsEnabled("AuthN"))
           services.AddAuthNCore(config, env);
 
-        // #8
         if (feature.IsEnabled("OpenApi"))
           services.AddOpenApiCore(config, feature);
 
-        // #9
         services.AddCorsCore();
 
-        // #10
         services.AddHeaderForwardCore(env);
 
         if (feature.IsEnabled("OpenApi:Profiler"))

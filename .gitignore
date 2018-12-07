@@ -334,3 +334,4 @@ tools
 build
 *.deb
 **/*/*.db
+**/*/livenessdb
