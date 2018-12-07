@@ -15,9 +15,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   public static partial class ServiceCollectionExtensions
   {
     public static IServiceCollection AddMongoMiniService(this IServiceCollection services,
-      Action<BeatPulseContext> beatPulseCtx = null,
       Action<IServiceCollection> preDbWorkHook = null,
-      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
+      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null,
+      Action<BeatPulseContext> beatPulseCtx = null)
     {
       services.AddFeatureToggle();
 

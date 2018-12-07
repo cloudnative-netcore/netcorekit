@@ -18,9 +18,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
   public static partial class ServiceCollectionExtensions
   {
     public static IServiceCollection AddEfCoreMiniService<TDbContext>(this IServiceCollection services,
-      Action<BeatPulseContext> beatPulseCtx = null,
       Action<IServiceCollection> preDbWorkHook = null,
-      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null)
+      Action<IServiceCollection, IServiceProvider> postDbWorkHook = null,
+      Action<BeatPulseContext> beatPulseCtx = null)
       where TDbContext : DbContext
     {
       services.AddFeatureToggle();
