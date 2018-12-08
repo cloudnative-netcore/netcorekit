@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using NetCoreKit.Domain;
@@ -11,38 +13,58 @@ namespace NetCoreKit.Infrastructure.Mongo
     public static async Task<TEntity> FindOneAsync<TEntity, TId>(
       this IMongoQueryRepository<TEntity> repo,
       Expression<Func<TEntity, TId>> filter,
-      TId id)
+      TId id,
+      CancellationToken cancellationToken = default(CancellationToken))
       where TEntity : class, IAggregateRoot
     {
       var collection = repo.DbContext.Collection<TEntity>();
       var filterDef = Builders<TEntity>.Filter.Eq(filter, id);
-      return await collection.Find(filterDef).FirstOrDefaultAsync();
+      return await collection.Find(filterDef).FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public static async Task<IReadOnlyList<TEntity>> FindListByFieldAsync<TEntity>(
+      this IMongoQueryRepository<TEntity> repo,
+      string fieldName,
+      string fieldValue,
+      CancellationToken cancellationToken = default(CancellationToken))
+      where TEntity : class, IAggregateRoot
+    {
+      // only use it if you don't have other solutions :p
+      var filter = Builders<TEntity>.Filter.Eq(fieldName, fieldValue);
+      return await repo
+        .DbContext
+        .Collection<TEntity>()
+        .Find(filter)
+        .ToListAsync(cancellationToken);
     }
 
     public static async Task<PaginatedItem<TResponse>> QueryAsync<TEntity, TResponse>(
       this IMongoQueryRepository<TEntity> repo,
       Criterion criterion,
-      Expression<Func<TEntity, TResponse>> selector)
+      Expression<Func<TEntity, TResponse>> selector,
+      CancellationToken cancellationToken = default(CancellationToken))
       where TEntity : class, IAggregateRoot
     {
-      return await GetDataAsync(repo, criterion, selector);
+      return await GetDataAsync(repo, criterion, selector, null, cancellationToken);
     }
 
     public static async Task<PaginatedItem<TResponse>> FindAllAsync<TEntity, TResponse>(
       this IMongoQueryRepository<TEntity> repo,
       Criterion criterion,
       Expression<Func<TEntity, TResponse>> selector,
-      Expression<Func<TEntity, bool>> filter)
+      Expression<Func<TEntity, bool>> filter,
+      CancellationToken cancellationToken = default(CancellationToken))
       where TEntity : class, IAggregateRoot
     {
-      return await GetDataAsync(repo, criterion, selector, filter);
+      return await GetDataAsync(repo, criterion, selector, filter, cancellationToken);
     }
 
     private static async Task<PaginatedItem<TResponse>> GetDataAsync<TEntity, TResponse>(
       IMongoQueryRepository<TEntity> repo,
       Criterion criterion,
       Expression<Func<TEntity, TResponse>> selector,
-      Expression<Func<TEntity, bool>> filter = null)
+      Expression<Func<TEntity, bool>> filter = null,
+      CancellationToken cancellationToken = default(CancellationToken))
       where TEntity : class, IAggregateRoot
     {
       var collection = repo.DbContext.Collection<TEntity>();
@@ -69,9 +91,9 @@ namespace NetCoreKit.Infrastructure.Mongo
         .SortEntity(sortDef)
         .Skip(criterion.CurrentPage * criterion.PageSize)
         .Limit(criterion.PageSize)
-        .ToListAsync();
+        .ToListAsync(cancellationToken);
 
-      var totalRecord = await collection.CountDocumentsAsync(FilterDefinition<TEntity>.Empty);
+      var totalRecord = await collection.CountDocumentsAsync(FilterDefinition<TEntity>.Empty, null, cancellationToken);
       var totalPages = (int)Math.Ceiling((double)totalRecord / criterion.PageSize);
 
       if (criterion.CurrentPage > totalPages)
