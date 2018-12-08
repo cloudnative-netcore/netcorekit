@@ -1,10 +1,16 @@
 # Cloud-native .NET Core Kit
 
+[![Build status](https://img.shields.io/appveyor/ci/thangchung/netcore-kit.svg)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
 [![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE)
 [![version](https://img.shields.io/nuget/v/NetCoreKit.Domain.svg?label=version)](https://www.nuget.org/packages?q=NetCoreKit)
-[![Build status](https://img.shields.io/appveyor/ci/thangchung/netcore-kit.svg)](https://ci.appveyor.com/api/project/thangchung/netcore-kit)
 
 A set of cloud-native tools and utilities for .NET Core.
+
+The goal of this project is implement the most common used cloud-native technologies (cloud-agnostic approach, containerization mechanism, container orchestration and so on) and share with the technical community the best way to develop great applications with .NET Core.
+
+## Give a Star! :star:
+
+If you liked the project or if `netcorekit` helped you, please give a star so that .NET community will know and help them just like you. Thank you very much :+1:
 
 ### Features
 
@@ -26,7 +32,9 @@ A set of cloud-native tools and utilities for .NET Core.
 
 Small, lightweight, cloud-native out of the box, and much more simple to get starting with miniservices approach. [Why miniservices?](https://thenewstack.io/miniservices-a-realistic-alternative-to-microservices)
 
-- No data storage
+### Look how simple we can start as below:
+
+- Without storage, merely calculation and job tasks:
 
 ```csharp
 public class Startup
@@ -43,7 +51,7 @@ public class Startup
 }
 ```
 
-- With Entity Framework
+- With Entity Framework Core (SQL Server, MySQL, and SQLite providers) comes along with the generic repository in place:
 
 ```csharp
 public class Startup
@@ -60,7 +68,7 @@ public class Startup
 }
 ```
 
-- With MongoDb
+- With NoSQL (MongoDb provider) comes along with the generic repository in place:
 
 ```csharp
 public class Startup
