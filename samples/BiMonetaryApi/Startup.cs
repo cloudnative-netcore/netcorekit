@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreKit.Infrastructure.AspNetCore.Miniservice;
+using NetCoreKit.Template.MongoDb;
 
 namespace NetCoreKit.Samples.BiMonetaryApi
 {
@@ -8,12 +8,12 @@ namespace NetCoreKit.Samples.BiMonetaryApi
   {
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMongoMiniService();
+      services.AddMongoDbTemplate();
     }
 
     public void Configure(IApplicationBuilder app)
     {
-      app.UseMiniService();
+      app.UseMongoDbTemplate();
     }
   }
 }

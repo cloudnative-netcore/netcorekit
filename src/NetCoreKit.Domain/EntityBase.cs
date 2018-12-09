@@ -7,6 +7,10 @@ using static NetCoreKit.Utils.Helpers.DateTimeHelper;
 
 namespace NetCoreKit.Domain
 {
+  /// <inheritdoc />
+  /// <summary>
+  /// Supertype for all Entity types
+  /// </summary>
   public interface IEntity : IIdentity
   { }
 
@@ -75,6 +79,7 @@ namespace NetCoreKit.Domain
     }
   }
 
+  /// <inheritdoc />
   /// <summary>
   /// Source: https://github.com/VaughnVernon/IDDD_Samples_NET
   /// </summary>

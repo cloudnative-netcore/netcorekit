@@ -16,14 +16,15 @@ If you liked the project or if `netcorekit` helped you, please give a star so th
 
 - [x] Simple libraries. No frameworks. Little abstraction.
 - [x] Opt-in and out of the box [features](https://github.com/cloudnative-netcore/netcorekit/wiki/Miniservice-template-guidance) with [Feature Toggles](https://martinfowler.com/articles/feature-toggles.html) technique.
-- [x] Generic repository for data persistence.
 - [x] Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
-- [x] Resilience and health check out of the box.
-- [x] Easy for configuration management.
+- [x] Authentication/Authorization with OAuth 2.0 and OpenID Connect.
 - [x] [Domain-driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) in mind.
 - [x] Simply [Clean Architecture](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) supports.
-- [x] Authentication/Authorization with OAuth 2.0 and OpenID Connect.
+- [x] Generic repository for data persistence.
+- [x] Mapping between domain entity to DTO and vice versa.
 - [x] Clean and demystify error, debug logs.
+- [x] Resilience and health check out of the box.
+- [x] Easy for configuration management.
 - [x] API versioning from Docker container to WebAPI. 
 - [x] Documentation template with OpenAPI documentation.
 - [x] Work natively with Kubernetes or even with Service Mesh(Istio).
@@ -34,53 +35,53 @@ Small, lightweight, cloud-native out of the box, and much more simple to get sta
 
 ### Look how simple we can start as below:
 
-- Without storage, merely calculation and job tasks:
+- Standard template - NetCoreKit.Template.Standard: without storage, merely calculation and job tasks:
 
 ```csharp
 public class Startup
 {
   public void ConfigureServices(IServiceCollection services)
   {
-    services.AddMiniService();
+    services.AddStandardTemplate();
   }
 
   public void Configure(IApplicationBuilder app)
   {
-    app.UseMiniService();
+    app.UseStandardTemplate();
   }
 }
 ```
 
-- With Entity Framework Core (SQL Server, MySQL, and SQLite providers) comes along with the generic repository in place:
+- EfCore template - NetCoreKit.Template.EfCore: with Entity Framework Core (SQL Server, MySQL, and SQLite providers) comes along with the generic repository in place:
 
 ```csharp
 public class Startup
 {
   public void ConfigureServices(IServiceCollection services)
   {
-    services.AddEfCoreMiniService<TodoListDbContext>(svc => svc.AddEfCoreMySqlDb());
+    services.AddEfCoreTemplate<TodoListDbContext>(svc => svc.AddEfCoreMySqlDb());
   }
 
   public void Configure(IApplicationBuilder app)
   {
-    app.UseMiniService();
+    app.UseEfCoreTemplate();
   }
 }
 ```
 
-- With NoSQL (MongoDb provider) comes along with the generic repository in place:
+- MongoDb template - NetCoreKit.Template.MongoDb: with NoSQL (MongoDb provider) comes along with the generic repository in place:
 
 ```csharp
 public class Startup
 {
   public void ConfigureServices(IServiceCollection services)
   {
-    services.AddMongoMiniService();
+    services.AddMongoTemplate();
   }
 
   public void Configure(IApplicationBuilder app)
   {
-    app.UseMiniService();
+    app.UseMongoTemplate();
   }
 }
 ```

@@ -3,6 +3,9 @@ using static NetCoreKit.Utils.Helpers.DateTimeHelper;
 
 namespace NetCoreKit.Domain
 {
+  /// <summary>
+  /// Supertype for all Event types
+  /// </summary>
   public interface IEvent
   {
     int EventVersion { get; }

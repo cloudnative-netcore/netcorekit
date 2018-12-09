@@ -21,7 +21,10 @@ var libs = new List<string>{
     "./src/NetCoreKit.Infrastructure.Mongo/NetCoreKit.Infrastructure.Mongo.csproj",
     "./src/NetCoreKit.Infrastructure.Bus/NetCoreKit.Infrastructure.Bus.csproj",
     "./src/NetCoreKit.Infrastructure.Bus.Kafka/NetCoreKit.Infrastructure.Bus.Kafka.csproj",
-    "./src/NetCoreKit.Infrastructure.Bus.Redis/NetCoreKit.Infrastructure.Bus.Redis.csproj"
+    "./src/NetCoreKit.Infrastructure.Bus.Redis/NetCoreKit.Infrastructure.Bus.Redis.csproj",
+    "./templates/NetCoreKit.Template.Standard/NetCoreKit.Template.Standard.csproj",
+    "./templates/NetCoreKit.Template.EfCore/NetCoreKit.Template.EfCore.csproj",
+    "./templates/NetCoreKit.Template.MongoDb/NetCoreKit.Template.MongoDb.csproj"
 };
 
 Task("Clean")
