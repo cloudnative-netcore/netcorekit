@@ -1,4 +1,4 @@
-using System.Diagnostics;
+/*using System.Diagnostics;
 using System.Reflection;
 using BeatPulse.UI;
 using IdentityServer4.Models;
@@ -173,4 +173,4 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       return app;
     }
   }
-}
+}*/

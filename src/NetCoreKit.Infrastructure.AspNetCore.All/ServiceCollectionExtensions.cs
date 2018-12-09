@@ -18,7 +18,7 @@ using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.AspNetCore.Validation;
 using Newtonsoft.Json.Serialization;
 
-namespace NetCoreKit.Infrastructure.AspNetCore
+namespace NetCoreKit.Infrastructure.AspNetCore.All
 {
   public static class ServiceCollectionExtensions
   {

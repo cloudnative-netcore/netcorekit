@@ -1,21 +1,16 @@
-using System.Diagnostics;
 using System.Reflection;
 using BeatPulse.UI;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCoreKit.Infrastructure.AspNetCore.All;
 using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
-using NetCoreKit.Infrastructure.AspNetCore.Rest;
 using NetCoreKit.Infrastructure.Features;
-using NetCoreKit.Utils.Helpers;
 using StackExchange.Profiling;
 
 namespace NetCoreKit.Template.Standard
@@ -29,15 +24,16 @@ namespace NetCoreKit.Template.Standard
       var env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
       var feature = app.ApplicationServices.GetRequiredService<IFeature>();
 
-      // #1
       loggerFactory.AddConsole(config.GetSection("Logging"));
       loggerFactory.AddDebug();
 
+      // #1 Log exception handler
       app.UseMiddleware<LogHandlerMiddleware>();
 
+      // #2 Default response cache
       app.UseResponseCaching();
 
-      // #2
+      // #3 configure Exception handling
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
@@ -48,52 +44,12 @@ namespace NetCoreKit.Template.Standard
       }
       else
       {
-        app.UseExceptionHandler("/Home/Error");
+        app.UseExceptionHandler("/error");
       }
-
-      app.UseExceptionHandler(errorApp =>
-      {
-#pragma warning disable CS1998
-        errorApp.Run(async context =>
-          {
-            var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
-            var exception = errorFeature.Error;
-
-            // the IsTrusted() extension method doesn't exist and
-            // you should implement your own as you may want to interpret it differently
-            // i.e. based on the current principal
-            var problemDetails = new ProblemDetails
-            {
-              Instance = $"urn:myorganization:error:{IdHelper.GenerateId()}"
-            };
-
-            if (exception is BadHttpRequestException badHttpRequestException)
-            {
-              problemDetails.Title = "Invalid request";
-              problemDetails.Status = (int)typeof(BadHttpRequestException)
-                .GetProperty("StatusCode", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?.GetValue(badHttpRequestException);
-              problemDetails.Detail = badHttpRequestException.Message;
-            }
-            else
-            {
-              problemDetails.Title = "An unexpected error occurred!";
-              problemDetails.Status = 500;
-              problemDetails.Detail = exception.Demystify().ToString();
-            }
-
-            // TODO: log the exception etc..
-            // ...
-
-            context.Response.StatusCode = problemDetails.Status.Value;
-            context.Response.WriteJson(problemDetails, "application/problem+json");
-          }
-#pragma warning restore CS1998
-        );
-      });
-
+      app.UseExceptionHandlerCore();
       app.UseMiddleware<ErrorHandlerMiddleware>();
 
+      // #4 BeatPulse healthcheck and BeatPulse UI 
       app
         .UseBeatPulse(options =>
         {
@@ -103,17 +59,17 @@ namespace NetCoreKit.Template.Standard
         })
         .UseBeatPulseUI();
 
+      // #5 Miniprofiler on API
       if (feature.IsEnabled("OpenApi:Profiler"))
         app.UseMiddleware<MiniProfilerMiddleware>();
 
-      // #3
+      // #6 liveness endpoint
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
       app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
-      // #4
+      // #7 Re-configure the base path
       var basePath = config.GetBasePath();
-
       if (!string.IsNullOrEmpty(basePath))
       {
         var logger = loggerFactory.CreateLogger("init");
@@ -121,34 +77,31 @@ namespace NetCoreKit.Template.Standard
         app.UsePathBase(basePath);
       }
 
-      // #5
+      // #8 ForwardHeaders
       if (!env.IsDevelopment())
         app.UseForwardedHeaders();
 
-      // #6
+      // #9 Cors
       app.UseCors("CorsPolicy");
 
-      // #7
+      // #10 AuthN
       if (feature.IsEnabled("AuthN"))
         app.UseAuthentication();
 
-      // #8
+      // #11 Mvc
       app.UseMvc();
 
-      // #9
-      basePath = config.GetBasePath();
-      var currentHostUri = config.GetExternalCurrentHostUri();
-
+      // #12 Open API
       if (feature.IsEnabled("OpenApi"))
         app.UseSwagger();
 
       if (feature.IsEnabled("OpenApi:OpenApiUI"))
+      {
+        // to make it work, we need to create an application with swagger_app name
         app.UseSwaggerUI(
           c =>
           {
             var provider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
-
-            // build a swagger endpoint for each discovered API version
             foreach (var description in provider.ApiVersionDescriptions)
               c.SwaggerEndpoint(
                 $"{basePath}swagger/{description.GroupName}/swagger.json",
@@ -159,16 +112,17 @@ namespace NetCoreKit.Template.Standard
               c.OAuthClientId("swagger_id");
               c.OAuthClientSecret("secret".Sha256());
               c.OAuthAppName("swagger_app");
-              c.OAuth2RedirectUrl($"{currentHostUri}/swagger/oauth2-redirect.html");
+              c.OAuth2RedirectUrl($"{config.GetExternalCurrentHostUri()}/swagger/oauth2-redirect.html");
             }
 
             if (feature.IsEnabled("OpenApi:Profiler"))
               c.IndexStream = () =>
-                typeof(Infrastructure.AspNetCore.ServiceCollectionExtensions)
+                typeof(Infrastructure.AspNetCore.All.ServiceCollectionExtensions)
                   .GetTypeInfo()
                   .Assembly
-                  .GetManifestResourceStream("NetCoreKit.Infrastructure.AspNetCore.Miniservice.Swagger.index.html");
+                  .GetManifestResourceStream("NetCoreKit.Infrastructure.AspNetCore.All.Swagger.index.html");
           });
+      }
 
       return app;
     }

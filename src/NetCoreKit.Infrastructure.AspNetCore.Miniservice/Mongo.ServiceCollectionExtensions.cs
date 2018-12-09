@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using BeatPulse.Core;
 using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
@@ -77,4 +77,4 @@ namespace NetCoreKit.Infrastructure.AspNetCore.Miniservice
       return services;
     }
   }
-}
+} */
