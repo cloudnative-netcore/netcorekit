@@ -24,13 +24,11 @@ namespace NetCoreKit.Infrastructure.Mongo
 
     public static async Task<IReadOnlyList<TEntity>> FindListByFieldAsync<TEntity>(
       this IMongoQueryRepository<TEntity> repo,
-      string fieldName,
-      string fieldValue,
+      Expression<Func<TEntity, bool>> filter = null,
       CancellationToken cancellationToken = default(CancellationToken))
       where TEntity : class, IAggregateRoot
     {
       // only use it if you don't have other solutions :p
-      var filter = Builders<TEntity>.Filter.Eq(fieldName, fieldValue);
       return await repo
         .DbContext
         .Collection<TEntity>()

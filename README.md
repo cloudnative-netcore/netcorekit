@@ -14,19 +14,19 @@ If you liked the project or if `netcorekit` helped you, please give a star so th
 
 ### Features
 
-- Simple libraries. No frameworks. Little abstraction.
-- Opt-in and out of the box [features](https://github.com/cloudnative-netcore/netcorekit/wiki/Miniservice-template-guidance) with [Feature Toggles](https://martinfowler.com/articles/feature-toggles.html) technique.
-- Generic repository for data persistence.
-- Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
-- Resilience and health check out of the box.
-- Easy for configuration management.
-- [Domain-driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) in mind.
-- Simply [Clean Architecture](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) supports.
-- Authentication/Authorization with OAuth 2.0 and OpenID Connect.
-- Clean and demystify error, debug logs.
-- API versioning from Docker container to WebAPI. 
-- Documentation template with OpenAPI documentation.
-- Work natively with Kubernetes or even with Service Mesh(Istio).
+- [x] Simple libraries. No frameworks. Little abstraction.
+- [x] Opt-in and out of the box [features](https://github.com/cloudnative-netcore/netcorekit/wiki/Miniservice-template-guidance) with [Feature Toggles](https://martinfowler.com/articles/feature-toggles.html) technique.
+- [x] Generic repository for data persistence.
+- [x] Adhere to [twelve-factor app paradigm](https://12factor.net) and more.
+- [x] Resilience and health check out of the box.
+- [x] Easy for configuration management.
+- [x] [Domain-driven Design](https://en.wikipedia.org/wiki/Domain-driven_design) in mind.
+- [x] Simply [Clean Architecture](http://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) supports.
+- [x] Authentication/Authorization with OAuth 2.0 and OpenID Connect.
+- [x] Clean and demystify error, debug logs.
+- [x] API versioning from Docker container to WebAPI. 
+- [x] Documentation template with OpenAPI documentation.
+- [x] Work natively with Kubernetes or even with Service Mesh(Istio).
 
 ## Less code to get starting
 
@@ -85,14 +85,9 @@ public class Startup
 }
 ```
 
-<details>
-  <summary>More guidances to get starting</summary>
-
 - Read [Get starting](https://github.com/cloudnative-netcore/netcorekit/wiki/Get-Started) section and [Play with Kubernetes](https://github.com/cloudnative-netcore/netcorekit/wiki/Deploy-on-k8s-on-local) section to know more about this cloud-native toolkit.
 - Basic usage can be found at [TodoApi Sample](https://github.com/cloudnative-netcore/netcorekit/tree/master/samples/TodoApi)
 - More advance usage is at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project.
-
-</details>
 
 ### Contributing
 
