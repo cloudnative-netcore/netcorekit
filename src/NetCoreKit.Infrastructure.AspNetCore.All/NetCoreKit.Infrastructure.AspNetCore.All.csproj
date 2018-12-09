@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <id>NetCoreKit.Infrastructure.AspNetCore.All</id>
+    <version>0.0.0</version>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Title>The library which is on top of all NetCoreKit.Infrastructure.AspNetCore libs.</Title>
+    <Description>Helps to add more functionalities such as home route, db-migration route, system info route,... for Cloud Native .NET Core Kit.</Description>
+    <Authors>Thang Chung</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

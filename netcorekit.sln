@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.AspNetCore.CleanArch", "src\NetCoreKit.Infrastructure.AspNetCore.CleanArch\NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj", "{F57C8FE9-DC9C-4858-8EA7-6AEF523557A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.AspNetCore.Miniservice", "src\NetCoreKit.Infrastructure.AspNetCore.Miniservice\NetCoreKit.Infrastructure.AspNetCore.Miniservice.csproj", "{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.AspNetCore.OpenApi", "src\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj", "{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.EfCore", "src\NetCoreKit.Infrastructure.EfCore\NetCoreKit.Infrastructure.EfCore.csproj", "{FA666FF1-5453-481D-BBDD-842F151F9E75}"
@@ -74,13 +72,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.TodoApi"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{4A2D1031-E1FD-43BB-B8D3-F570F4020A29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Template.Standard", "templates\NetCoreKit.Template.Standard\NetCoreKit.Template.Standard.csproj", "{78525DA7-EC37-4364-875F-0DFAE951A066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Template.Standard", "templates\NetCoreKit.Template.Standard\NetCoreKit.Template.Standard.csproj", "{78525DA7-EC37-4364-875F-0DFAE951A066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Template.EfCore", "templates\NetCoreKit.Template.EfCore\NetCoreKit.Template.EfCore.csproj", "{EAEEE731-2708-47AB-A26C-CC64CFB842EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Template.EfCore", "templates\NetCoreKit.Template.EfCore\NetCoreKit.Template.EfCore.csproj", "{EAEEE731-2708-47AB-A26C-CC64CFB842EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Template.MongoDb", "templates\NetCoreKit.Template.MongoDb\NetCoreKit.Template.MongoDb.csproj", "{1C91E302-7210-4970-8915-0A2247C5E894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Template.MongoDb", "templates\NetCoreKit.Template.MongoDb\NetCoreKit.Template.MongoDb.csproj", "{1C91E302-7210-4970-8915-0A2247C5E894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.AspNetCore.All", "src\NetCoreKit.Infrastructure.AspNetCore.All\NetCoreKit.Infrastructure.AspNetCore.All.csproj", "{B19A199A-B86D-46D7-9020-0846C3BD7733}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.AspNetCore.All", "src\NetCoreKit.Infrastructure.AspNetCore.All\NetCoreKit.Infrastructure.AspNetCore.All.csproj", "{B19A199A-B86D-46D7-9020-0846C3BD7733}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,14 +120,6 @@ Global
 		{F57C8FE9-DC9C-4858-8EA7-6AEF523557A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F57C8FE9-DC9C-4858-8EA7-6AEF523557A4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F57C8FE9-DC9C-4858-8EA7-6AEF523557A4}.Release|x86.Build.0 = Release|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Debug|x86.Build.0 = Debug|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Release|x86.ActiveCfg = Release|Any CPU
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB}.Release|x86.Build.0 = Release|Any CPU
 		{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -291,7 +281,6 @@ Global
 		{CAF26917-0B10-4FB9-BD59-F792D21C2BD8} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{29F1B230-7A1A-43DB-9294-D3A664220D8C} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{F57C8FE9-DC9C-4858-8EA7-6AEF523557A4} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
-		{E8AA73B0-2BFC-4D9F-8921-CE25A6EE49FB} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{86E10CC4-BAA0-459F-B0C9-3C6CE466DD9B} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{FA666FF1-5453-481D-BBDD-842F151F9E75} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 		{D6B29A97-1417-48A6-B141-74D57E5C8C16} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
