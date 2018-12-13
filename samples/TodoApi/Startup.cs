@@ -19,7 +19,6 @@ namespace NetCoreKit.Samples.TodoAPI
         {
           //svc.AddEfSqlLiteDb();
           svc.AddEfCoreMySqlDb();
-          //svc.AddExternalSystemHealthChecks();
         },
         (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
       );
