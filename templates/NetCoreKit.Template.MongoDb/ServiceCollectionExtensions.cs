@@ -72,8 +72,9 @@ namespace NetCoreKit.Template.MongoDb
 
         services.AddBeatPulse(beatPulseCtx);
 
-        if (feature.IsEnabled("HealthUI"))
-          services.AddBeatPulseUI();
+        // TODO: don't know why it could not work in dotnet 2.2
+        //if (feature.IsEnabled("HealthUI"))
+        //  services.AddBeatPulseUI();
       }
 
       return services;

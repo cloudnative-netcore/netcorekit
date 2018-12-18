@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using MediatR;
@@ -12,7 +13,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
     {
       services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
       Mapper.Initialize(cfg => cfg.AddProfiles(registeredAssemblies));
-      services.AddMediatR(registeredAssemblies);
+      services.AddMediatR(registeredAssemblies.ToArray());
 
       return services;
     }

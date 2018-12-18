@@ -44,23 +44,27 @@ namespace NetCoreKit.Infrastructure.AspNetCore.All
     public static IServiceCollection AddApiVersionCore(this IServiceCollection services, IConfiguration config)
     {
       services.AddRouting(o => o.LowercaseUrls = true);
+
       services
-        .AddMvcCore()
         .AddVersionedApiExplorer(
           o =>
           {
             o.GroupNameFormat = "'v'VVV";
             o.SubstituteApiVersionInUrl = true;
-          })
+          });
+
+      services
+        .AddMvcCore()
         .AddJsonFormatters(o => o.ContractResolver = new CamelCasePropertyNamesContractResolver())
         .AddDataAnnotations();
 
-      services.AddApiVersioning(o =>
-      {
-        o.ReportApiVersions = true;
-        o.AssumeDefaultVersionWhenUnspecified = true;
-        o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
-      });
+      services
+        .AddApiVersioning(o =>
+        {
+          o.ReportApiVersions = true;
+          o.AssumeDefaultVersionWhenUnspecified = true;
+          o.DefaultApiVersion = ParseApiVersion(config.GetValue<string>("API_VERSION"));
+        });
 
       return services;
     }
