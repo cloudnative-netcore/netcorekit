@@ -28,7 +28,7 @@ configuration:
   - Debug
 
 before_build:
-  - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.2.0
+  # - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.2.0
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
