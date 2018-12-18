@@ -28,13 +28,13 @@ configuration:
   - Debug
 
 before_build:
+  - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.2.100
   # Display .NET Core version
   - cmd: dotnet --version
   # Display minimal restore text
   - cmd: dotnet restore --verbosity m
 
 build_script:
-  - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.2.100
   - ps: ./build.ps1
 
 test: off
