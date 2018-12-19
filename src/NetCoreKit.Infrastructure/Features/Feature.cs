@@ -13,7 +13,7 @@ namespace NetCoreKit.Infrastructure.Features
 
     public bool IsEnabled(string feature)
     {
-      var featureValue = _config.GetSection($"Features:{feature}").Exists() || _config.GetValue($"Features:{feature}", false);
+      var featureValue = _config.GetSection($"Features:{feature}").Exists() || _config.GetValue($"Features:{feature}:Enabled", false);
       return featureValue;
     }
   }
