@@ -75,7 +75,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore.All
       if (config.LoadFullAssemblies() != null && config.LoadFullAssemblies().Any())
         foreach (var assembly in config.LoadFullAssemblies())
           mvcBuilder = mvcBuilder.AddApplicationPart(assembly);
-      mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
       return services;
     }

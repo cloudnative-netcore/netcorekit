@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using static NetCoreKit.Utils.Helpers.DateTimeHelper;
 
 namespace NetCoreKit.Domain
@@ -10,6 +12,17 @@ namespace NetCoreKit.Domain
   {
     int EventVersion { get; }
     DateTime OccurredOn { get; }
+  }
+
+  public interface IEventHandler<in TEvent, TResult>
+    where TEvent : IEvent
+  {
+    Task<TResult> Handle(TEvent request, CancellationToken cancellationToken);
+  }
+
+  public interface IDomainEventBus : IDisposable
+  {
+    Task Publish(IEvent @event);
   }
 
   public abstract class EventBase : IEvent
@@ -26,5 +39,17 @@ namespace NetCoreKit.Domain
     }
 
     public IEvent Event { get;  }
+  }
+
+  public class MemoryDomainEventBus : IDomainEventBus
+  {
+    public void Dispose()
+    {
+    }
+
+    public Task Publish(IEvent @event)
+    {
+      return Task.CompletedTask;
+    }
   }
 }

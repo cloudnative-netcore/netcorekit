@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreKit.Domain
 {
-  public interface IUnitOfWorkAsync : IRepositoryAsyncFactory, IDisposable
+  public interface IUnitOfWorkAsync : IRepositoryFactoryAsync, IDisposable
   {
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

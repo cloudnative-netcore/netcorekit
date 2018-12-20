@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace NetCoreKit.Domain
 {
-  public interface IRepositoryAsyncFactory
+  public interface IRepositoryFactoryAsync
   {
     IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot;
   }
