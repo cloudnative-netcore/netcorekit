@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Mappers;
-using Project.Proto;
+using NetCoreKit.Samples.Contracts.TodoApi;
 
 namespace NetCoreKit.Samples.Notifier
 {

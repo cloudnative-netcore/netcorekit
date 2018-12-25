@@ -42,7 +42,7 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
       {
         await sub.SubscribeAsync(topic, async (channel, message) =>
         {
-          _logger.LogInformation($"[NCK: {topic}] Subsribing to the message...");
+          _logger.LogInformation($"[NCK: {topic}] Subscribing to the message...");
           var msg = (TMessage)Activator.CreateInstance(typeof(TMessage));
           msg.MergeFrom(message);
           var keyField = msg.Descriptor.FindFieldByName("Key");

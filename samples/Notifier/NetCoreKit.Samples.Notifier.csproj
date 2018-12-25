@@ -41,7 +41,6 @@
     <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus.Kafka\NetCoreKit.Infrastructure.Bus.Kafka.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
-    <ProjectReference Include="..\Contracts\NetCoreKit.Samples.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +50,10 @@
     <None Update="hostsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Rpc\" />
   </ItemGroup>
 
 </Project>

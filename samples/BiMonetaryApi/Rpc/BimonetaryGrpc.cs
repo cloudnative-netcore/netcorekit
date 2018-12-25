@@ -7,31 +7,31 @@
 
 using grpc = global::Grpc.Core;
 
-namespace NetCoreKit.Samples.ExchangeService.Rpc {
+namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
   public static partial class ExchangeService
   {
-    static readonly string __ServiceName = "NetCoreKit.Samples.ExchangeService.Rpc.ExchangeService";
+    static readonly string __ServiceName = "BiMonetary.ExchangeService";
 
-    static readonly grpc::Marshaller<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest> __Marshaller_NetCoreKit_Samples_ExchangeService_Rpc_TokenRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse> __Marshaller_NetCoreKit_Samples_ExchangeService_Rpc_TokenResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest> __Marshaller_BiMonetary_TokenRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> __Marshaller_BiMonetary_TokenResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse.Parser.ParseFrom);
 
-    static readonly grpc::Method<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest, global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse> __Method_GetTokenInfo = new grpc::Method<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest, global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse>(
+    static readonly grpc::Method<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> __Method_GetTokenInfo = new grpc::Method<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
         "GetTokenInfo",
-        __Marshaller_NetCoreKit_Samples_ExchangeService_Rpc_TokenRequest,
-        __Marshaller_NetCoreKit_Samples_ExchangeService_Rpc_TokenResponse);
+        __Marshaller_BiMonetary_TokenRequest,
+        __Marshaller_BiMonetary_TokenResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
-      get { return global::NetCoreKit.Samples.ExchangeService.Rpc.BimonetaryReflection.Descriptor.Services[0]; }
+      get { return global::NetCoreKit.Samples.BiMonetaryApi.Rpc.BimonetaryReflection.Descriptor.Services[0]; }
     }
 
     /// <summary>Base class for server-side implementations of ExchangeService</summary>
     public abstract partial class ExchangeServiceBase
     {
-      public virtual global::System.Threading.Tasks.Task<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse> GetTokenInfo(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> GetTokenInfo(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -61,19 +61,19 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc {
       {
       }
 
-      public virtual global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse GetTokenInfo(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse GetTokenInfo(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetTokenInfo(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse GetTokenInfo(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest request, grpc::CallOptions options)
+      public virtual global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse GetTokenInfo(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_GetTokenInfo, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse> GetTokenInfoAsync(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> GetTokenInfoAsync(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetTokenInfoAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse> GetTokenInfoAsync(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> GetTokenInfoAsync(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetTokenInfo, null, options, request);
       }

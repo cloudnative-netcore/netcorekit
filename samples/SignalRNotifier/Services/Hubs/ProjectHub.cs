@@ -6,8 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Bus;
+using NetCoreKit.Samples.Contracts.TodoApi;
 using NetCoreKit.Samples.SignalRNotifier.Services.Events;
-using Project.Proto;
 
 namespace NetCoreKit.Samples.SignalRNotifier.Services.Hubs
 {

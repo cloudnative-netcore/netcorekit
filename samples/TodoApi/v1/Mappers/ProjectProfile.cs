@@ -1,7 +1,7 @@
 using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
+using NetCoreKit.Samples.Contracts.TodoApi;
 using NetCoreKit.Samples.TodoAPI.Domain;
-using Project.Proto;
 
 namespace NetCoreKit.Samples.TodoApi.v1.Mappers
 {

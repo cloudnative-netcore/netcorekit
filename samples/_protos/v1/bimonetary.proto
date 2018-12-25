@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-package NetCoreKit.Samples.ExchangeService.Rpc;
+package BiMonetary;
+
+option csharp_namespace = "NetCoreKit.Samples.BiMonetaryApi.Rpc";
 
 service ExchangeService {
     rpc GetTokenInfo(TokenRequest) returns (TokenResponse);

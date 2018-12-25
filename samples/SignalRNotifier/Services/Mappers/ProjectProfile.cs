@@ -1,7 +1,7 @@
 using System;
 using AutoMapper;
+using NetCoreKit.Samples.Contracts.TodoApi;
 using NetCoreKit.Samples.SignalRNotifier.Services.Events;
-using Project.Proto;
 
 namespace NetCoreKit.Samples.SignalRNotifier.Services.Mappers
 {

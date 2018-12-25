@@ -3,21 +3,21 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Mappers;
+using NetCoreKit.Samples.Contracts.TodoApi;
 using NetCoreKit.Samples.TodoAPI.Domain;
-using Project.Proto;
 using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoApi.v1.PubSub
 {
-    public class RedisNotificationPublisher : INotificationHandler<NotificationEnvelope>
+    public class RedisNotifPublisher : INotificationHandler<NotificationEnvelope>
     {
         private readonly IDispatchedEventBus _dispatchedEventBus;
-        private readonly ILogger<RedisNotificationPublisher> _logger;
+        private readonly ILogger<RedisNotifPublisher> _logger;
 
-        public RedisNotificationPublisher(IDispatchedEventBus dispatchedEventBus, ILoggerFactory loggerFactory)
+        public RedisNotifPublisher(IDispatchedEventBus dispatchedEventBus, ILoggerFactory loggerFactory)
         {
             _dispatchedEventBus = dispatchedEventBus;
-            _logger = loggerFactory.CreateLogger<RedisNotificationPublisher>();
+            _logger = loggerFactory.CreateLogger<RedisNotifPublisher>();
         }
 
         public async Task Handle(NotificationEnvelope notify, CancellationToken cancellationToken)

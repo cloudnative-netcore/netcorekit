@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Reflection;
@@ -11,16 +11,19 @@ namespace NetCoreKit.Samples.ExchangeService
 {
     public class HostedService : IHostedService
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<HostedService> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+
         private readonly IApplicationLifetime _appLifetime;
         private readonly IConfiguration _config;
 
         public HostedService(
-            ILogger<HostedService> logger,
+            ILoggerFactory loggerFactory,
             IApplicationLifetime appLifetime,
             IConfiguration config)
         {
-            _logger = logger;
+            _logger = loggerFactory.CreateLogger<HostedService>();
+            _loggerFactory = loggerFactory;
             _appLifetime = appLifetime;
             _config = config;
         }
@@ -46,13 +49,13 @@ namespace NetCoreKit.Samples.ExchangeService
             var port = int.Parse(_config["service:port"]);
 
             var refImpl = new ReflectionServiceImpl(
-                ServerReflection.Descriptor, Rpc.ExchangeService.Descriptor);
+                ServerReflection.Descriptor, BiMonetaryApi.Rpc.ExchangeService.Descriptor);
 
             var server = new Server
             {
                 Services =
                 {
-                    Rpc.ExchangeService.BindService(new Rpc.ExchangeServiceImpl()),
+                    BiMonetaryApi.Rpc.ExchangeService.BindService(new Rpc.ExchangeServiceImpl(_loggerFactory)),
                     ServerReflection.BindService(refImpl)
                 },
                 Ports = {new ServerPort("localhost", port, ServerCredentials.Insecure)}

@@ -1,11 +1,11 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.Mongo;
-using NetCoreKit.Samples.ExchangeService.Rpc;
-using MyExchangeService = NetCoreKit.Samples.ExchangeService.Rpc.ExchangeService;
+using NetCoreKit.Samples.BiMonetaryApi.Rpc;
+using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
 
 namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
 {
@@ -54,13 +54,14 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
 
             if (tickers == null || tickers.Items.Count <= 0) return tickers;
 
-            var items = tickers.Items.SelectMany(x =>
-            {
-                var r = MapTickerWithExtraInfo(x);
-                return new[] {r.Result};
-            });
+            var items = new List<Ticker>();
 
-            return new PaginatedItem<Ticker>(tickers.TotalItems, tickers.TotalPages, items.ToList());
+            foreach (var i in tickers.Items)
+            {
+                items.Add(await MapTickerWithExtraInfo(i));
+            }
+
+            return new PaginatedItem<Ticker>(tickers.TotalItems, tickers.TotalPages, items);
         }
 
         // GET api/tickers/{C35A5A15-0913-43A0-BAD5-00FE9749C320}

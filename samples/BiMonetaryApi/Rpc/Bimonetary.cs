@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace NetCoreKit.Samples.ExchangeService.Rpc {
+namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
 
   /// <summary>Holder for reflection information generated from bimonetary.proto</summary>
   public static partial class BimonetaryReflection {
@@ -24,22 +24,21 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc {
     static BimonetaryReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBiaW1vbmV0YXJ5LnByb3RvEiZOZXRDb3JlS2l0LlNhbXBsZXMuRXhjaGFu",
-            "Z2VTZXJ2aWNlLlJwYyIeCgxUb2tlblJlcXVlc3QSDgoGU3ltYm9sGAEgASgJ",
-            "IucBCg1Ub2tlblJlc3BvbnNlEgwKBFJhbmsYASABKAUSEAoIUHJpY2VVc2QY",
-            "AiABKAESEAoIUHJpY2VCdGMYAyABKAESFAoMVm9sdW1uMjRoVXNkGAQgASgB",
-            "EhQKDE1hcmtldENhcFVzZBgFIAEoARIXCg9BdmFpbGFibGVTdXBwbHkYBiAB",
-            "KAESEwoLVG90YWxTdXBwbHkYByABKAESFwoPUGVyY2VudENoYW5nZTFoGAgg",
-            "ASgJEhgKEFBlcmNlbnRDaGFuZ2UyNGgYCSABKAkSFwoPUGVyY2VudENoYW5n",
-            "ZTdkGAogASgJMo4BCg9FeGNoYW5nZVNlcnZpY2USewoMR2V0VG9rZW5JbmZv",
-            "EjQuTmV0Q29yZUtpdC5TYW1wbGVzLkV4Y2hhbmdlU2VydmljZS5ScGMuVG9r",
-            "ZW5SZXF1ZXN0GjUuTmV0Q29yZUtpdC5TYW1wbGVzLkV4Y2hhbmdlU2Vydmlj",
-            "ZS5ScGMuVG9rZW5SZXNwb25zZWIGcHJvdG8z"));
+            "ChBiaW1vbmV0YXJ5LnByb3RvEgpCaU1vbmV0YXJ5Ih4KDFRva2VuUmVxdWVz",
+            "dBIOCgZTeW1ib2wYASABKAki5wEKDVRva2VuUmVzcG9uc2USDAoEUmFuaxgB",
+            "IAEoBRIQCghQcmljZVVzZBgCIAEoARIQCghQcmljZUJ0YxgDIAEoARIUCgxW",
+            "b2x1bW4yNGhVc2QYBCABKAESFAoMTWFya2V0Q2FwVXNkGAUgASgBEhcKD0F2",
+            "YWlsYWJsZVN1cHBseRgGIAEoARITCgtUb3RhbFN1cHBseRgHIAEoARIXCg9Q",
+            "ZXJjZW50Q2hhbmdlMWgYCCABKAkSGAoQUGVyY2VudENoYW5nZTI0aBgJIAEo",
+            "CRIXCg9QZXJjZW50Q2hhbmdlN2QYCiABKAkyVgoPRXhjaGFuZ2VTZXJ2aWNl",
+            "EkMKDEdldFRva2VuSW5mbxIYLkJpTW9uZXRhcnkuVG9rZW5SZXF1ZXN0Ghku",
+            "QmlNb25ldGFyeS5Ub2tlblJlc3BvbnNlQieqAiROZXRDb3JlS2l0LlNhbXBs",
+            "ZXMuQmlNb25ldGFyeUFwaS5ScGNiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest), global::NetCoreKit.Samples.ExchangeService.Rpc.TokenRequest.Parser, new[]{ "Symbol" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse), global::NetCoreKit.Samples.ExchangeService.Rpc.TokenResponse.Parser, new[]{ "Rank", "PriceUsd", "PriceBtc", "Volumn24HUsd", "MarketCapUsd", "AvailableSupply", "TotalSupply", "PercentChange1H", "PercentChange24H", "PercentChange7D" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest.Parser, new[]{ "Symbol" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse.Parser, new[]{ "Rank", "PriceUsd", "PriceBtc", "Volumn24HUsd", "MarketCapUsd", "AvailableSupply", "TotalSupply", "PercentChange1H", "PercentChange24H", "PercentChange7D" }, null, null, null)
           }));
     }
     #endregion
@@ -54,7 +53,7 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NetCoreKit.Samples.ExchangeService.Rpc.BimonetaryReflection.Descriptor.MessageTypes[0]; }
+      get { return global::NetCoreKit.Samples.BiMonetaryApi.Rpc.BimonetaryReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -183,7 +182,7 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NetCoreKit.Samples.ExchangeService.Rpc.BimonetaryReflection.Descriptor.MessageTypes[1]; }
+      get { return global::NetCoreKit.Samples.BiMonetaryApi.Rpc.BimonetaryReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

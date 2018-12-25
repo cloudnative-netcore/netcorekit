@@ -1,13 +1,24 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using NetCoreKit.Samples.BiMonetaryApi.Rpc;
 
 namespace NetCoreKit.Samples.ExchangeService.Rpc
 {
-    public class ExchangeServiceImpl : ExchangeService.ExchangeServiceBase
+    public class ExchangeServiceImpl : BiMonetaryApi.Rpc.ExchangeService.ExchangeServiceBase
     {
+        private readonly ILogger<ExchangeServiceImpl> _logger;
+
+        public ExchangeServiceImpl(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<ExchangeServiceImpl>();
+        }
+
         public override Task<TokenResponse> GetTokenInfo(TokenRequest request, ServerCallContext context)
         {
+            _logger.LogInformation($"Start to process get extra info for {request.Symbol}.");
+
             var rnd = new Random();
 
             // TODO: just for demo
@@ -20,10 +31,12 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc
                 AvailableSupply = rnd.NextDouble() * 9999D + 1,
                 TotalSupply = rnd.NextDouble() * 9999D + 1,
                 Volumn24HUsd = rnd.NextDouble() * 9999D + 1,
-                PercentChange1H = rnd.Next(1, 100) / 100 + "",
-                PercentChange24H = rnd.Next(1, 100) / 100 + "",
-                PercentChange7D = rnd.Next(1, 100) / 100 + ""
+                PercentChange1H = rnd.Next(1, 100) + "%",
+                PercentChange24H = rnd.Next(1, 100) + "%",
+                PercentChange7D = rnd.Next(1, 100) + "%"
             };
+
+            _logger.LogInformation("Return to caller.");
 
             return Task.FromResult(result);
         }
