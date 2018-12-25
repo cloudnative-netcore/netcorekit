@@ -60,9 +60,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Bus.Redis", "src\NetCoreKit.Infrastructure.Bus.Redis\NetCoreKit.Infrastructure.Bus.Redis.csproj", "{94E34AF7-42CA-4BBC-B444-FC17915B4D55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{B955EE6A-DBD9-474A-AE34-E1960E887F0F}"
-	ProjectSection(SolutionItems) = preProject
-		samples\protos\project.proto = samples\protos\project.proto
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.Mongo", "src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj", "{BAAB999F-EF03-4575-8FD4-9989A544319E}"
 EndProject
@@ -79,6 +76,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Template.MongoDb", "templates\NetCoreKit.Template.MongoDb\NetCoreKit.Template.MongoDb.csproj", "{1C91E302-7210-4970-8915-0A2247C5E894}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Infrastructure.AspNetCore.All", "src\NetCoreKit.Infrastructure.AspNetCore.All\NetCoreKit.Infrastructure.AspNetCore.All.csproj", "{B19A199A-B86D-46D7-9020-0846C3BD7733}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreKit.Samples.ExchangeService", "samples\ExchangeService\NetCoreKit.Samples.ExchangeService.csproj", "{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "v1", "v1", "{8085E7E4-6084-49E2-85F8-C28C6E6B0008}"
+	ProjectSection(SolutionItems) = preProject
+		samples\protos\v1\bimonetary.proto = samples\protos\v1\bimonetary.proto
+		samples\protos\v1\project.proto = samples\protos\v1\project.proto
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -272,6 +277,14 @@ Global
 		{B19A199A-B86D-46D7-9020-0846C3BD7733}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B19A199A-B86D-46D7-9020-0846C3BD7733}.Release|x86.ActiveCfg = Release|Any CPU
 		{B19A199A-B86D-46D7-9020-0846C3BD7733}.Release|x86.Build.0 = Release|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Debug|x86.Build.0 = Debug|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Release|x86.ActiveCfg = Release|Any CPU
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -302,6 +315,8 @@ Global
 		{EAEEE731-2708-47AB-A26C-CC64CFB842EA} = {4A2D1031-E1FD-43BB-B8D3-F570F4020A29}
 		{1C91E302-7210-4970-8915-0A2247C5E894} = {4A2D1031-E1FD-43BB-B8D3-F570F4020A29}
 		{B19A199A-B86D-46D7-9020-0846C3BD7733} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
+		{8BDABAA0-9B93-4EEE-8AE1-A0B313448048} = {92D6FD73-B95C-4CBB-A48E-047672EB4E77}
+		{8085E7E4-6084-49E2-85F8-C28C6E6B0008} = {B955EE6A-DBD9-474A-AE34-E1960E887F0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}

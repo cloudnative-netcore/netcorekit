@@ -3,17 +3,17 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Db
 {
-  public class TodoListDbModelBuilder : ICustomModelBuilder
-  {
-    public void Build(ModelBuilder modelBuilder)
+    public class TodoListDbModelBuilder : ICustomModelBuilder
     {
-      modelBuilder.Entity<Domain.Project>(b =>
-      {
-        b.HasMany(t => t.Tasks)
-          .WithOne(a => a.Project)
-          .HasForeignKey(k => k.ProjectId)
-          .OnDelete(DeleteBehavior.Cascade);
-      });
+        public void Build(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Domain.Project>(b =>
+            {
+                b.HasMany(t => t.Tasks)
+                    .WithOne(a => a.Project)
+                    .HasForeignKey(k => k.ProjectId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
     }
-  }
 }

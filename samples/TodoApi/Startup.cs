@@ -10,26 +10,26 @@ using NetCoreKit.Template.EfCore;
 
 namespace NetCoreKit.Samples.TodoAPI
 {
-  public class Startup
-  {
-    public void ConfigureServices(IServiceCollection services)
+    public class Startup
     {
-      services.AddEfCoreTemplate<TodoListDbContext>(
-        svc =>
+        public void ConfigureServices(IServiceCollection services)
         {
-          //svc.AddEfSqlLiteDb();
-          svc.AddEfCoreMySqlDb();
-        },
-        (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
-      );
+            services.AddEfCoreTemplate<TodoListDbContext>(
+                svc =>
+                {
+                    //svc.AddEfSqlLiteDb();
+                    svc.AddEfCoreMySqlDb();
+                },
+                (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
+            );
 
-      services.AddDomainEventBus();
-      services.AddRedisBus();
-    }
+            services.AddDomainEventBus();
+            services.AddRedisBus();
+        }
 
-    public void Configure(IApplicationBuilder app)
-    {
-      app.UseEfCoreTemplate();
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseEfCoreTemplate();
+        }
     }
-  }
 }

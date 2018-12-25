@@ -10,15 +10,15 @@ using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.Services
 {
-  public class KafkaEnvelopeEventHandler : INotificationHandler<NotificationEnvelope>
+  public class KafkaNotificationPublisher : INotificationHandler<NotificationEnvelope>
   {
     private readonly IDispatchedEventBus _eventBus;
-    private readonly ILogger<KafkaEnvelopeEventHandler> _logger;
+    private readonly ILogger<KafkaNotificationPublisher> _logger;
 
-    public KafkaEnvelopeEventHandler(IDispatchedEventBus eventBus, ILoggerFactory loggerFactory)
+    public KafkaNotificationPublisher(IDispatchedEventBus eventBus, ILoggerFactory loggerFactory)
     {
       _eventBus = eventBus;
-      _logger = loggerFactory.CreateLogger<KafkaEnvelopeEventHandler>();
+      _logger = loggerFactory.CreateLogger<KafkaNotificationPublisher>();
     }
 
     public async Task Handle(NotificationEnvelope notify, CancellationToken cancellationToken)
@@ -36,3 +36,5 @@ namespace NetCoreKit.Samples.TodoAPI.v1.Services
     }
   }
 } */
+
+

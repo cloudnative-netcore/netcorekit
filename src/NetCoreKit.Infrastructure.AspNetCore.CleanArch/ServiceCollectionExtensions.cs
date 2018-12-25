@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,12 +5,9 @@ namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
 {
   public static class ServiceCollectionExtensions
   {
-    public static IServiceCollection AddCleanArch(this IServiceCollection services, IEnumerable<Assembly> registeredAssemblies)
+    public static IServiceCollection AddCleanArch(this IServiceCollection services)
     {
       services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
-      Mapper.Initialize(cfg => cfg.AddProfiles(registeredAssemblies));
-      services.AddMediatR(registeredAssemblies.ToArray());
-
       return services;
     }
   }

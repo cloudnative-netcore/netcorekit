@@ -3,8 +3,8 @@ using NetCoreKit.Samples.TodoAPI.Dtos;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-  public interface IUserGateway
-  {
-    Task<AuthorDto> GetAuthorAsync();
-  }
+    public interface IUserGateway
+    {
+        Task<AuthorDto> GetAuthorAsync();
+    }
 }

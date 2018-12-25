@@ -6,17 +6,17 @@ using Task = System.Threading.Tasks.Task;
 
 namespace NetCoreKit.Samples.TodoAPI.Infrastructure.Gateways
 {
-  public class UserGateway : IUserGateway
-  {
-    public Task<AuthorDto> GetAuthorAsync()
+    public class UserGateway : IUserGateway
     {
-      return Task.FromResult(
-        new AuthorDto
+        public Task<AuthorDto> GetAuthorAsync()
         {
-          Id = new Guid("E8F0B717-E325-466B-A87C-1AF1AA951599"),
-          FirstName = "Tom",
-          LastName = "Cruise"
-        });
+            return Task.FromResult(
+                new AuthorDto
+                {
+                    Id = new Guid("E8F0B717-E325-466B-A87C-1AF1AA951599"),
+                    FirstName = "Tom",
+                    LastName = "Cruise"
+                });
+        }
     }
-  }
 }

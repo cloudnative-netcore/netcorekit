@@ -10,48 +10,49 @@ using NetCoreKit.Infrastructure.Bus.Kafka;
 
 namespace NetCoreKit.Samples.Notifier
 {
-  public class Program
-  {
-    public static IConfiguration Configuration { get; set; }
-
-    public static async Task Main(string[] args)
+    public class Program
     {
-      var host = new HostBuilder()
-        .ConfigureHostConfiguration(configHost =>
-        {
-          configHost.SetBasePath(Directory.GetCurrentDirectory());
-          configHost.AddJsonFile("hostsettings.json", optional: true);
-          configHost.AddEnvironmentVariables();
-          configHost.AddCommandLine(args);
-        })
-        .ConfigureAppConfiguration((hostContext, configApp) =>
-        {
-          configApp.AddJsonFile("appsettings.json", optional: true);
-          configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
-          configApp.AddEnvironmentVariables();
-          configApp.AddCommandLine(args);
-        })
-        .ConfigureServices((hostContext, services) =>
-        {
-          Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Program)));
-          services.AddMediatR();
-          services.AddKafkaEventBus();
+        public static IConfiguration Configuration { get; set; }
 
-          var config = services.BuildServiceProvider().GetService<IConfiguration>();
-
-          services.AddLogging();
-          services.Configure<KafkaOptions>(config);
-          services.AddHostedService<EventsHostedService>();
-        })
-        .ConfigureLogging((hostContext, configLogging) =>
+        public static async Task Main(string[] args)
         {
-          configLogging.AddConsole();
-          configLogging.AddDebug();
-        })
-        .UseConsoleLifetime()
-        .Build();
+            var host = new HostBuilder()
+                .ConfigureHostConfiguration(configHost =>
+                {
+                    configHost.SetBasePath(Directory.GetCurrentDirectory());
+                    configHost.AddJsonFile("hostsettings.json", optional: true);
+                    configHost.AddEnvironmentVariables();
+                    configHost.AddCommandLine(args);
+                })
+                .ConfigureAppConfiguration((hostContext, configApp) =>
+                {
+                    configApp.AddJsonFile("appsettings.json", optional: true);
+                    configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
+                        optional: true);
+                    configApp.AddEnvironmentVariables();
+                    configApp.AddCommandLine(args);
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    Mapper.Initialize(cfg => cfg.AddProfiles(typeof(Program)));
+                    services.AddMediatR();
+                    services.AddKafkaEventBus();
 
-      await host.RunAsync();
+                    var config = services.BuildServiceProvider().GetService<IConfiguration>();
+
+                    services.AddLogging();
+                    services.Configure<KafkaOptions>(config);
+                    services.AddHostedService<EventsHostedService>();
+                })
+                .ConfigureLogging((hostContext, configLogging) =>
+                {
+                    configLogging.AddConsole();
+                    configLogging.AddDebug();
+                })
+                .UseConsoleLifetime()
+                .Build();
+
+            await host.RunAsync();
+        }
     }
-  }
 }

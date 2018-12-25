@@ -7,27 +7,27 @@ using NetCoreKit.Samples.TodoAPI.Dtos;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.CreateProject
 {
-  public class CreateProjectRequest : IRequest<CreateProjectResponse>
-	{
-	  public CreateProjectRequest()
-	  {
-	    Name = "sample project";
-	  }
-
-		[Required] public string Name { get; set; }
-	}
-
-	public class CreateProjectResponse
-	{
-		public ProjectDto Result { get; set; }
-	}
-
-  public class CreateProjectProfile : Profile
-  {
-    public CreateProjectProfile()
+    public class CreateProjectRequest : IRequest<CreateProjectResponse>
     {
-      this.MapMySelf<ProjectCreated>();
-      this.MapMySelf<TaskCreated>();
+        public CreateProjectRequest()
+        {
+            Name = "sample project";
+        }
+
+        [Required] public string Name { get; set; }
     }
-  }
+
+    public class CreateProjectResponse
+    {
+        public ProjectDto Result { get; set; }
+    }
+
+    public class CreateProjectProfile : Profile
+    {
+        public CreateProjectProfile()
+        {
+            this.MapMySelf<ProjectCreated>();
+            this.MapMySelf<TaskCreated>();
+        }
+    }
 }

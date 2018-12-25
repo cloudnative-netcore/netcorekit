@@ -4,15 +4,15 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-  public class ProjectCreated : EventBase, INotification
-  {
-    public ProjectCreated(Guid id, string name)
+    public class ProjectCreated : EventBase, INotification
     {
-      Id = id;
-      Name = name;
-    }
+        public ProjectCreated(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
 
-    public Guid Id { get; }
-    public string Name { get; }
-  }
+        public Guid Id { get; }
+        public string Name { get; }
+    }
 }
