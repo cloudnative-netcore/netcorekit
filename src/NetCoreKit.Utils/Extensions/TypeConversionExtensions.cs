@@ -3,19 +3,19 @@ using System.ComponentModel;
 
 namespace NetCoreKit.Utils.Extensions
 {
-  public static class TypeConversionExtensions
-  {
-    public static T ConvertTo<T>(this string input)
+    public static class TypeConversionExtensions
     {
-      try
-      {
-        var converter = TypeDescriptor.GetConverter(typeof(T));
-        return (T)converter.ConvertFromString(input);
-      }
-      catch (NotSupportedException)
-      {
-        return default(T);
-      }
+        public static T ConvertTo<T>(this string input)
+        {
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(typeof(T));
+                return (T)converter.ConvertFromString(input);
+            }
+            catch (NotSupportedException)
+            {
+                return default(T);
+            }
+        }
     }
-  }
 }

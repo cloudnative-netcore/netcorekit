@@ -4,12 +4,12 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-  public static class ServiceCollectionExtensions
-  {
-    public static IServiceCollection AddDomainEventBus(this IServiceCollection services)
+    public static class ServiceCollectionExtensions
     {
-      services.Replace(ServiceDescriptor.Singleton<IDomainEventBus, DomainEventBus>());
-      return services;
+        public static IServiceCollection AddDomainEventBus(this IServiceCollection services)
+        {
+            services.Replace(ServiceDescriptor.Singleton<IDomainEventBus, DomainEventBus>());
+            return services;
+        }
     }
-  }
 }

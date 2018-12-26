@@ -4,20 +4,20 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Mongo
 {
-  public class MongoContext
-  {
-    private readonly IMongoDatabase _database;
-
-    public MongoContext(IOptions<MongoSettings> settings)
+    public class MongoContext
     {
-      var client = new MongoClient(settings.Value.ConnectionString);
-      _database = client.GetDatabase(settings.Value.Database);
-    }
+        private readonly IMongoDatabase _database;
 
-    public IMongoCollection<TEntity> Collection<TEntity>()
-      where TEntity : IAggregateRoot
-    {
-      return _database.GetCollection<TEntity>(typeof(TEntity).FullName);
+        public MongoContext(IOptions<MongoSettings> settings)
+        {
+            var client = new MongoClient(settings.Value.ConnectionString);
+            _database = client.GetDatabase(settings.Value.Database);
+        }
+
+        public IMongoCollection<TEntity> Collection<TEntity>()
+            where TEntity : IAggregateRoot
+        {
+            return _database.GetCollection<TEntity>(typeof(TEntity).FullName);
+        }
     }
-  }
 }

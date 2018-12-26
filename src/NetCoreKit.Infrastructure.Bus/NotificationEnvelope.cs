@@ -3,13 +3,13 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-  public class NotificationEnvelope : INotification
-  {
-    public NotificationEnvelope(IEvent @event)
+    public class NotificationEnvelope : INotification
     {
-      Event = @event;
-    }
+        public NotificationEnvelope(IEvent @event)
+        {
+            Event = @event;
+        }
 
-    public IEvent Event { get; }
-  }
+        public IEvent Event { get; }
+    }
 }

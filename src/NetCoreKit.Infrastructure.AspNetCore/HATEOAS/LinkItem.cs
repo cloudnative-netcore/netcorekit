@@ -1,16 +1,16 @@
 namespace NetCoreKit.Infrastructure.AspNetCore.HATEOAS
 {
-  public class LinkItem
-  {
-    public string Href { get; set; }
-    public string Rel { get; set; }
-    public string Method { get; set; }
-
-    public LinkItem(string href, string rel, string method)
+    public class LinkItem
     {
-      Href = href;
-      Rel = rel;
-      Method = method;
+        public LinkItem(string href, string rel, string method)
+        {
+            Href = href;
+            Rel = rel;
+            Method = method;
+        }
+
+        public string Href { get; set; }
+        public string Rel { get; set; }
+        public string Method { get; set; }
     }
-  }
 }

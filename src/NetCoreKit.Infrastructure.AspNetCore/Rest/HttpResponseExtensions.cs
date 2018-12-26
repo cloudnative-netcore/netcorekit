@@ -5,26 +5,26 @@ using Newtonsoft.Json;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Rest
 {
-  public static class HttpResponseExtensions
-  {
-    private static readonly JsonSerializer Serializer = new JsonSerializer
+    public static class HttpResponseExtensions
     {
-      NullValueHandling = NullValueHandling.Ignore
-    };
-
-    public static void WriteJson<T>(this HttpResponse response, T obj, string contentType = null)
-    {
-      response.ContentType = contentType ?? "application/json";
-      using (var writer = new HttpResponseStreamWriter(response.Body, Encoding.UTF8))
-      {
-        using (var jsonWriter = new JsonTextWriter(writer))
+        private static readonly JsonSerializer Serializer = new JsonSerializer
         {
-          jsonWriter.CloseOutput = false;
-          jsonWriter.AutoCompleteOnClose = false;
+            NullValueHandling = NullValueHandling.Ignore
+        };
 
-          Serializer.Serialize(jsonWriter, obj);
+        public static void WriteJson<T>(this HttpResponse response, T obj, string contentType = null)
+        {
+            response.ContentType = contentType ?? "application/json";
+            using (var writer = new HttpResponseStreamWriter(response.Body, Encoding.UTF8))
+            {
+                using (var jsonWriter = new JsonTextWriter(writer))
+                {
+                    jsonWriter.CloseOutput = false;
+                    jsonWriter.AutoCompleteOnClose = false;
+
+                    Serializer.Serialize(jsonWriter, obj);
+                }
+            }
         }
-      }
     }
-  }
 }

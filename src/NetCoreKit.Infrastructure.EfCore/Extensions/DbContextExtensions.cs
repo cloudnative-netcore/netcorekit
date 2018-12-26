@@ -5,19 +5,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NetCoreKit.Infrastructure.EfCore.Extensions
 {
-  public static class DbContextExtensions
-  {
-    public static bool AllMigrationsApplied(this DbContext context)
+    public static class DbContextExtensions
     {
-      var applied = context.GetService<IHistoryRepository>()
-        .GetAppliedMigrations()
-        .Select(m => m.MigrationId);
+        public static bool AllMigrationsApplied(this DbContext context)
+        {
+            var applied = context.GetService<IHistoryRepository>()
+                .GetAppliedMigrations()
+                .Select(m => m.MigrationId);
 
-      var total = context.GetService<IMigrationsAssembly>()
-        .Migrations
-        .Select(m => m.Key);
+            var total = context.GetService<IMigrationsAssembly>()
+                .Migrations
+                .Select(m => m.Key);
 
-      return !total.Except(applied).Any();
+            return !total.Except(applied).Any();
+        }
     }
-  }
 }

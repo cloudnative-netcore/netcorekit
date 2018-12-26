@@ -4,29 +4,29 @@ using Google.Protobuf;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
 {
-  public class ProtoDeserializer<T> : IDeserializer<T>
-    where T : IMessage<T>, new()
-  {
-    private readonly MessageParser<T> _parser;
-
-    public ProtoDeserializer()
+    public class ProtoDeserializer<T> : IDeserializer<T>
+        where T : IMessage<T>, new()
     {
-      _parser = new MessageParser<T>(() => new T());
-    }
+        private readonly MessageParser<T> _parser;
 
-    public IEnumerable<KeyValuePair<string, object>>
-      Configure(IEnumerable<KeyValuePair<string, object>> config, bool isKey)
-    {
-      return config;
-    }
+        public ProtoDeserializer()
+        {
+            _parser = new MessageParser<T>(() => new T());
+        }
 
-    public void Dispose()
-    {
-    }
+        public IEnumerable<KeyValuePair<string, object>>
+            Configure(IEnumerable<KeyValuePair<string, object>> config, bool isKey)
+        {
+            return config;
+        }
 
-    public T Deserialize(string topic, byte[] data)
-    {
-      return _parser.ParseFrom(data);
+        public void Dispose()
+        {
+        }
+
+        public T Deserialize(string topic, byte[] data)
+        {
+            return _parser.ParseFrom(data);
+        }
     }
-  }
 }

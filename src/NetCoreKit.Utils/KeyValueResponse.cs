@@ -1,14 +1,14 @@
 namespace NetCoreKit.Utils
 {
-  public class KeyValueObject<TKey>
-  {
-    public KeyValueObject(TKey key, string value)
+    public class KeyValueObject<TKey>
     {
-      Key = key;
-      Value = value;
-    }
+        public KeyValueObject(TKey key, string value)
+        {
+            Key = key;
+            Value = value;
+        }
 
-    public TKey Key { get; private set; }
-    public string Value { get; private set; }
-  }
+        public TKey Key { get; }
+        public string Value { get; }
+    }
 }

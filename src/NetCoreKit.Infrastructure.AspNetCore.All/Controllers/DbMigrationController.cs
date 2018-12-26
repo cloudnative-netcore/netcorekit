@@ -5,22 +5,22 @@ using NetCoreKit.Infrastructure.EfCore.Extensions;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.All.Controllers
 {
-  [Route("")]
-  [ApiVersionNeutral]
-  [ApiExplorerSettings(IgnoreApi = true)]
-  public class DbMigrationController : Controller
-  {
-    private readonly IServiceProvider _svcProvider;
-
-    public DbMigrationController(IServiceProvider svcProvider)
+    [Route("")]
+    [ApiVersionNeutral]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class DbMigrationController : Controller
     {
-      _svcProvider = svcProvider;
-    }
+        private readonly IServiceProvider _svcProvider;
 
-    [HttpGet("/db-migration")]
-    public Task<bool> Index()
-    {
-      return Task.Run(() => _svcProvider.MigrateDbContext() != null);
+        public DbMigrationController(IServiceProvider svcProvider)
+        {
+            _svcProvider = svcProvider;
+        }
+
+        [HttpGet("/db-migration")]
+        public Task<bool> Index()
+        {
+            return Task.Run(() => _svcProvider.MigrateDbContext() != null);
+        }
     }
-  }
 }

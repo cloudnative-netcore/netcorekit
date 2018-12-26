@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <id>NetCoreKit.Template.gRPC.MongoDb</id>
+    <version>0.0.0</version>
+    <Title>The MongoDb gRPC Service template.</Title>
+    <Description>This template is for a standard server (microservice) using gRPC protocol with MongoDb.</Description>
+    <Authors>Thang Chung</Authors>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <PackageId>NetCoreKit.Template.gRPC.MongoDb</PackageId>
+    <PackageTags>cloud-native gRPC-mongodb-template web-development</PackageTags>
+    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RootNamespace>NetCoreKit.Template.gRPC.MongoDb</RootNamespace>
+    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+    <AssemblyName>NetCoreKit.Template.gRPC.MongoDb</AssemblyName>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Grpc" Version="1.17.1" />
+    <PackageReference Include="Grpc.Reflection" Version="1.17.1" />
+    <PackageReference Include="Grpc.Tools" Version="1.17.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj"  />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

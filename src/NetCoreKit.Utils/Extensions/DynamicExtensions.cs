@@ -4,16 +4,16 @@ using System.Dynamic;
 
 namespace NetCoreKit.Utils.Extensions
 {
-  public static class DynamicExtensions
-  {
-    public static dynamic ToDynamic(this object value)
+    public static class DynamicExtensions
     {
-      IDictionary<string, object> expando = new ExpandoObject();
+        public static dynamic ToDynamic(this object value)
+        {
+            IDictionary<string, object> expando = new ExpandoObject();
 
-      foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(value.GetType()))
-        expando.Add(property.Name, property.GetValue(value));
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(value.GetType()))
+                expando.Add(property.Name, property.GetValue(value));
 
-      return expando as ExpandoObject;
+            return expando as ExpandoObject;
+        }
     }
-  }
 }

@@ -4,21 +4,21 @@ using Google.Protobuf;
 
 namespace NetCoreKit.Infrastructure.Bus.Kafka
 {
-  public class ProtoSerializer<T> : ISerializer<T> where T : IMessage<T>
-  {
-    public IEnumerable<KeyValuePair<string, object>>
-      Configure(IEnumerable<KeyValuePair<string, object>> config, bool isKey)
+    public class ProtoSerializer<T> : ISerializer<T> where T : IMessage<T>
     {
-      return config;
-    }
+        public IEnumerable<KeyValuePair<string, object>>
+            Configure(IEnumerable<KeyValuePair<string, object>> config, bool isKey)
+        {
+            return config;
+        }
 
-    public void Dispose()
-    {
-    }
+        public void Dispose()
+        {
+        }
 
-    public byte[] Serialize(string topic, T data)
-    {
-      return data.ToByteArray();
+        public byte[] Serialize(string topic, T data)
+        {
+            return data.ToByteArray();
+        }
     }
-  }
 }

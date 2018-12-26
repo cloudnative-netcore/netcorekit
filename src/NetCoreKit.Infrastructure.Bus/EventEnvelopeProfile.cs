@@ -4,11 +4,11 @@ using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-  public class EventEnvelopeProfile : Profile
-  {
-    public EventEnvelopeProfile()
+    public class EventEnvelopeProfile : Profile
     {
-      this.MapToNotification<EventEnvelope, NotificationEnvelope>();
+        public EventEnvelopeProfile()
+        {
+            this.MapToNotification<EventEnvelope, NotificationEnvelope>();
+        }
     }
-  }
 }

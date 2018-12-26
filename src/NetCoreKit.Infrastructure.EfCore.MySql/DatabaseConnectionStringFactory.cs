@@ -5,30 +5,30 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
-  public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
-  {
-    private readonly IConfiguration _config;
-    private readonly DbOptions _dbOption;
-
-    public DatabaseConnectionStringFactory(IConfiguration config, IOptions<DbOptions> options)
+    public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
     {
-      _config = config;
-      _dbOption = options.Value;
-    }
+        private readonly IConfiguration _config;
+        private readonly DbOptions _dbOption;
 
-    public string Create()
-    {
-      var connPattern = _dbOption.ConnString;
-      var connConfigs = _dbOption.FQDN?.Split(':');
-      var fqdn = connConfigs?.First();
-      var port = connConfigs?.Except(new[] {fqdn}).First();
+        public DatabaseConnectionStringFactory(IConfiguration config, IOptions<DbOptions> options)
+        {
+            _config = config;
+            _dbOption = options.Value;
+        }
 
-      return string.Format(
-        connPattern,
-        fqdn, port,
-        _dbOption.UserName,
-        _dbOption.Password,
-        _dbOption.Database);
+        public string Create()
+        {
+            var connPattern = _dbOption.ConnString;
+            var connConfigs = _dbOption.FQDN?.Split(':');
+            var fqdn = connConfigs?.First();
+            var port = connConfigs?.Except(new[] {fqdn}).First();
+
+            return string.Format(
+                connPattern,
+                fqdn, port,
+                _dbOption.UserName,
+                _dbOption.Password,
+                _dbOption.Database);
+        }
     }
-  }
 }

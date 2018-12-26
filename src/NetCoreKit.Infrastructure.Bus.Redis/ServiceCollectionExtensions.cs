@@ -3,26 +3,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NetCoreKit.Infrastructure.Bus.Redis
 {
-  public static class ServiceCollectionExtensions
-  {
-    public static IServiceCollection AddRedisBus(this IServiceCollection services)
+    public static class ServiceCollectionExtensions
     {
-      var resolver = services.BuildServiceProvider();
-      using (var scope = resolver.CreateScope())
-      {
-        var config = scope.ServiceProvider.GetService<IConfiguration>();
-        var redisOptions = config.GetSection("Features:Redis");
-
-        services.Configure<RedisOptions>(o =>
+        public static IServiceCollection AddRedisBus(this IServiceCollection services)
         {
-          o.Fqdn = redisOptions.GetValue<string>("FQDN");
-          o.Password = redisOptions.GetValue<string>("Password");
-        });
+            var resolver = services.BuildServiceProvider();
+            using (var scope = resolver.CreateScope())
+            {
+                var config = scope.ServiceProvider.GetService<IConfiguration>();
+                var redisOptions = config.GetSection("Features:Redis");
 
-        services.AddSingleton<RedisStore>();
-        services.AddSingleton<IDispatchedEventBus, DispatchedEventBus>();
-        return services;
-      }
+                services.Configure<RedisOptions>(o =>
+                {
+                    o.Fqdn = redisOptions.GetValue<string>("FQDN");
+                    o.Password = redisOptions.GetValue<string>("Password");
+                });
+
+                services.AddSingleton<RedisStore>();
+                services.AddSingleton<IDispatchedEventBus, DispatchedEventBus>();
+                return services;
+            }
+        }
     }
-  }
 }

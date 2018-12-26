@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure;
-using NetCoreKit.Infrastructure.AspNetCore;
 using NetCoreKit.Infrastructure.AspNetCore.All;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
@@ -14,62 +13,62 @@ using NetCoreKit.Infrastructure.Features;
 
 namespace NetCoreKit.Template.Standard
 {
-  public static class ServiceCollectionExtensions
-  {
-    public static IServiceCollection AddStandardTemplate(this IServiceCollection services,
-      Action<IServiceCollection, IServiceProvider> preHook = null,
-      Action<BeatPulseContext> beatPulseCtx = null)
+    public static class ServiceCollectionExtensions
     {
-      services.AddFeatureToggle();
+        public static IServiceCollection AddStandardTemplate(this IServiceCollection services,
+            Action<IServiceCollection, IServiceProvider> preHook = null,
+            Action<BeatPulseContext> beatPulseCtx = null)
+        {
+            services.AddFeatureToggle();
 
-      using (var scope = services.BuildServiceProvider().GetService<IServiceScopeFactory>().CreateScope())
-      {
-        var svcProvider = scope.ServiceProvider;
-        var config = svcProvider.GetRequiredService<IConfiguration>();
-        var env = svcProvider.GetRequiredService<IHostingEnvironment>();
-        var feature = svcProvider.GetRequiredService<IFeature>();
+            using (var scope = services.BuildServiceProvider().GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var svcProvider = scope.ServiceProvider;
+                var config = svcProvider.GetRequiredService<IConfiguration>();
+                var env = svcProvider.GetRequiredService<IHostingEnvironment>();
+                var feature = svcProvider.GetRequiredService<IFeature>();
 
-        preHook?.Invoke(services, svcProvider);
+                preHook?.Invoke(services, svcProvider);
 
-        services.AddRestClientCore();
+                services.AddRestClientCore();
 
-        services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
+                services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
 
-        services.AddAutoMapperCore(config.LoadFullAssemblies());
-        services.AddMediatRCore(config.LoadFullAssemblies());
+                services.AddAutoMapperCore(config.LoadFullAssemblies());
+                services.AddMediatRCore(config.LoadFullAssemblies());
 
-        if (feature.IsEnabled("CleanArch"))
-          services.AddCleanArch();
+                if (feature.IsEnabled("CleanArch"))
+                    services.AddCleanArch();
 
-        services.AddCacheCore();
+                services.AddCacheCore();
 
-        if (feature.IsEnabled("ApiVersion"))
-          services.AddApiVersionCore(config);
+                if (feature.IsEnabled("ApiVersion"))
+                    services.AddApiVersionCore(config);
 
-        services.AddMvcCore(config);
+                services.AddMvcCore(config);
 
-        services.AddDetailExceptionCore();
+                services.AddDetailExceptionCore();
 
-        if (feature.IsEnabled("AuthN"))
-          services.AddAuthNCore(config, env);
+                if (feature.IsEnabled("AuthN"))
+                    services.AddAuthNCore(config, env);
 
-        if (feature.IsEnabled("OpenApi"))
-          services.AddOpenApiCore(config, feature);
+                if (feature.IsEnabled("OpenApi"))
+                    services.AddOpenApiCore(config, feature);
 
-        services.AddCorsCore();
+                services.AddCorsCore();
 
-        services.AddHeaderForwardCore(env);
+                services.AddHeaderForwardCore(env);
 
-        if (feature.IsEnabled("OpenApi:Profiler"))
-          services.AddApiProfilerCore();
+                if (feature.IsEnabled("OpenApi:Profiler"))
+                    services.AddApiProfilerCore();
 
-        services.AddBeatPulse(beatPulseCtx);
+                services.AddBeatPulse(beatPulseCtx);
 
-        if (feature.IsEnabled("HealthUI"))
-          services.AddBeatPulseUI();
-      }
+                if (feature.IsEnabled("HealthUI"))
+                    services.AddBeatPulseUI();
+            }
 
-      return services;
+            return services;
+        }
     }
-  }
 }

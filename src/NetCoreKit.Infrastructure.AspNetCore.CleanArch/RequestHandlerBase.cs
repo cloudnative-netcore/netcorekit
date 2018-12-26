@@ -5,16 +5,16 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.CleanArch
 {
-  public abstract class RequestHandlerBase<TRequest, TResponse> : IEventHandler<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
-  {
-    protected RequestHandlerBase(IQueryRepositoryFactory queryRepositoryFactory)
+    public abstract class RequestHandlerBase<TRequest, TResponse> : IEventHandler<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
     {
-      QueryFactory = queryRepositoryFactory;
+        protected RequestHandlerBase(IQueryRepositoryFactory queryRepositoryFactory)
+        {
+            QueryFactory = queryRepositoryFactory;
+        }
+
+        public IQueryRepositoryFactory QueryFactory { get; }
+
+        public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
     }
-
-    public IQueryRepositoryFactory QueryFactory { get; }
-
-    public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
-  }
 }

@@ -4,24 +4,24 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.SqlServer
 {
-  public sealed class DbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
-  {
-    public DbContextOptionsBuilder Extend(
-      DbContextOptionsBuilder optionsBuilder,
-      IDatabaseConnectionStringFactory connectionStringFactory,
-      string assemblyName)
+    public sealed class DbContextOptionsBuilderFactory : IExtendDbContextOptionsBuilder
     {
-      return optionsBuilder.UseSqlServer(
-          connectionStringFactory.Create(),
-          sqlOptions =>
-          {
-            sqlOptions.MigrationsAssembly(assemblyName);
-            sqlOptions.EnableRetryOnFailure(
-              maxRetryCount: 15,
-              maxRetryDelay: TimeSpan.FromSeconds(30),
-              errorNumbersToAdd: null);
-          })
-        .EnableSensitiveDataLogging();
+        public DbContextOptionsBuilder Extend(
+            DbContextOptionsBuilder optionsBuilder,
+            IDatabaseConnectionStringFactory connectionStringFactory,
+            string assemblyName)
+        {
+            return optionsBuilder.UseSqlServer(
+                    connectionStringFactory.Create(),
+                    sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(assemblyName);
+                        sqlOptions.EnableRetryOnFailure(
+                            15,
+                            TimeSpan.FromSeconds(30),
+                            null);
+                    })
+                .EnableSensitiveDataLogging();
+        }
     }
-  }
 }

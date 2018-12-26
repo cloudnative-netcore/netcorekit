@@ -2,13 +2,13 @@ using NetCoreKit.Infrastructure.AspNetCore.Rest;
 
 namespace NetCoreKit.Infrastructure.AspNetCore
 {
-  public abstract class ProxyServiceBase
-  {
-    protected readonly RestClient RestClient;
-
-    protected ProxyServiceBase(RestClient rest)
+    public abstract class ProxyServiceBase
     {
-      RestClient = rest;
+        protected readonly RestClient RestClient;
+
+        protected ProxyServiceBase(RestClient rest)
+        {
+            RestClient = rest;
+        }
     }
-  }
 }

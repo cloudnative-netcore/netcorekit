@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -36,6 +36,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Host.gRPC\NetCoreKit.Infrastructure.Host.gRPC.csproj" />
+    <ProjectReference Include="..\..\templates\NetCoreKit.Template.gRPC.Standard\NetCoreKit.Template.gRPC.Standard.csproj" />
   </ItemGroup>
 
 </Project>

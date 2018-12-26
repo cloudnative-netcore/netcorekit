@@ -5,41 +5,36 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure
 {
-  public static class OrderByExtensions
-  {
-    public static IQueryable<TEntity> OrderByPropertyName<TEntity>(this IQueryable<TEntity> source, string propertyName,
-      bool isDescending)
-      where TEntity : IEntity
+    public static class OrderByExtensions
     {
-      if (source == null)
-      {
-        throw new ArgumentException("source");
-      }
+        public static IQueryable<TEntity> OrderByPropertyName<TEntity>(this IQueryable<TEntity> source,
+            string propertyName,
+            bool isDescending)
+            where TEntity : IEntity
+        {
+            if (source == null) throw new ArgumentException("source");
 
-      if (string.IsNullOrWhiteSpace(propertyName))
-      {
-        throw new ArgumentException("propertyName");
-      }
+            if (string.IsNullOrWhiteSpace(propertyName)) throw new ArgumentException("propertyName");
 
-      var type = typeof(TEntity);
-      var arg = Expression.Parameter(type, "x");
-      var propertyInfo = type.GetProperty(propertyName);
-      Expression expression = Expression.Property(arg, propertyInfo);
-      type = propertyInfo.PropertyType;
+            var type = typeof(TEntity);
+            var arg = Expression.Parameter(type, "x");
+            var propertyInfo = type.GetProperty(propertyName);
+            Expression expression = Expression.Property(arg, propertyInfo);
+            type = propertyInfo.PropertyType;
 
-      var delegateType = typeof(Func<,>).MakeGenericType(typeof(TEntity), type);
-      var lambda = Expression.Lambda(delegateType, expression, arg);
+            var delegateType = typeof(Func<,>).MakeGenericType(typeof(TEntity), type);
+            var lambda = Expression.Lambda(delegateType, expression, arg);
 
-      var methodName = isDescending ? "OrderByDescending" : "OrderBy";
-      var result = typeof(Queryable).GetMethods().Single(
-          method => method.Name == methodName
-                    && method.IsGenericMethodDefinition
-                    && method.GetGenericArguments().Length == 2
-                    && method.GetParameters().Length == 2)
-        .MakeGenericMethod(typeof(TEntity), type)
-        .Invoke(null, new object[] {source, lambda});
+            var methodName = isDescending ? "OrderByDescending" : "OrderBy";
+            var result = typeof(Queryable).GetMethods().Single(
+                    method => method.Name == methodName
+                              && method.IsGenericMethodDefinition
+                              && method.GetGenericArguments().Length == 2
+                              && method.GetParameters().Length == 2)
+                .MakeGenericMethod(typeof(TEntity), type)
+                .Invoke(null, new object[] {source, lambda});
 
-      return (IQueryable<TEntity>)result;
+            return (IQueryable<TEntity>)result;
+        }
     }
-  }
 }

@@ -5,26 +5,26 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
-  public static class ServiceCollectionExtensions
-  {
-    public static IServiceCollection AddEfCoreMySqlDb(this IServiceCollection services)
+    public static class ServiceCollectionExtensions
     {
-      var svcProvider = services.BuildServiceProvider();
-      var config = svcProvider.GetRequiredService<IConfiguration>();
+        public static IServiceCollection AddEfCoreMySqlDb(this IServiceCollection services)
+        {
+            var svcProvider = services.BuildServiceProvider();
+            var config = svcProvider.GetRequiredService<IConfiguration>();
 
-      services.Configure<DbOptions>(config.GetSection("Features:EfCore:MySqlDb"));
+            services.Configure<DbOptions>(config.GetSection("Features:EfCore:MySqlDb"));
 
-      services.Replace(
-        ServiceDescriptor.Scoped<
-          IDatabaseConnectionStringFactory,
-          DatabaseConnectionStringFactory>());
+            services.Replace(
+                ServiceDescriptor.Scoped<
+                    IDatabaseConnectionStringFactory,
+                    DatabaseConnectionStringFactory>());
 
-      services.Replace(
-        ServiceDescriptor.Scoped<
-          IExtendDbContextOptionsBuilder,
-          DbContextOptionsBuilderFactory>());
+            services.Replace(
+                ServiceDescriptor.Scoped<
+                    IExtendDbContextOptionsBuilder,
+                    DbContextOptionsBuilderFactory>());
 
-      return services;
+            return services;
+        }
     }
-  }
 }

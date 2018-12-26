@@ -1,9 +1,9 @@
 namespace NetCoreKit.Domain
 {
-  /// <summary>
-  /// Supertype for all Dto types
-  /// </summary>
-  public interface IDto
-  {
-  }
+    /// <summary>
+    ///     Supertype for all Dto types
+    /// </summary>
+    public interface IDto
+    {
+    }
 }

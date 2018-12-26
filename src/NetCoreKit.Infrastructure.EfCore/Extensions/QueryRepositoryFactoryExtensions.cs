@@ -3,12 +3,12 @@ using NetCoreKit.Infrastructure.EfCore.Repository;
 
 namespace NetCoreKit.Infrastructure.EfCore.Extensions
 {
-  public static class EfQueryRepositoryFactoryExtensions
-  {
-    public static IEfQueryRepository<TEntity> QueryEfRepository<TEntity>(this IQueryRepositoryFactory factory)
-      where TEntity : IAggregateRoot
+    public static class EfQueryRepositoryFactoryExtensions
     {
-      return factory.QueryRepository<TEntity>() as IEfQueryRepository<TEntity>;
+        public static IEfQueryRepository<TEntity> QueryEfRepository<TEntity>(this IQueryRepositoryFactory factory)
+            where TEntity : IAggregateRoot
+        {
+            return factory.QueryRepository<TEntity>() as IEfQueryRepository<TEntity>;
+        }
     }
-  }
 }

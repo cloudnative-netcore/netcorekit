@@ -6,44 +6,38 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Mongo
 {
-  public class MongoUnitOfWorkAsync : IUnitOfWorkAsync
-  {
-    private ConcurrentDictionary<Type, object> _repositories;
-    private readonly MongoContext _dbContext;
-
-    public MongoUnitOfWorkAsync(MongoContext dbContext)
+    public class MongoUnitOfWorkAsync : IUnitOfWorkAsync
     {
-      _dbContext = dbContext;
-    }
+        private readonly MongoContext _dbContext;
+        private ConcurrentDictionary<Type, object> _repositories;
 
-    public virtual IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot
-    {
-      if (_repositories == null)
-      {
-        _repositories = new ConcurrentDictionary<Type, object>();
-      }
-      var type = typeof(TEntity);
-      if (!_repositories.ContainsKey(type))
-      {
-        _repositories[type] = new MongoRepositoryAsync<TEntity>(_dbContext);
-      }
+        public MongoUnitOfWorkAsync(MongoContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
-      return (IRepositoryAsync<TEntity>)_repositories[type];
-    }
+        public virtual IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot
+        {
+            if (_repositories == null) _repositories = new ConcurrentDictionary<Type, object>();
+            var type = typeof(TEntity);
+            if (!_repositories.ContainsKey(type)) _repositories[type] = new MongoRepositoryAsync<TEntity>(_dbContext);
 
-    public void Dispose()
-    {
-      if(_dbContext != null) GC.SuppressFinalize(_dbContext);
-    }
+            return (IRepositoryAsync<TEntity>)_repositories[type];
+        }
 
-    public int SaveChanges()
-    {
-      throw new NotImplementedException();
-    }
+        public void Dispose()
+        {
+            if (_dbContext != null) GC.SuppressFinalize(_dbContext);
+        }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-    {
-      throw new NotImplementedException();
+        public int SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
-  }
 }

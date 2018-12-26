@@ -4,22 +4,22 @@ using NetCoreKit.Infrastructure.AspNetCore.Configuration;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.All.Controllers
 {
-  [Route("")]
-  [ApiVersionNeutral]
-  [ApiExplorerSettings(IgnoreApi = true)]
-  public class HomeController : Controller
-  {
-    private readonly string _basePath;
-
-    public HomeController(IConfiguration config)
+    [Route("")]
+    [ApiVersionNeutral]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class HomeController : Controller
     {
-      _basePath = config.GetBasePath() ?? "/";
-    }
+        private readonly string _basePath;
 
-    [HttpGet]
-    public IActionResult Index()
-    {
-      return Redirect($"~{_basePath}swagger");
+        public HomeController(IConfiguration config)
+        {
+            _basePath = config.GetBasePath() ?? "/";
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Redirect($"~{_basePath}swagger");
+        }
     }
-  }
 }

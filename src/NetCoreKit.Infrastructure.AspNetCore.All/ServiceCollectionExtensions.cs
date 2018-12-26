@@ -174,28 +174,20 @@ namespace NetCoreKit.Infrastructure.AspNetCore.All
 
         private static ApiVersion ParseApiVersion(string serviceVersion)
         {
-            if (string.IsNullOrEmpty(serviceVersion))
-            {
-                throw new CoreException("[CS] ServiceVersion is null or empty.");
-            }
+            if (string.IsNullOrEmpty(serviceVersion)) throw new CoreException("[CS] ServiceVersion is null or empty.");
 
             const string pattern = @"(.)|(-)";
             var results = Regex.Split(serviceVersion, pattern)
                 .Where(x => x != string.Empty && x != "." && x != "-")
                 .ToArray();
 
-            if (results == null || results.Count() < 2)
-            {
-                throw new CoreException("[CS] Could not parse ServiceVersion.");
-            }
+            if (results == null || results.Count() < 2) throw new CoreException("[CS] Could not parse ServiceVersion.");
 
             if (results.Count() > 2)
-            {
                 return new ApiVersion(
                     Convert.ToInt32(results[0]),
                     Convert.ToInt32(results[1]),
                     results[2]);
-            }
 
             return new ApiVersion(
                 Convert.ToInt32(results[0]),

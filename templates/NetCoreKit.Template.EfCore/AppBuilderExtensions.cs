@@ -97,8 +97,6 @@ namespace NetCoreKit.Template.EfCore
                 app.UseSwagger();
 
             if (feature.IsEnabled("OpenApi:OpenApiUI"))
-            {
-                // to make it work, we need to create an application with swagger_app name
                 app.UseSwaggerUI(
                     c =>
                     {
@@ -124,7 +122,6 @@ namespace NetCoreKit.Template.EfCore
                                     .GetManifestResourceStream(
                                         "NetCoreKit.Infrastructure.AspNetCore.All.Swagger.index.html");
                     });
-            }
 
             return app;
         }

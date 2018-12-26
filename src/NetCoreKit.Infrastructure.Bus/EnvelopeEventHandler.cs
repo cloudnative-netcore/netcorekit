@@ -6,18 +6,18 @@ using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-  public class EnvelopeEventHandler : INotificationHandler<NotificationEnvelope>
-  {
-    private readonly IMediator _mediator;
-
-    public EnvelopeEventHandler(IMediator mediator)
+    public class EnvelopeEventHandler : INotificationHandler<NotificationEnvelope>
     {
-      _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    public async Task Handle(NotificationEnvelope notification, CancellationToken cancellationToken)
-    {
-      await _mediator.Publish(notification.Event.MapTo<IEvent, INotification>(), cancellationToken);
+        public EnvelopeEventHandler(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        public async Task Handle(NotificationEnvelope notification, CancellationToken cancellationToken)
+        {
+            await _mediator.Publish(notification.Event.MapTo<IEvent, INotification>(), cancellationToken);
+        }
     }
-  }
 }

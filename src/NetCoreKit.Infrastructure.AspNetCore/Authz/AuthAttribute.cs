@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreKit.Infrastructure.AspNetCore.Authz
 {
-  public class AuthAttribute : AuthorizeAttribute
-  {
-    public AuthAttribute(string policy = null)
+    public class AuthAttribute : AuthorizeAttribute
     {
-      AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
-      Policy = policy;
+        public AuthAttribute(string policy = null)
+        {
+            AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme;
+            Policy = policy;
+        }
     }
-  }
 }
