@@ -4,8 +4,11 @@ package BiMonetary;
 
 option csharp_namespace = "NetCoreKit.Samples.BiMonetaryApi.Rpc";
 
+import "google/protobuf/empty.proto";
+
 service ExchangeService {
     rpc GetTokenInfo(TokenRequest) returns (TokenResponse);
+    rpc Ping(google.protobuf.Empty) returns (PingResponse);
 }
 
 message TokenRequest {
@@ -23,4 +26,8 @@ message TokenResponse {
     string PercentChange1h = 8;
     string PercentChange24h = 9;
     string PercentChange7d = 10;
+}
+
+message PingResponse {
+    bool Result = 1;
 }

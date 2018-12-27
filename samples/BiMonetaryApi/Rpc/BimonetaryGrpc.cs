@@ -14,6 +14,8 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
 
     static readonly grpc::Marshaller<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest> __Marshaller_BiMonetary_TokenRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> __Marshaller_BiMonetary_TokenResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Google.Protobuf.WellKnownTypes.Empty> __Marshaller_google_protobuf_Empty = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Empty.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse> __Marshaller_BiMonetary_PingResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse.Parser.ParseFrom);
 
     static readonly grpc::Method<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> __Method_GetTokenInfo = new grpc::Method<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse>(
         grpc::MethodType.Unary,
@@ -21,6 +23,13 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
         "GetTokenInfo",
         __Marshaller_BiMonetary_TokenRequest,
         __Marshaller_BiMonetary_TokenResponse);
+
+    static readonly grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse> __Method_Ping = new grpc::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "Ping",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_BiMonetary_PingResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -32,6 +41,11 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
     public abstract partial class ExchangeServiceBase
     {
       public virtual global::System.Threading.Tasks.Task<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse> GetTokenInfo(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse> Ping(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -77,6 +91,22 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetTokenInfo, null, options, request);
       }
+      public virtual global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse Ping(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return Ping(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse Ping(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_Ping, null, options, request);
+      }
+      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse> PingAsync(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return PingAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncUnaryCall<global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse> PingAsync(global::Google.Protobuf.WellKnownTypes.Empty request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Ping, null, options, request);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override ExchangeServiceClient NewInstance(ClientBaseConfiguration configuration)
       {
@@ -89,7 +119,8 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
     public static grpc::ServerServiceDefinition BindService(ExchangeServiceBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_GetTokenInfo, serviceImpl.GetTokenInfo).Build();
+          .AddMethod(__Method_GetTokenInfo, serviceImpl.GetTokenInfo)
+          .AddMethod(__Method_Ping, serviceImpl.Ping).Build();
     }
 
     /// <summary>Register service method implementations with a service binder. Useful when customizing the service binding logic.
@@ -99,6 +130,7 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
     public static void BindService(grpc::ServiceBinderBase serviceBinder, ExchangeServiceBase serviceImpl)
     {
       serviceBinder.AddMethod(__Method_GetTokenInfo, serviceImpl.GetTokenInfo);
+      serviceBinder.AddMethod(__Method_Ping, serviceImpl.Ping);
     }
 
   }

@@ -2,11 +2,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Grpc.Core;
-using Grpc.Reflection;
-using Grpc.Reflection.V1Alpha;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Host.gRPC;
+using NetCoreKit.Samples.ExchangeService.Rpc;
 using NetCoreKit.Template.gRPC.Standard;
 
 namespace NetCoreKit.Samples.ExchangeService
@@ -33,21 +32,20 @@ namespace NetCoreKit.Samples.ExchangeService
 
         protected override Server ConfigureServer()
         {
+            var host = Config["Hosts:Local:Host"];
             var port = int.Parse(Config["Hosts:Local:Port"]);
-            var refImpl = new ReflectionServiceImpl(ServerReflection.Descriptor,
-                BiMonetaryApi.Rpc.ExchangeService.Descriptor);
 
             var server = new Server
             {
                 Services =
                 {
-                    BiMonetaryApi.Rpc.ExchangeService.BindService(new Rpc.ExchangeServiceImpl(LoggerFactory)),
-                    ServerReflection.BindService(refImpl)
+                    BiMonetaryApi.Rpc.ExchangeService.BindService(new ExchangeServiceImpl(LoggerFactory)),
+                    Grpc.Health.V1.Health.BindService(new HealthImpl())
                 },
-                Ports = {new ServerPort("localhost", port, ServerCredentials.Insecure)}
+                Ports = {new ServerPort(host, port, ServerCredentials.Insecure)}
             };
 
-            Logger.LogInformation($"{nameof(BiMonetaryApi.Rpc.ExchangeService)} is listening on port {port}.");
+            Logger.LogInformation($"{nameof(BiMonetaryApi.Rpc.ExchangeService)} is listening on {host}:{port}.");
             return server;
         }
 

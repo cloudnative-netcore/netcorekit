@@ -24,21 +24,25 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
     static BimonetaryReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBiaW1vbmV0YXJ5LnByb3RvEgpCaU1vbmV0YXJ5Ih4KDFRva2VuUmVxdWVz",
-            "dBIOCgZTeW1ib2wYASABKAki5wEKDVRva2VuUmVzcG9uc2USDAoEUmFuaxgB",
-            "IAEoBRIQCghQcmljZVVzZBgCIAEoARIQCghQcmljZUJ0YxgDIAEoARIUCgxW",
-            "b2x1bW4yNGhVc2QYBCABKAESFAoMTWFya2V0Q2FwVXNkGAUgASgBEhcKD0F2",
-            "YWlsYWJsZVN1cHBseRgGIAEoARITCgtUb3RhbFN1cHBseRgHIAEoARIXCg9Q",
-            "ZXJjZW50Q2hhbmdlMWgYCCABKAkSGAoQUGVyY2VudENoYW5nZTI0aBgJIAEo",
-            "CRIXCg9QZXJjZW50Q2hhbmdlN2QYCiABKAkyVgoPRXhjaGFuZ2VTZXJ2aWNl",
-            "EkMKDEdldFRva2VuSW5mbxIYLkJpTW9uZXRhcnkuVG9rZW5SZXF1ZXN0Ghku",
-            "QmlNb25ldGFyeS5Ub2tlblJlc3BvbnNlQieqAiROZXRDb3JlS2l0LlNhbXBs",
-            "ZXMuQmlNb25ldGFyeUFwaS5ScGNiBnByb3RvMw=="));
+            "ChBiaW1vbmV0YXJ5LnByb3RvEgpCaU1vbmV0YXJ5Ghtnb29nbGUvcHJvdG9i",
+            "dWYvZW1wdHkucHJvdG8iHgoMVG9rZW5SZXF1ZXN0Eg4KBlN5bWJvbBgBIAEo",
+            "CSLnAQoNVG9rZW5SZXNwb25zZRIMCgRSYW5rGAEgASgFEhAKCFByaWNlVXNk",
+            "GAIgASgBEhAKCFByaWNlQnRjGAMgASgBEhQKDFZvbHVtbjI0aFVzZBgEIAEo",
+            "ARIUCgxNYXJrZXRDYXBVc2QYBSABKAESFwoPQXZhaWxhYmxlU3VwcGx5GAYg",
+            "ASgBEhMKC1RvdGFsU3VwcGx5GAcgASgBEhcKD1BlcmNlbnRDaGFuZ2UxaBgI",
+            "IAEoCRIYChBQZXJjZW50Q2hhbmdlMjRoGAkgASgJEhcKD1BlcmNlbnRDaGFu",
+            "Z2U3ZBgKIAEoCSIeCgxQaW5nUmVzcG9uc2USDgoGUmVzdWx0GAEgASgIMpAB",
+            "Cg9FeGNoYW5nZVNlcnZpY2USQwoMR2V0VG9rZW5JbmZvEhguQmlNb25ldGFy",
+            "eS5Ub2tlblJlcXVlc3QaGS5CaU1vbmV0YXJ5LlRva2VuUmVzcG9uc2USOAoE",
+            "UGluZxIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoYLkJpTW9uZXRhcnkuUGlu",
+            "Z1Jlc3BvbnNlQieqAiROZXRDb3JlS2l0LlNhbXBsZXMuQmlNb25ldGFyeUFw",
+            "aS5ScGNiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { },
+          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenRequest.Parser, new[]{ "Symbol" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse.Parser, new[]{ "Rank", "PriceUsd", "PriceBtc", "Volumn24HUsd", "MarketCapUsd", "AvailableSupply", "TotalSupply", "PercentChange1H", "PercentChange24H", "PercentChange7D" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.TokenResponse.Parser, new[]{ "Rank", "PriceUsd", "PriceBtc", "Volumn24HUsd", "MarketCapUsd", "AvailableSupply", "TotalSupply", "PercentChange1H", "PercentChange24H", "PercentChange7D" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse), global::NetCoreKit.Samples.BiMonetaryApi.Rpc.PingResponse.Parser, new[]{ "Result" }, null, null, null)
           }));
     }
     #endregion
@@ -547,6 +551,135 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
           }
           case 82: {
             PercentChange7D = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class PingResponse : pb::IMessage<PingResponse> {
+    private static readonly pb::MessageParser<PingResponse> _parser = new pb::MessageParser<PingResponse>(() => new PingResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PingResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::NetCoreKit.Samples.BiMonetaryApi.Rpc.BimonetaryReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PingResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PingResponse(PingResponse other) : this() {
+      result_ = other.result_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PingResponse Clone() {
+      return new PingResponse(this);
+    }
+
+    /// <summary>Field number for the "Result" field.</summary>
+    public const int ResultFieldNumber = 1;
+    private bool result_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Result {
+      get { return result_; }
+      set {
+        result_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as PingResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(PingResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Result != other.Result) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Result != false) hash ^= Result.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Result != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Result != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(PingResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Result != false) {
+        Result = other.Result;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Result = input.ReadBool();
             break;
           }
         }

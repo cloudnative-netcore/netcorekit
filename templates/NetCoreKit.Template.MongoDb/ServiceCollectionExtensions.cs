@@ -34,7 +34,7 @@ namespace NetCoreKit.Template.MongoDb
                 if (feature.IsEnabled("Mongo"))
                 {
                     if (feature.IsEnabled("EfCore"))
-                        throw new Exception("Should turn off EfCore settings.");
+                        throw new Exception("Should turn EfCore feature off.");
                     services.AddMongoDb();
                 }
 
@@ -73,10 +73,6 @@ namespace NetCoreKit.Template.MongoDb
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
-
-                // TODO: don't know why it could not work in dotnet 2.2
-                //if (feature.IsEnabled("HealthUI"))
-                //  services.AddBeatPulseUI();
             }
 
             return services;

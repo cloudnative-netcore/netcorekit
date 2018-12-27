@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Template.EfCore</id>
@@ -49,11 +49,18 @@
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="System.Reactive" Version="4.1.2" />
     <PackageReference Include="BeatPulse" Version="3.0.0" />
-    <PackageReference Include="BeatPulse.UI" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.All\NetCoreKit.Infrastructure.AspNetCore.All.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.CleanArch\NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.OpenApi\NetCoreKit.Infrastructure.AspNetCore.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.EfCore\NetCoreKit.Infrastructure.EfCore.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
 </Project>

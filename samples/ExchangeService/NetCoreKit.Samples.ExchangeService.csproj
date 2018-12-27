@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc" Version="1.17.1" />
-    <PackageReference Include="Grpc.Reflection" Version="1.17.1" />
+    <PackageReference Include="Grpc.HealthCheck" Version="1.17.1" />
     <PackageReference Include="Grpc.Tools" Version="1.17.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -41,6 +41,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Host.gRPC\NetCoreKit.Infrastructure.Host.gRPC.csproj" />
     <ProjectReference Include="..\..\templates\NetCoreKit.Template.gRPC.Standard\NetCoreKit.Template.gRPC.Standard.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

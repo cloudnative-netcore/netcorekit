@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace NetCoreKit.Samples.BiMonetaryApi
 {
@@ -13,6 +14,7 @@ namespace NetCoreKit.Samples.BiMonetaryApi
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging(builder => builder.AddConsole().AddDebug())
                 .UseStartup<Startup>();
         }
     }

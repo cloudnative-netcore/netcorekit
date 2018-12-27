@@ -1,6 +1,5 @@
 using System;
 using BeatPulse.Core;
-using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,9 +62,6 @@ namespace NetCoreKit.Template.Standard
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
-
-                if (feature.IsEnabled("HealthUI"))
-                    services.AddBeatPulseUI();
             }
 
             return services;

@@ -1,5 +1,4 @@
 using System.Reflection;
-using BeatPulse.UI;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,9 +22,6 @@ namespace NetCoreKit.Template.EfCore
             var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
             var env = app.ApplicationServices.GetRequiredService<IHostingEnvironment>();
             var feature = app.ApplicationServices.GetRequiredService<IFeature>();
-
-            loggerFactory.AddConsole(config.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             // #1 Log exception handler
             app.UseMiddleware<LogHandlerMiddleware>();
@@ -51,14 +47,12 @@ namespace NetCoreKit.Template.EfCore
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             // #4 BeatPulse healthcheck and BeatPulse UI 
-            app
-                .UseBeatPulse(options =>
-                {
-                    options.ConfigurePath("healthz") //default hc
-                        .ConfigureTimeout(1500) // default -1 infinitely
-                        .ConfigureDetailedOutput(true, true); //default (true,false)
-                })
-                .UseBeatPulseUI();
+            app.UseBeatPulse(options =>
+            {
+                options.ConfigurePath("healthz") //default hc
+                    .ConfigureTimeout(1500) // default -1 infinitely
+                    .ConfigureDetailedOutput(true, true); //default (true,false)
+            });
 
             // #5 Miniprofiler on API
             if (feature.IsEnabled("OpenApi:Profiler"))

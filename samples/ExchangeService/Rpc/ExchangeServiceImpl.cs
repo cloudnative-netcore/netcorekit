@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Samples.BiMonetaryApi.Rpc;
@@ -39,6 +40,11 @@ namespace NetCoreKit.Samples.ExchangeService.Rpc
             _logger.LogInformation("Return to caller.");
 
             return Task.FromResult(result);
+        }
+
+        public override Task<PingResponse> Ping(Empty request, ServerCallContext context)
+        {
+            return Task.FromResult(new PingResponse {Result = true});
         }
     }
 }

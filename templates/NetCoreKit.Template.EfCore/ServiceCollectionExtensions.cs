@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using BeatPulse.Core;
-using BeatPulse.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +37,7 @@ namespace NetCoreKit.Template.EfCore
 
                 if (feature.IsEnabled("EfCore"))
                 {
-                    if (feature.IsEnabled("Mongo")) throw new Exception("Please turn off MongoDb settings.");
+                    if (feature.IsEnabled("Mongo")) throw new Exception("Should turn MongoDb feature off.");
 
                     services.AddDbContextPool<TDbContext>((sp, o) =>
                     {
@@ -87,9 +86,6 @@ namespace NetCoreKit.Template.EfCore
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
-
-                if (feature.IsEnabled("HealthUI"))
-                    services.AddBeatPulseUI();
             }
 
             return services;

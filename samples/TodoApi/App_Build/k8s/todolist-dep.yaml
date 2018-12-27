@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: todolist
-        image: vndg/todoapi:latest
+        image: vndg/todo-api:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: Hosts__BasePath
