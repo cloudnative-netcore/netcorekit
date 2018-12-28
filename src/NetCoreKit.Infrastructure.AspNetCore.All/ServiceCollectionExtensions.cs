@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using AutoMapper;
 using MediatR;
+using MessagePack.AspNetCoreMvcFormatter;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -88,15 +90,17 @@ namespace NetCoreKit.Infrastructure.AspNetCore.All
             return services;
         }
 
-        public static IServiceCollection AddMvcCore(this IServiceCollection services, IConfiguration config)
+        public static IMvcBuilder AddMvcCore(this IServiceCollection services, IConfiguration config)
         {
             var mvcBuilder = services.AddMvc();
+
             if (config.LoadFullAssemblies() != null && config.LoadFullAssemblies().Any())
                 foreach (var assembly in config.LoadFullAssemblies())
                     mvcBuilder = mvcBuilder.AddApplicationPart(assembly);
+
             mvcBuilder.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            return services;
+            return mvcBuilder;
         }
 
         public static IServiceCollection AddDetailExceptionCore(this IServiceCollection services)

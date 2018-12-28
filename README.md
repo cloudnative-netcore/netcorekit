@@ -24,6 +24,7 @@ If you liked the project or if `netcorekit` helped you, please give a star so th
 - [x] Mapping between domain entity to DTO and vice versa.
 - [x] Clean and demystify error, debug logs.
 - [x] Resilience and health check out of the box.
+- [x] MessagePack for WebAPI and gRPC for internal services.
 - [x] Easy for configuration management.
 - [x] API versioning from Docker container to WebAPI. 
 - [x] Documentation template with OpenAPI documentation.

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
@@ -16,9 +17,10 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Ping()
+        public async Task<IActionResult> Ping()
         {
-            return Ok(_exchangeServiceClient.PingAsync(new Empty()));
+            var response = await _exchangeServiceClient.PingAsync(new Empty());
+            return Ok(response.Result);
         }
     }
 }
