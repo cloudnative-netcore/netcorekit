@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 PROJ_DIR=`pwd`
 GRPC_PATH=${HOME}/.nuget/packages/grpc.tools/1.17.1/tools/linux_x64

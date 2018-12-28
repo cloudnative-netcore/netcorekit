@@ -1,6 +1,5 @@
 #!/bin/sh
-set -e 
-set -x 
+set -ex
 
 export ASPNETCORE_ENVIRONMENT Development
 dotnet build

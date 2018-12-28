@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using BeatPulse.Core;
+using MessagePack.AspNetCoreMvcFormatter;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -68,7 +70,18 @@ namespace NetCoreKit.Template.EfCore
                 if (feature.IsEnabled("ApiVersion"))
                     services.AddApiVersionCore(config);
 
-                services.AddMvcCore(config);
+                var mvcBuilder = services.AddMvcCore(config);
+
+                if (feature.IsEnabled("MessagePack"))
+                    mvcBuilder.AddMvcOptions(option =>
+                    {
+                        option.OutputFormatters.Clear();
+                        option.OutputFormatters.Add(
+                            new MessagePackOutputFormatter(ContractlessStandardResolver.Instance));
+                        option.InputFormatters.Clear();
+                        option.InputFormatters.Add(
+                            new MessagePackInputFormatter(ContractlessStandardResolver.Instance));
+                    });
 
                 services.AddDetailExceptionCore();
 
