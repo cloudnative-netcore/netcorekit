@@ -23,7 +23,7 @@
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore\NetCoreKit.Infrastructure.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Bus\NetCoreKit.Infrastructure.Bus.csproj" />
-    <ProjectReference Include="..\..\templates\NetCoreKit.Template.MongoDb\NetCoreKit.Template.MongoDb.csproj" />
+    <ProjectReference Include="..\..\templates\NetCoreKit.Template.Rest.MongoDb\NetCoreKit.Template.Rest.MongoDb.csproj" />
   </ItemGroup>
 
   <ItemGroup>

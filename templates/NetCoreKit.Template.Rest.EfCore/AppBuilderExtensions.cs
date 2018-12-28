@@ -12,7 +12,7 @@ using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
 using NetCoreKit.Infrastructure.Features;
 using StackExchange.Profiling;
 
-namespace NetCoreKit.Template.EfCore
+namespace NetCoreKit.Template.Rest.EfCore
 {
     public static class AppBuilderExtensions
     {
@@ -28,6 +28,9 @@ namespace NetCoreKit.Template.EfCore
 
             // #2 Default response cache
             app.UseResponseCaching();
+
+            if (feature.IsEnabled("ResponseCompression"))
+                app.UseResponseCompression();
 
             // #3 configure Exception handling
             if (env.IsDevelopment())

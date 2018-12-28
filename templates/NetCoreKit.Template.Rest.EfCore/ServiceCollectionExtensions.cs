@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using BeatPulse.Core;
 using MessagePack.AspNetCoreMvcFormatter;
 using MessagePack.Resolvers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
@@ -10,15 +13,19 @@ using NetCoreKit.Infrastructure;
 using NetCoreKit.Infrastructure.AspNetCore.All;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
+using NetCoreKit.Infrastructure.EfCore;
+using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.Features;
 
-namespace NetCoreKit.Template.Standard
+namespace NetCoreKit.Template.Rest.EfCore
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddStandardTemplate(this IServiceCollection services,
-            Action<IServiceCollection, IServiceProvider> preHook = null,
+        public static IServiceCollection AddEfCoreTemplate<TDbContext>(this IServiceCollection services,
+            Action<IServiceCollection> preDbWorkHook = null,
+            Action<IServiceCollection, IServiceProvider> postDbWorkHook = null,
             Action<BeatPulseContext> beatPulseCtx = null)
+            where TDbContext : DbContext
         {
             services.AddFeatureToggle();
 
@@ -29,7 +36,25 @@ namespace NetCoreKit.Template.Standard
                 var env = svcProvider.GetRequiredService<IHostingEnvironment>();
                 var feature = svcProvider.GetRequiredService<IFeature>();
 
-                preHook?.Invoke(services, svcProvider);
+                preDbWorkHook?.Invoke(services);
+
+                if (feature.IsEnabled("EfCore"))
+                {
+                    if (feature.IsEnabled("Mongo")) throw new Exception("Should turn MongoDb feature off.");
+
+                    services.AddDbContextPool<TDbContext>((sp, o) =>
+                    {
+                        var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
+                        var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
+                        extendOptionsBuilder.Extend(o, connStringFactory,
+                            config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
+                    });
+
+                    services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
+                    services.AddGenericRepository();
+                }
+
+                postDbWorkHook?.Invoke(services, svcProvider);
 
                 services.AddRestClientCore();
 
@@ -75,6 +100,9 @@ namespace NetCoreKit.Template.Standard
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
+
+                if (feature.IsEnabled("ResponseCompression"))
+                    services.AddResponseCompression();
             }
 
             return services;

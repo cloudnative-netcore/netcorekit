@@ -6,7 +6,7 @@ using NetCoreKit.Infrastructure.EfCore.MySql;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Gateways;
-using NetCoreKit.Template.EfCore;
+using NetCoreKit.Template.Rest.EfCore;
 
 namespace NetCoreKit.Samples.TodoAPI
 {

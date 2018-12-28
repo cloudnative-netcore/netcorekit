@@ -18,7 +18,7 @@ spec:
         env:
         - name: Hosts__BasePath
           value: /
-        - name: Features__Mongo__ConnectionString
+        - name: Features__Mongo__ConnString
           value: mongodb://mongodb:27017
         - name: RpcClients__ExchangeService
           value: exchange:5000

@@ -10,7 +10,7 @@ namespace NetCoreKit.Infrastructure.Mongo
 
         public MongoContext(IOptions<MongoSettings> settings)
         {
-            var client = new MongoClient(settings.Value.ConnectionString);
+            var client = new MongoClient(settings.Value.ConnString);
             _database = client.GetDatabase(settings.Value.Database);
         }
 

@@ -2,7 +2,7 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreKit.Template.MongoDb;
+using NetCoreKit.Template.Rest.MongoDb;
 using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
 
 namespace NetCoreKit.Samples.BiMonetaryApi

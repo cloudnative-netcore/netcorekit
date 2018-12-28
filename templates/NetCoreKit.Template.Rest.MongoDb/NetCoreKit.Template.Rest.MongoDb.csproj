@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Standard</id>
+    <id>NetCoreKit.Template.Rest.MongoDb</id>
     <version>0.0.0</version>
-    <Title>The standard template for NetCoreKit which is no storage built-in.</Title>
-    <Description>This template needs for some of host which is only for computing or running background job.</Description>
+    <Title>The MongoDb template for NetCoreKit which has MongoDb includes generic repository, open API, authentication and much more.</Title>
+    <Description>This template needs for the host which intents to use MongoDb in mind.</Description>
     <Authors>Thang Chung</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>NetCoreKit.Template.Standard</PackageId>
-    <PackageTags>cloud-native standard-template web-development</PackageTags>
+    <PackageId>NetCoreKit.Template.Rest.MongoDb</PackageId>
+    <PackageTags>cloud-native mongodb-template web-development</PackageTags>
     <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>NetCoreKit.Template.Standard</RootNamespace>
+    <RootNamespace>NetCoreKit.Template.Rest.MongoDb</RootNamespace>
     <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
-    <AssemblyName>NetCoreKit.Template.Standard</AssemblyName>
+    <AssemblyName>NetCoreKit.Template.Rest.MongoDb</AssemblyName>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
@@ -43,7 +44,6 @@
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.3.0" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.0.138" />
-    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.0.138" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />
     <PackageReference Include="MediatR" Version="6.0.0" />
@@ -55,6 +55,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.All\NetCoreKit.Infrastructure.AspNetCore.All.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.AspNetCore.CleanArch\NetCoreKit.Infrastructure.AspNetCore.CleanArch.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
   </ItemGroup>
 
 </Project>

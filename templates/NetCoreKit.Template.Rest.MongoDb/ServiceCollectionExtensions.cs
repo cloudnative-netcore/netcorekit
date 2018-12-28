@@ -1,10 +1,9 @@
 using System;
-using System.Linq;
 using BeatPulse.Core;
 using MessagePack.AspNetCoreMvcFormatter;
 using MessagePack.Resolvers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
@@ -12,19 +11,17 @@ using NetCoreKit.Infrastructure;
 using NetCoreKit.Infrastructure.AspNetCore.All;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
-using NetCoreKit.Infrastructure.EfCore;
-using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.Features;
+using NetCoreKit.Infrastructure.Mongo;
 
-namespace NetCoreKit.Template.EfCore
+namespace NetCoreKit.Template.Rest.MongoDb
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddEfCoreTemplate<TDbContext>(this IServiceCollection services,
+        public static IServiceCollection AddMongoDbTemplate(this IServiceCollection services,
             Action<IServiceCollection> preDbWorkHook = null,
             Action<IServiceCollection, IServiceProvider> postDbWorkHook = null,
             Action<BeatPulseContext> beatPulseCtx = null)
-            where TDbContext : DbContext
         {
             services.AddFeatureToggle();
 
@@ -37,20 +34,11 @@ namespace NetCoreKit.Template.EfCore
 
                 preDbWorkHook?.Invoke(services);
 
-                if (feature.IsEnabled("EfCore"))
+                if (feature.IsEnabled("Mongo"))
                 {
-                    if (feature.IsEnabled("Mongo")) throw new Exception("Should turn MongoDb feature off.");
-
-                    services.AddDbContextPool<TDbContext>((sp, o) =>
-                    {
-                        var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
-                        var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
-                        extendOptionsBuilder.Extend(o, connStringFactory,
-                            config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
-                    });
-
-                    services.AddScoped<DbContext>(resolver => resolver.GetService<TDbContext>());
-                    services.AddGenericRepository();
+                    if (feature.IsEnabled("EfCore"))
+                        throw new Exception("Should turn EfCore feature off.");
+                    services.AddMongoDb();
                 }
 
                 postDbWorkHook?.Invoke(services, svcProvider);
@@ -99,6 +87,9 @@ namespace NetCoreKit.Template.EfCore
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
+
+                if (feature.IsEnabled("ResponseCompression"))
+                    services.AddResponseCompression();
             }
 
             return services;

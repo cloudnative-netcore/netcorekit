@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.EfCore</id>
+    <id>NetCoreKit.Template.Rest.EfCore</id>
     <version>0.0.0</version>
     <Title>The EfCore template for NetCoreKit which has EfCore (SQL Server, MySQL, and SQLite providers) includes generic repository, open API, authentication and much more.</Title>
     <Description>This template needs for the host which intents to use RDBMS with EfCore in mind.</Description>
     <Authors>Thang Chung</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>NetCoreKit.Template.EfCore</PackageId>
+    <PackageId>NetCoreKit.Template.Rest.EfCore</PackageId>
     <PackageTags>cloud-native efcore-template web-development</PackageTags>
     <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>NetCoreKit.Template.EfCore</RootNamespace>
+    <RootNamespace>NetCoreKit.Template.Rest.EfCore</RootNamespace>
     <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
-    <AssemblyName>NetCoreKit.Template.EfCore</AssemblyName>
+    <AssemblyName>NetCoreKit.Template.Rest.EfCore</AssemblyName>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />

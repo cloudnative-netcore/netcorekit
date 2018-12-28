@@ -12,11 +12,11 @@ using NetCoreKit.Infrastructure.AspNetCore.Middlewares;
 using NetCoreKit.Infrastructure.Features;
 using StackExchange.Profiling;
 
-namespace NetCoreKit.Template.MongoDb
+namespace NetCoreKit.Template.Rest.Standard
 {
     public static class AppBuilderExtensions
     {
-        public static IApplicationBuilder UseMongoDbTemplate(this IApplicationBuilder app)
+        public static IApplicationBuilder UseStandardTemplate(this IApplicationBuilder app)
         {
             var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
             var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
@@ -28,6 +28,9 @@ namespace NetCoreKit.Template.MongoDb
 
             // #2 Default response cache
             app.UseResponseCaching();
+
+            if (feature.IsEnabled("ResponseCompression"))
+                app.UseResponseCompression();
 
             // #3 configure Exception handling
             if (env.IsDevelopment())

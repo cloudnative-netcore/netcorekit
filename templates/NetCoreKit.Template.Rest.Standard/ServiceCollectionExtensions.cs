@@ -2,6 +2,7 @@ using System;
 using BeatPulse.Core;
 using MessagePack.AspNetCoreMvcFormatter;
 using MessagePack.Resolvers;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,15 +12,13 @@ using NetCoreKit.Infrastructure.AspNetCore.All;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.AspNetCore.OpenApi;
 using NetCoreKit.Infrastructure.Features;
-using NetCoreKit.Infrastructure.Mongo;
 
-namespace NetCoreKit.Template.MongoDb
+namespace NetCoreKit.Template.Rest.Standard
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMongoDbTemplate(this IServiceCollection services,
-            Action<IServiceCollection> preDbWorkHook = null,
-            Action<IServiceCollection, IServiceProvider> postDbWorkHook = null,
+        public static IServiceCollection AddStandardTemplate(this IServiceCollection services,
+            Action<IServiceCollection, IServiceProvider> preHook = null,
             Action<BeatPulseContext> beatPulseCtx = null)
         {
             services.AddFeatureToggle();
@@ -31,16 +30,7 @@ namespace NetCoreKit.Template.MongoDb
                 var env = svcProvider.GetRequiredService<IHostingEnvironment>();
                 var feature = svcProvider.GetRequiredService<IFeature>();
 
-                preDbWorkHook?.Invoke(services);
-
-                if (feature.IsEnabled("Mongo"))
-                {
-                    if (feature.IsEnabled("EfCore"))
-                        throw new Exception("Should turn EfCore feature off.");
-                    services.AddMongoDb();
-                }
-
-                postDbWorkHook?.Invoke(services, svcProvider);
+                preHook?.Invoke(services, svcProvider);
 
                 services.AddRestClientCore();
 
@@ -86,6 +76,9 @@ namespace NetCoreKit.Template.MongoDb
                     services.AddApiProfilerCore();
 
                 services.AddBeatPulse(beatPulseCtx);
+
+                if (feature.IsEnabled("ResponseCompression"))
+                    services.AddResponseCompression();
             }
 
             return services;
