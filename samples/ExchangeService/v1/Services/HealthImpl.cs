@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Health.V1;
 
-namespace NetCoreKit.Samples.ExchangeService.Rpc
+namespace NetCoreKit.Samples.ExchangeService.v1.Services
 {
     public class HealthImpl : Health.HealthBase
     {

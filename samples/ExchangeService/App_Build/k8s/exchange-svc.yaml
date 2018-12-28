@@ -7,11 +7,9 @@ metadata:
     app: exchange
 spec:
   ports:
-  - port: 32502
+  - name: grpc
+    port: 5000
     targetPort: 5000
-    nodePort: 32502
-    protocol: TCP
-    name: http
-  type: NodePort
+  type: ClusterIP
   selector:
     app: exchange

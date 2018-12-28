@@ -5,7 +5,7 @@ using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Samples.BiMonetaryApi.Rpc;
 
-namespace NetCoreKit.Samples.ExchangeService.Rpc
+namespace NetCoreKit.Samples.ExchangeService.v1.Services
 {
     public class ExchangeServiceImpl : BiMonetaryApi.Rpc.ExchangeService.ExchangeServiceBase
     {

@@ -21,7 +21,7 @@ spec:
         - name: Features__Mongo__ConnectionString
           value: mongodb://mongodb:27017
         - name: RpcClients__ExchangeService
-          value: exchange:32502
+          value: exchange:5000
         resources:
           requests:
             cpu: 200m
