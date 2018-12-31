@@ -5,16 +5,16 @@ using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
-    public class DomainEventBus : IDomainEventBus
+    public class DomainEventDispatcher : IDomainEventDispatcher
     {
         private readonly IMediator _mediator;
 
-        public DomainEventBus(IMediator mediator)
+        public DomainEventDispatcher(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        public async Task Publish(IEvent @event)
+        public async Task Dispatch(IEvent @event)
         {
             await _mediator.Publish(@event.MapTo<IEvent, INotification>());
         }

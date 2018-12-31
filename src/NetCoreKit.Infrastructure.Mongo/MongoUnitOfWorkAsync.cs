@@ -9,20 +9,20 @@ namespace NetCoreKit.Infrastructure.Mongo
     public class MongoUnitOfWorkAsync : IUnitOfWorkAsync
     {
         private readonly MongoContext _dbContext;
-        private readonly IDomainEventBus _domainEventBus;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
         private ConcurrentDictionary<Type, object> _repositories;
 
-        public MongoUnitOfWorkAsync(MongoContext dbContext, IDomainEventBus domainEventBus)
+        public MongoUnitOfWorkAsync(MongoContext dbContext, IDomainEventDispatcher domainEventDispatcher)
         {
             _dbContext = dbContext;
-            _domainEventBus = domainEventBus;
+            _domainEventDispatcher = domainEventDispatcher;
         }
 
         public virtual IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot
         {
             if (_repositories == null) _repositories = new ConcurrentDictionary<Type, object>();
             var type = typeof(TEntity);
-            if (!_repositories.ContainsKey(type)) _repositories[type] = new MongoRepositoryAsync<TEntity>(_dbContext, _domainEventBus);
+            if (!_repositories.ContainsKey(type)) _repositories[type] = new MongoRepositoryAsync<TEntity>(_dbContext, _domainEventDispatcher);
 
             return (IRepositoryAsync<TEntity>)_repositories[type];
         }
@@ -34,12 +34,14 @@ namespace NetCoreKit.Infrastructure.Mongo
 
         public int SaveChanges()
         {
-            throw new NotImplementedException();
+            // we do nothing
+            return 1;
         }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            // we do nothing
+            return Task.FromResult(1);
         }
     }
 }

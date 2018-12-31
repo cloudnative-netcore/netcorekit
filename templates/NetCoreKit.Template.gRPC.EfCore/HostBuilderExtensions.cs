@@ -68,7 +68,7 @@ namespace NetCoreKit.Template.gRPC.EfCore
                             services.AddGenericRepository();
                         }
 
-                        services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
+                        services.AddSingleton<IDomainEventDispatcher, MemoryDomainEventDispatcher>();
 
                         Mapper.Initialize(cfg => cfg.AddProfiles(config.LoadFullAssemblies()));
                         services.AddMediatR(config.LoadFullAssemblies().ToArray());

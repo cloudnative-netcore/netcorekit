@@ -58,7 +58,7 @@ namespace NetCoreKit.Template.Rest.EfCore
 
                 services.AddRestClientCore();
 
-                services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
+                services.AddSingleton<IDomainEventDispatcher, MemoryDomainEventDispatcher>();
 
                 services.AddAutoMapperCore(config.LoadFullAssemblies());
                 services.AddMediatRCore(config.LoadFullAssemblies());

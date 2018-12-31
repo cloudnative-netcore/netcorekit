@@ -9,12 +9,12 @@ namespace NetCoreKit.Infrastructure.Mongo
     public class MongoRepositoryAsync<TEntity> : IMongoQueryRepository<TEntity>, IRepositoryAsync<TEntity>
         where TEntity : IAggregateRoot
     {
-        private readonly IDomainEventBus _domainEventBus;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public MongoRepositoryAsync(MongoContext dbContext, IDomainEventBus domainEventBus)
+        public MongoRepositoryAsync(MongoContext dbContext, IDomainEventDispatcher domainEventDispatcher)
         {
             DbContext = dbContext;
-            _domainEventBus = domainEventBus;
+            _domainEventDispatcher = domainEventDispatcher;
         }
 
         public MongoContext DbContext { get; }
@@ -76,7 +76,7 @@ namespace NetCoreKit.Infrastructure.Mongo
             var events = entity.GetUncommittedEvents().ToArray();
             if (events.Length > 0)
                 foreach (var domainEvent in events)
-                    await _domainEventBus.Publish(new EventEnvelope(domainEvent));
+                    await _domainEventDispatcher.Dispatch(new EventEnvelope(domainEvent));
         }
     }
 }

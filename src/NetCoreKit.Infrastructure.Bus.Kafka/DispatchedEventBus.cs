@@ -39,7 +39,7 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
         public async Task PublishAsync<TMessage>(TMessage @event, params string[] topics)
             where TMessage : IMessage<TMessage>
         {
-            if (topics.Length <= 0) throw new CoreException("[NCK] Publish - Topic to publish should be at least one.");
+            if (topics.Length <= 0) throw new CoreException("[NCK] Dispatch - Topic to publish should be at least one.");
 
             using (var producer = new Producer<Null, TMessage>(
                 ConstructConfig(_brokerList, true),
@@ -53,23 +53,23 @@ namespace NetCoreKit.Infrastructure.Bus.Kafka
                         result.ContinueWith(task =>
                         {
                             if (task.Result.Error.HasError)
-                                Console.WriteLine($"[NCK] Publish - IS ERROR RESULT {result.Result.Error.Reason}");
+                                Console.WriteLine($"[NCK] Dispatch - IS ERROR RESULT {result.Result.Error.Reason}");
                             else
-                                Console.WriteLine("[NCK] Publish - Delivered {0}\nPartition: {0}, Offset: {1}",
+                                Console.WriteLine("[NCK] Dispatch - Delivered {0}\nPartition: {0}, Offset: {1}",
                                     task.Result.Value,
                                     task.Result.Partition, task.Result.Offset);
 
                             if (task.IsFaulted)
-                                Console.WriteLine("[NCK] Publish - IS FAULTED");
+                                Console.WriteLine("[NCK] Dispatch - IS FAULTED");
 
                             if (task.Exception != null)
                                 Console.WriteLine(result.Exception?.Message);
 
                             if (task.IsCanceled)
-                                Console.WriteLine("[NCK] Publish - IS CANCELLED");
+                                Console.WriteLine("[NCK] Dispatch - IS CANCELLED");
                         }));
 
-                    Console.WriteLine($"[NCK] Publish - Events are writted to Kafka. Topic name: {topic}.");
+                    Console.WriteLine($"[NCK] Dispatch - Events are writted to Kafka. Topic name: {topic}.");
 
                     producer.Flush(TimeSpan.FromSeconds(10));
                 }

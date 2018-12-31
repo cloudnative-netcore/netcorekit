@@ -20,9 +20,9 @@ namespace NetCoreKit.Domain
         Task<TResult> Handle(TEvent request, CancellationToken cancellationToken);
     }
 
-    public interface IDomainEventBus : IDisposable
+    public interface IDomainEventDispatcher : IDisposable
     {
-        Task Publish(IEvent @event);
+        Task Dispatch(IEvent @event);
     }
 
     public abstract class EventBase : IEvent
@@ -41,13 +41,13 @@ namespace NetCoreKit.Domain
         public IEvent Event { get; }
     }
 
-    public class MemoryDomainEventBus : IDomainEventBus
+    public class MemoryDomainEventDispatcher : IDomainEventDispatcher
     {
         public void Dispose()
         {
         }
 
-        public Task Publish(IEvent @event)
+        public Task Dispatch(IEvent @event)
         {
             return Task.CompletedTask;
         }

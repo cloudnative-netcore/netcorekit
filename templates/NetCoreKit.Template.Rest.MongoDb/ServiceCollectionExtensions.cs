@@ -45,7 +45,7 @@ namespace NetCoreKit.Template.Rest.MongoDb
 
                 services.AddRestClientCore();
 
-                services.AddSingleton<IDomainEventBus, MemoryDomainEventBus>();
+                services.AddSingleton<IDomainEventDispatcher, MemoryDomainEventDispatcher>();
 
                 services.AddAutoMapperCore(config.LoadFullAssemblies());
                 services.AddMediatRCore(config.LoadFullAssemblies());

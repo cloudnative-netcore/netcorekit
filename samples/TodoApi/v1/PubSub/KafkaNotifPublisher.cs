@@ -26,12 +26,12 @@ namespace NetCoreKit.Samples.TodoAPI.v1.Services
       if (notify.Event is ProjectCreated created)
       {
         _logger.LogInformation("[NCK] Start to publish ProjectCreatedMsg.");
-        await _eventBus.Publish(created.MapTo<ProjectCreated, ProjectCreatedMsg>(), "project-created");
+        await _eventBus.Dispatch(created.MapTo<ProjectCreated, ProjectCreatedMsg>(), "project-created");
       }
       else if(notify.Event is TaskCreated taskCreated)
       {
         _logger.LogInformation("[NCK] Start to publish TaskCreatedMsg.");
-        await _eventBus.Publish(taskCreated.MapTo<TaskCreated, TaskCreatedMsg>(), "task-created");
+        await _eventBus.Dispatch(taskCreated.MapTo<TaskCreated, TaskCreatedMsg>(), "task-created");
       }
     }
   }
