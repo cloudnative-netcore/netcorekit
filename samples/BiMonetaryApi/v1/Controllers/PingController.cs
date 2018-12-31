@@ -3,7 +3,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
 
-namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
+namespace NetCoreKit.Samples.BiMonetaryApi.v1.Controllers
 {
     [Route("api/ping")]
     [ApiController]

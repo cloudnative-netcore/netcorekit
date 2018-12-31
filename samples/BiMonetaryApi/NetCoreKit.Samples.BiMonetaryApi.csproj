@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rpc\" />
+    <Folder Include="v1\Grpc\" />
   </ItemGroup>
 
 </Project>

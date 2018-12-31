@@ -1,10 +1,13 @@
 #!/bin/bash
 set -ex
 
-PROJ_DIR=`pwd`
+ROOT_DIR=`pwd`
+SERVICE_DIR=${ROOT_DIR}/samples/BiMonetaryApi
+
 GRPC_PATH=${HOME}/.nuget/packages/grpc.tools/1.17.1/tools/linux_x64
-PROTO_PATH=${PROJ_DIR}/../../_protos/v1
-OUTPUT_PATH=${PROJ_DIR}/../Rpc
+PROTO_PATH=${ROOT_DIR}/samples/_protos/v1
+OUTPUT_PATH=${SERVICE_DIR}/v1/Grpc
+PROTO_FILE=bimonetary.proto
 
 $GRPC_PATH/protoc -I $PROTO_PATH -I /usr/local/include \
     --csharp_out $OUTPUT_PATH \
