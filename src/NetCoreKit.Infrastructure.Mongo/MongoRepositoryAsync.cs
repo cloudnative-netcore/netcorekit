@@ -9,9 +9,12 @@ namespace NetCoreKit.Infrastructure.Mongo
     public class MongoRepositoryAsync<TEntity> : IMongoQueryRepository<TEntity>, IRepositoryAsync<TEntity>
         where TEntity : IAggregateRoot
     {
-        public MongoRepositoryAsync(MongoContext dbContext)
+        private readonly IDomainEventBus _domainEventBus;
+
+        public MongoRepositoryAsync(MongoContext dbContext, IDomainEventBus domainEventBus)
         {
             DbContext = dbContext;
+            _domainEventBus = domainEventBus;
         }
 
         public MongoContext DbContext { get; }
@@ -22,6 +25,7 @@ namespace NetCoreKit.Infrastructure.Mongo
                 .Collection<TEntity>()
                 .Find(_ => true)
                 .ToListAsync();
+
             // we do a synchronous context here
             return result.Result.AsQueryable();
         }
@@ -29,6 +33,9 @@ namespace NetCoreKit.Infrastructure.Mongo
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             await DbContext.Collection<TEntity>().InsertOneAsync(entity);
+
+            await PublishDomainEventAsync(entity);
+
             return await FindOneAsync(entity.Id);
         }
 
@@ -37,6 +44,9 @@ namespace NetCoreKit.Infrastructure.Mongo
             await DbContext
                 .Collection<TEntity>()
                 .ReplaceOneAsync(n => n.Id.Equals(entity.Id), entity, new UpdateOptions {IsUpsert = true});
+
+            await PublishDomainEventAsync(entity);
+
             return await FindOneAsync(entity.Id);
         }
 
@@ -45,6 +55,9 @@ namespace NetCoreKit.Infrastructure.Mongo
             await DbContext
                 .Collection<TEntity>()
                 .DeleteOneAsync(Builders<TEntity>.Filter.Eq("Id", entity.Id));
+
+            await PublishDomainEventAsync(entity);
+
             return await FindOneAsync(entity.Id);
         }
 
@@ -56,6 +69,14 @@ namespace NetCoreKit.Infrastructure.Mongo
                 .Collection<TEntity>()
                 .Find(filter)
                 .FirstOrDefaultAsync();
+        }
+
+        private async Task PublishDomainEventAsync(TEntity entity)
+        {
+            var events = entity.GetUncommittedEvents().ToArray();
+            if (events.Length > 0)
+                foreach (var domainEvent in events)
+                    await _domainEventBus.Publish(new EventEnvelope(domainEvent));
         }
     }
 }

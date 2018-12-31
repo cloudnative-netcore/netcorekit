@@ -11,6 +11,11 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
 {
     public class Ticker : AggregateRootBase
     {
+        public Ticker()
+        {
+            AddEvent(new TokenCreated(Name));
+        }
+
         public string Name { get; set; }
         public string Symbol { get; set; }
         public int Rank { get; set; }
@@ -25,6 +30,16 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Controllers
         public string PercentChange7d { get; set; }
         public DateTime LastSyncWithService { get; set; }
         public string Link { get; set; }
+    }
+
+    public class TokenCreated : EventBase
+    {
+        public TokenCreated(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; } 
     }
 
     [Route("api/tickers")]
