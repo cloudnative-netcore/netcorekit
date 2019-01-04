@@ -15,9 +15,10 @@ using NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask;
 
 namespace NetCoreKit.Samples.TodoAPI.v1
 {
+    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/projects")]
-    public class ProjectController : Controller
+    public class ProjectController : ControllerBase
     {
         private readonly ILogger<ProjectController> _logger;
 

@@ -3,7 +3,7 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-    public class TaskUpdated : EventBase, INotification
+    public class TaskUpdated : EventBase
     {
     }
 }

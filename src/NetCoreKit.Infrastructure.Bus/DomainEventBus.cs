@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using MediatR;
 using NetCoreKit.Domain;
-using NetCoreKit.Infrastructure.Mappers;
 
 namespace NetCoreKit.Infrastructure.Bus
 {
@@ -16,7 +15,7 @@ namespace NetCoreKit.Infrastructure.Bus
 
         public async Task Dispatch(IEvent @event)
         {
-            await _mediator.Publish(@event.MapTo<IEvent, INotification>());
+            await _mediator.Publish(new NotificationEnvelope(@event));
         }
 
         public void Dispose()

@@ -1,10 +1,9 @@
 using System;
-using MediatR;
 using NetCoreKit.Domain;
 
 namespace NetCoreKit.Samples.TodoAPI.Domain
 {
-    public class TaskCreated : EventBase, INotification
+    public class TaskCreated : EventBase
     {
         public TaskCreated(Guid id, string title, Guid projectId)
         {

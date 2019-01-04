@@ -76,7 +76,7 @@ namespace NetCoreKit.Infrastructure.Mongo
             var events = entity.GetUncommittedEvents().ToArray();
             if (events.Length > 0)
                 foreach (var domainEvent in events)
-                    await _domainEventDispatcher.Dispatch(new EventEnvelope(domainEvent));
+                    await _domainEventDispatcher.Dispatch(domainEvent);
         }
     }
 }

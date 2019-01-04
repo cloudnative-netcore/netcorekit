@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -21,40 +20,35 @@ namespace NetCoreKit.Infrastructure.Bus.Redis
             _logger = factory.CreateLogger<DispatchedEventBus>();
         }
 
-        public async Task PublishAsync<TMessage>(TMessage msg, params string[] topics)
+        public async Task PublishAsync<TMessage>(TMessage msg, params string[] channels)
             where TMessage : IMessage<TMessage>
         {
             var redis = _redisStore.RedisCache;
             var pub = redis.Multiplexer.GetSubscriber();
 
-            foreach (var topic in topics)
+            foreach (var channel in channels)
             {
-                _logger.LogInformation($"[NCK: {topic}] Publishing the message...");
-                await pub.PublishAsync(topic, msg.ToByteString().ToByteArray());
+                _logger.LogInformation($"[NCK: {channel}] Publishing the message...");
+                await pub.PublishAsync(channel, msg.ToByteString().ToByteArray());
             }
         }
 
-        public async Task SubscribeAsync<TMessage>(params string[] topics) where TMessage : IMessage<TMessage>, new()
+        public async Task SubscribeAsync<TMessage>(params string[] channels) where TMessage : IMessage<TMessage>, new()
         {
             var redis = _redisStore.RedisCache;
             var sub = redis.Multiplexer.GetSubscriber();
 
-            foreach (var topic in topics)
-                await sub.SubscribeAsync(topic, async (channel, message) =>
+            foreach (var channel in channels)
+                await sub.SubscribeAsync(channel, async (_, message) =>
                 {
-                    _logger.LogInformation($"[NCK: {topic}] Subscribing to the message...");
+                    _logger.LogInformation($"[NCK: {channel}] Subscribe to ${nameof(message)} message.");
                     var msg = (TMessage)Activator.CreateInstance(typeof(TMessage));
                     msg.MergeFrom(message);
-                    var keyField = msg.Descriptor.FindFieldByName("Key");
-                    var key = keyField.Accessor.GetValue(msg);
 
                     using (var scope = _serviceProvider.CreateScope())
                     {
-                        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
                         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-                        var notify = msg.ToNotification(config, key.ToString());
-                        await mediator.Publish(notify);
+                        await mediator.Publish(new MessageEnvelope<TMessage>(msg));
                     }
                 });
         }
