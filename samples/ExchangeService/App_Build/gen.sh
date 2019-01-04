@@ -1,13 +1,13 @@
 #!/bin/bash
 set -ex
 
-ROOT_DIR=`pwd`
-SERVICE_DIR=${ROOT_DIR}/samples/ExchangeService
+readonly ROOT_DIR=`pwd`
+readonly SERVICE_DIR=${ROOT_DIR}/samples/ExchangeService
 
-GRPC_PATH=${HOME}/.nuget/packages/grpc.tools/1.17.1/tools/linux_x64
-PROTO_PATH=${ROOT_DIR}/samples/_protos/v1
-OUTPUT_PATH=${SERVICE_DIR}/v1/Grpc
-PROTO_FILE=bimonetary.proto
+readonly GRPC_PATH=${HOME}/.nuget/packages/grpc.tools/1.17.1/tools/linux_x64
+readonly PROTO_PATH=${ROOT_DIR}/samples/_protos/v1
+readonly OUTPUT_PATH=${SERVICE_DIR}/v1/Grpc
+readonly PROTO_FILE=bimonetary.proto
 
 cd `$SERVICE_DIR/App_Build`
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Host.gRPC;
 using NetCoreKit.Samples.ExchangeService.v1.Services;
 using NetCoreKit.Template.gRPC.Standard;
+using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Samples.ExchangeService
 {
@@ -34,11 +35,11 @@ namespace NetCoreKit.Samples.ExchangeService
         protected override Server ConfigureServer()
         {
             var host = Config["Hosts:Local:Host"];
-            var port = int.Parse(Config["Hosts:Local:Port"]);
+            var port = Config["Hosts:Local:Port"].ConvertTo<int>();
 
             if (!_env.IsDevelopment())
             {
-                port = Convert.ToInt32(Environment.GetEnvironmentVariable("EXCHANGE_SERVICE_HOST"));
+                port = Environment.GetEnvironmentVariable("EXCHANGE_SERVICE_HOST").ConvertTo<int>();
             }
 
             var server = new Server

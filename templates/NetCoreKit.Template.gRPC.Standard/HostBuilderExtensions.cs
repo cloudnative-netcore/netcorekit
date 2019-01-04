@@ -15,7 +15,7 @@ namespace NetCoreKit.Template.gRPC.Standard
     {
         public static IHost ConfigureDefaultSettings(this HostBuilder hostBuilder,
             string[] args,
-            Action<IServiceCollection> moreRegisterAction)
+            Action<IServiceCollection> moreRegisterAction = null)
         {
             return hostBuilder
                 .ConfigureHostConfiguration(configHost =>

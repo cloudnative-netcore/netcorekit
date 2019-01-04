@@ -35,8 +35,8 @@ namespace NetCoreKit.Samples.BiMonetaryApi.Rpc {
             "Cg9FeGNoYW5nZVNlcnZpY2USQwoMR2V0VG9rZW5JbmZvEhguQmlNb25ldGFy",
             "eS5Ub2tlblJlcXVlc3QaGS5CaU1vbmV0YXJ5LlRva2VuUmVzcG9uc2USOAoE",
             "UGluZxIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoYLkJpTW9uZXRhcnkuUGlu",
-            "Z1Jlc3BvbnNlQieqAiROZXRDb3JlS2l0LlNhbXBsZXMuQmlNb25ldGFyeUFw",
-            "aS5ScGNiBnByb3RvMw=="));
+            "Z1Jlc3BvbnNlQilIAaoCJE5ldENvcmVLaXQuU2FtcGxlcy5CaU1vbmV0YXJ5",
+            "QXBpLlJwY2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {

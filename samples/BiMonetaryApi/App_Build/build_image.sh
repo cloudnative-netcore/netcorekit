@@ -1,8 +1,8 @@
 #!/bin/sh
 set -ex
 
-TAG=${TAG:=$(git rev-parse --short HEAD)}
-NAMESPACE=${NAMESPACE:="vndg"}
+readonly TAG=${TAG:=$(git rev-parse --short HEAD)}
+readonly NAMESPACE=${NAMESPACE:="vndg"}
 
 echo "namespace: ${NAMESPACE} and tag: ${TAG}"
 echo "start to build BiMonetaryApi..."

@@ -18,7 +18,8 @@ namespace NetCoreKit.Template.gRPC.MongoDb
     {
         public static IHost ConfigureDefaultSettings(this HostBuilder hostBuilder,
             string[] args,
-            Action<IServiceCollection> moreRegisterAction)
+            Action<IServiceCollection> preDbWorkHook = null,
+            Action<IServiceCollection> moreRegisterAction = null)
         {
             return hostBuilder
                 .ConfigureHostConfiguration(configHost =>
@@ -52,6 +53,8 @@ namespace NetCoreKit.Template.gRPC.MongoDb
                         {
                             if (feature.IsEnabled("EfCore"))
                                 throw new Exception("Should turn off EfCore settings.");
+
+                            preDbWorkHook?.Invoke(services);
                             services.AddMongoDb();
                         }
 

@@ -20,7 +20,8 @@ namespace NetCoreKit.Template.gRPC.EfCore
     {
         public static IHost ConfigureDefaultSettings<TDbContext>(this HostBuilder hostBuilder,
             string[] args,
-            Action<IServiceCollection> moreRegisterAction)
+            Action<IServiceCollection> preDbWorkHook = null,
+            Action<IServiceCollection> moreRegisterAction = null)
             where TDbContext : DbContext
         {
             return hostBuilder
@@ -55,6 +56,8 @@ namespace NetCoreKit.Template.gRPC.EfCore
                         {
                             if (feature.IsEnabled("Mongo"))
                                 throw new Exception("Should turn off MongoDb settings.");
+
+                            preDbWorkHook?.Invoke(services);
 
                             services.AddDbContextPool<TDbContext>((sp, o) =>
                             {
