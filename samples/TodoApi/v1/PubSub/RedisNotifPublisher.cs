@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Mappers;
-using NetCoreKit.Samples.Contracts.TodoApi;
+using NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using Task = System.Threading.Tasks.Task;
 

@@ -26,7 +26,7 @@ If you liked the project or if `netcorekit` helped you, please give a star so th
 - [x] Resilience and health check out of the box.
 - [x] MessagePack for WebAPI and gRPC for internal services.
 - [x] Easy for configuration management.
-- [x] API versioning from Docker container to WebAPI. 
+- [x] API versioning from Docker container to WebAPI.
 - [x] Documentation template with OpenAPI documentation.
 - [x] Work natively with Kubernetes or even with Service Mesh(Istio).
 
@@ -93,6 +93,10 @@ public class Startup
 
 - Read [Get starting](https://github.com/cloudnative-netcore/netcorekit/wiki/Get-Started) section and [Play with Kubernetes](https://github.com/cloudnative-netcore/netcorekit/wiki/Deploy-on-k8s-on-local) section to know more about this cloud-native toolkit.
 - More advance usage is at [Coolstore Microservices](https://github.com/vietnam-devs/coolstore-microservices) project.
+
+### Microservice architecture
+
+![msa_architecture](artwork/msa_architecture.png?raw=true 'msa_architecture')
 
 ### Contributing
 

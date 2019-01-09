@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace NetCoreKit.Samples.Contracts.TodoApi {
+namespace NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc {
 
   /// <summary>Holder for reflection information generated from project.proto</summary>
   public static partial class ProjectReflection {
@@ -30,13 +30,13 @@ namespace NetCoreKit.Samples.Contracts.TodoApi {
             "KAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInsKDlRhc2tDcmVhdGVk",
             "TXNnEgsKA0tleRgBIAEoCRIKCgJJZBgCIAEoCRINCgVUaXRsZRgDIAEoCRIR",
             "CglQcm9qZWN0SWQYBCABKAkSLgoKT2NjdXJyZWRPbhgFIAEoCzIaLmdvb2ds",
-            "ZS5wcm90b2J1Zi5UaW1lc3RhbXBCJ6oCJE5ldENvcmVLaXQuU2FtcGxlcy5D",
-            "b250cmFjdHMuVG9kb0FwaWIGcHJvdG8z"));
+            "ZS5wcm90b2J1Zi5UaW1lc3RhbXBCL6oCLE5ldENvcmVLaXQuU2FtcGxlcy5D",
+            "b250cmFjdHMuVG9kb0FwaS52MS5HcnBjYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.Contracts.TodoApi.ProjectCreatedMsg), global::NetCoreKit.Samples.Contracts.TodoApi.ProjectCreatedMsg.Parser, new[]{ "Key", "Id", "Name", "OccurredOn" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.Contracts.TodoApi.TaskCreatedMsg), global::NetCoreKit.Samples.Contracts.TodoApi.TaskCreatedMsg.Parser, new[]{ "Key", "Id", "Title", "ProjectId", "OccurredOn" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.ProjectCreatedMsg), global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.ProjectCreatedMsg.Parser, new[]{ "Key", "Id", "Name", "OccurredOn" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.TaskCreatedMsg), global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.TaskCreatedMsg.Parser, new[]{ "Key", "Id", "Title", "ProjectId", "OccurredOn" }, null, null, null)
           }));
     }
     #endregion
@@ -51,7 +51,7 @@ namespace NetCoreKit.Samples.Contracts.TodoApi {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NetCoreKit.Samples.Contracts.TodoApi.ProjectReflection.Descriptor.MessageTypes[0]; }
+      get { return global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.ProjectReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -270,7 +270,7 @@ namespace NetCoreKit.Samples.Contracts.TodoApi {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::NetCoreKit.Samples.Contracts.TodoApi.ProjectReflection.Descriptor.MessageTypes[1]; }
+      get { return global::NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc.ProjectReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

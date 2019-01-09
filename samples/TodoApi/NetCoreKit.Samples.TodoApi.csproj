@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Rpc\" />
+    <Folder Include="v1\Grpc\" />
   </ItemGroup>
 
 </Project>

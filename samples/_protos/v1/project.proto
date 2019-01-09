@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package TodoApi;
 
-option csharp_namespace = "NetCoreKit.Samples.Contracts.TodoApi";
+option csharp_namespace = "NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc";
 
 import "google/protobuf/timestamp.proto";
 
