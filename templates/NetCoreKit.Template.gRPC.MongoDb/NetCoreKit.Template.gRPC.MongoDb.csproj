@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Template.gRPC.MongoDb</id>
@@ -27,6 +27,7 @@
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="Grpc" Version="1.17.1" />
     <PackageReference Include="Grpc.Reflection" Version="1.17.1" />
+    <PackageReference Include="Grpc.HealthCheck" Version="1.17.1" />
     <PackageReference Include="Google.Api.Gax.Grpc" Version="2.5.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
@@ -40,9 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj"  />
-    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Host.gRPC\NetCoreKit.Infrastructure.Host.gRPC.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
   </ItemGroup>
 
 </Project>
