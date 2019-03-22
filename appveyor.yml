@@ -1,0 +1,42 @@
+image: Visual Studio 2017
+
+branches:
+  only:
+  - master
+
+init:
+  - git config --global core.autocrlf true
+
+pull_requests:
+  # Do not increment build number for pull requests
+  do_not_increment_build_number: true
+
+nuget:
+  # Do not publish for pull requests
+  disable_publish_on_pr: true
+
+environment:
+  # Set the DOTNET_SKIP_FIRST_TIME_EXPERIENCE environment variable to stop wasting time caching packages
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending usage data to Microsoft
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+assembly_info:
+  patch: false
+
+configuration:
+  - Debug
+
+before_build:
+  # - ps: choco install dotnetcore-sdk --no-progress --confirm --version 2.2.0
+  # Display .NET Core version
+  - cmd: dotnet --version
+  # Display minimal restore text
+  - cmd: dotnet restore --verbosity m
+
+build_script:
+  - ps: ./build.ps1
+
+test: off
+
+skip_tags: true

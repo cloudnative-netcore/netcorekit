@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <id>NetCoreKit.Infrastructure.AspNetCore.CleanArch</id>
+    <version>0.0.0</version>
+	  <Title>The Clean Architecture library for Cloud Native .NET Core Kit.</Title>
+	  <Description>Helps to organize a service structure and architecture according to Clean Architecture.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="System.Reactive" Version="4.2.0-preview.63" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
