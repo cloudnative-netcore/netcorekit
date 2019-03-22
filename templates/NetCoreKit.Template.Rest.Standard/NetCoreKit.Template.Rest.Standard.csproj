@@ -3,14 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Rest.Standard</id>
     <version>0.0.0</version>
-    <Title>The standard template for NetCoreKit which is no storage built-in.</Title>
-    <Description>This template needs for some of host which is only for computing or running background job.</Description>
+    <id>NetCoreKit.Template.Rest.Standard</id>
     <PackageId>NetCoreKit.Template.Rest.Standard</PackageId>
-    <PackageTags>cloud-native standard-template web-development</PackageTags>
     <RootNamespace>NetCoreKit.Template.Rest.Standard</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Rest.Standard</AssemblyName>
+    <Title>The standard template for NetCoreKit which is no storage built-in.</Title>
+    <Description>This template needs for some of host which is only for computing or running background job.</Description>
+    <PackageTags>cloud-native standard-template web-development</PackageTags>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>

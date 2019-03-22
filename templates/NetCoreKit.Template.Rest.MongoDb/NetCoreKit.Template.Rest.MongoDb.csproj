@@ -3,14 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Rest.MongoDb</id>
     <version>0.0.0</version>
-    <Title>The MongoDb template for NetCoreKit which has MongoDb includes generic repository, open API, authentication and much more.</Title>
-    <Description>This template needs for the host which intents to use MongoDb in mind.</Description>
+    <id>NetCoreKit.Template.Rest.MongoDb</id>
     <PackageId>NetCoreKit.Template.Rest.MongoDb</PackageId>
-    <PackageTags>cloud-native mongodb-template web-development</PackageTags>
     <RootNamespace>NetCoreKit.Template.Rest.MongoDb</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Rest.MongoDb</AssemblyName>
+    <Title>The MongoDb template for NetCoreKit which has MongoDb includes generic repository, open API, authentication and much more.</Title>
+    <Description>This template needs for the host which intents to use MongoDb in mind.</Description>
+    <PackageTags>cloud-native mongodb-template web-development</PackageTags>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>

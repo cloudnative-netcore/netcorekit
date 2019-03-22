@@ -3,14 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Grpc.MongoDb</id>
     <version>0.0.0</version>
-    <Title>The MongoDb gRPC Service template.</Title>
-    <Description>This template is for a standard server (microservice) using gRPC protocol with MongoDb.</Description>
+    <id>NetCoreKit.Template.Grpc.MongoDb</id>
     <PackageId>NetCoreKit.Template.Grpc.MongoDb</PackageId>
-    <PackageTags>cloud-native grpc-mongodb-template web-development</PackageTags>
     <RootNamespace>NetCoreKit.Template.Grpc.MongoDb</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Grpc.MongoDb</AssemblyName>
+    <Title>The MongoDb gRPC Service template.</Title>
+    <Description>This template is for a standard server (microservice) using gRPC protocol with MongoDb.</Description>
+    <PackageTags>cloud-native grpc-mongodb-template web-development</PackageTags>
     <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>

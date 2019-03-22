@@ -3,17 +3,17 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Grpc.Standard</id>
     <version>0.0.0</version>
-    <Title>The Standard gRPC Service template.</Title>
-    <Description>This template is for a standard server (microservice) using gRPC protocol.</Description>
-    <OutputType>Library</OutputType>
-    <PackageId>NetCoreKit.Template.gRPC.Standard</PackageId>
-    <PackageTags>cloud-native grpc-standard-template web-development</PackageTags>
+    <id>NetCoreKit.Template.Grpc.Standard</id>
+    <PackageId>NetCoreKit.Template.Grpc.Standard</PackageId>
     <RootNamespace>NetCoreKit.Template.Grpc.Standard</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Grpc.Standard</AssemblyName>
+    <Title>The Standard gRPC Service template.</Title>
+    <Description>This template is for a standard server (microservice) using gRPC protocol.</Description>
+    <PackageTags>cloud-native grpc-standard-template web-development</PackageTags>
     <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,14 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Rest.EfCore</id>
     <version>0.0.0</version>
-    <Title>The EfCore template for NetCoreKit which has EfCore (SQL Server, MySQL, and SQLite providers) includes generic repository, open API, authentication and much more.</Title>
-    <Description>This template needs for the host which intents to use RDBMS with EfCore in mind.</Description>
-    <PackageTags>cloud-native efcore-template web-development</PackageTags>
+    <id>NetCoreKit.Template.Rest.EfCore</id>
     <PackageId>NetCoreKit.Template.Rest.EfCore</PackageId>
     <RootNamespace>NetCoreKit.Template.Rest.EfCore</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Rest.EfCore</AssemblyName>
+    <Title>The EfCore template for NetCoreKit which has EfCore (SQL Server, MySQL, and SQLite providers) includes generic repository, open API, authentication and much more.</Title>
+    <Description>This template needs for the host which intents to use RDBMS with EfCore in mind.</Description>
+    <PackageTags>cloud-native efcore-template web-development</PackageTags>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>

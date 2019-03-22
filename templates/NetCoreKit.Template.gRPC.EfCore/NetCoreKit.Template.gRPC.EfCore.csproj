@@ -3,15 +3,14 @@
   <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.Grpc.EfCore</id>
     <version>0.0.0</version>
-    <Title>The EfCore gRPC Service template.</Title>
-    <Description>This template is for a standard server (microservice) using gRPC protocol with EfCore.</Description>
-    <Authors>Thang Chung</Authors>
+    <id>NetCoreKit.Template.Grpc.EfCore</id>
     <PackageId>NetCoreKit.Template.Grpc.EfCore</PackageId>
-    <PackageTags>cloud-native grpc-efcore-template web-development</PackageTags>
     <RootNamespace>NetCoreKit.Template.Grpc.EfCore</RootNamespace>
     <AssemblyName>NetCoreKit.Template.Grpc.EfCore</AssemblyName>
+    <Title>The EfCore gRPC Service template.</Title>
+    <Description>This template is for a standard server (microservice) using gRPC protocol with EfCore.</Description>
+    <PackageTags>cloud-native grpc-efcore-template web-development</PackageTags>
     <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
