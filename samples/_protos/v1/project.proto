@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package TodoApi;
+
+option csharp_namespace = "NetCoreKit.Samples.Contracts.TodoApi.v1.Grpc";
+
+import "google/protobuf/timestamp.proto";
+
+message ProjectCreatedMsg {
+  string Key = 1;
+  string Id = 2;
+  string Name = 3;
+  google.protobuf.Timestamp OccurredOn = 4;
+}
+
+message TaskCreatedMsg {
+  string Key = 1;
+  string Id = 2;
+  string Title = 3;
+  string ProjectId = 4;
+  google.protobuf.Timestamp OccurredOn = 5;
+}

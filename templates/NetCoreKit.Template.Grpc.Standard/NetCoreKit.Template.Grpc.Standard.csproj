@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <version>0.0.0</version>
+    <id>NetCoreKit.Template.Grpc.Standard</id>
+    <PackageId>NetCoreKit.Template.Grpc.Standard</PackageId>
+    <RootNamespace>NetCoreKit.Template.Grpc.Standard</RootNamespace>
+    <AssemblyName>NetCoreKit.Template.Grpc.Standard</AssemblyName>
+    <Title>The Standard gRPC Service template.</Title>
+    <Description>This template is for a standard server (microservice) using gRPC protocol.</Description>
+    <PackageTags>cloud-native grpc-standard-template web-development</PackageTags>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Grpc" Version="1.17.1" />
+    <PackageReference Include="Grpc.Reflection" Version="1.17.1" />
+    <PackageReference Include="Grpc.HealthCheck" Version="1.17.1" />
+    <PackageReference Include="Google.Api.Gax.Grpc" Version="2.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

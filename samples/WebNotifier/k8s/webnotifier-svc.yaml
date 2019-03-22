@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webnotifier
+  namespace: netcorekit
+  labels:
+    app: webnotifier
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 32503
+    protocol: TCP
+    name: http
+  type: NodePort
+  selector:
+    app: webnotifier

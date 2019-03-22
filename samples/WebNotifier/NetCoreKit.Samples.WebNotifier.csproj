@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RunCommand>dotnet</RunCommand>
+    <RunArguments>blazor serve</RunArguments>
+    <LangVersion>7.3</LangVersion>
+    <AssemblyName>WebNotifier</AssemblyName>
+    <RootNamespace>WebNotifier</RootNamespace>
+    <TieredCompilation>true</TieredCompilation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor.Extensions.SignalR" Version="0.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.7.0" />
+    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include=".\Env\config.dev.json" Condition="'$(Configuration)' == 'Debug'">
+      <LogicalName>config.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include=".\Env\config.prod.json" Condition="'$(Configuration)' == 'Release'">
+      <LogicalName>config.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package BiMonetary;
+
+option csharp_namespace = "NetCoreKit.Samples.BiMonetaryApi.Rpc";
+
+import "google/protobuf/empty.proto";
+
+service ExchangeService {
+    rpc GetTokenInfo(TokenRequest) returns (TokenResponse);
+    rpc Ping(google.protobuf.Empty) returns (PingResponse);
+}
+
+message TokenRequest {
+    string Symbol = 1;
+}
+
+message TokenResponse {
+    int32 Rank = 1;
+    double PriceUsd = 2;
+    double PriceBtc = 3;
+    double Volumn24hUsd = 4;
+    double MarketCapUsd = 5;
+    double AvailableSupply = 6;
+    double TotalSupply = 7;
+    string PercentChange1h = 8;
+    string PercentChange24h = 9;
+    string PercentChange7d = 10;
+}
+
+message PingResponse {
+    bool Result = 1;
+}

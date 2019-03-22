@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bimonetary-api-v1
+  namespace: netcorekit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bimonetary-api
+        version: v1
+    spec:
+      containers:
+      - name: bimonetary-api
+        image: vndg/bimonetary-api:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: Hosts__BasePath
+          value: /
+        - name: Features__Mongo__ConnString
+          value: mongodb://mongodb:27017
+        - name: RpcClients__ExchangeService
+          value: exchange:5000
+        resources:
+          requests:
+            cpu: 200m
+            memory: 64Mi
+          limits:
+            cpu: 300m
+            memory: 128Mi
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10

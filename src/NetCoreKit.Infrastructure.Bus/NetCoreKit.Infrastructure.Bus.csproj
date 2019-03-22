@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
+
+  <PropertyGroup>
+    <id>NetCoreKit.Infrastructure.Bus</id>
+    <version>0.0.0</version>
+    <AssemblyName>NetCoreKit.Infrastructure.Bus</AssemblyName>
+    <RootNamespace>NetCoreKit.Infrastructure.Bus</RootNamespace>
+    <Title>The bus infrastructure library for Cloud Native .NET Core Kit.</Title>
+    <Description>Supports a very abstraction of the in-memory and utilities for working with the bus.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="System.Reactive" Version="4.2.0-preview.63" />
+    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
+    <ProjectReference Include="..\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
