@@ -10,7 +10,9 @@ The goal of this project is implement the most common used cloud-native technolo
 
 ## Give a Star! :star:
 
-If you liked the project or if `netcorekit` helped you, please give a star so that .NET community will know and help them just like you. Thank you very much :+1:
+If you liked `netcorekit` project or if it helped you, please give a star :star: for this repository. That will not only help strengthen our .NET community but also improve cloud-native apps development skills for .NET developers in around the world. Thank you very much :+1:
+
+Check out my [blog](https://medium.com/@thangchung) or say hi on [Twitter](https://twitter.com/thangchung)!
 
 ### Features
 
