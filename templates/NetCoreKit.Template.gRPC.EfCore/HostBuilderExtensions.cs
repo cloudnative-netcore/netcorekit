@@ -14,7 +14,7 @@ using NetCoreKit.Infrastructure.EfCore;
 using NetCoreKit.Infrastructure.EfCore.Db;
 using NetCoreKit.Infrastructure.Features;
 
-namespace NetCoreKit.Template.gRPC.EfCore
+namespace NetCoreKit.Template.Grpc.EfCore
 {
     public static class HostBuilderExtensions
     {

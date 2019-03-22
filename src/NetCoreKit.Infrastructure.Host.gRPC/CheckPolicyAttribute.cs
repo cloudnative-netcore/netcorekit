@@ -1,6 +1,6 @@
 using System;
 
-namespace NetCoreKit.Infrastructure.Host.gRPC
+namespace NetCoreKit.Infrastructure.Host.Grpc
 {
     public class CheckPolicyAttribute : Attribute
     {

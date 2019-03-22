@@ -1,25 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.gRPC.Standard</id>
+    <id>NetCoreKit.Template.Grpc.Standard</id>
     <version>0.0.0</version>
     <Title>The Standard gRPC Service template.</Title>
     <Description>This template is for a standard server (microservice) using gRPC protocol.</Description>
-    <Authors>Thang Chung</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <PackageId>NetCoreKit.Template.gRPC.Standard</PackageId>
-    <PackageTags>cloud-native gRPC-standard-template web-development</PackageTags>
-    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>NetCoreKit.Template.gRPC.Standard</RootNamespace>
-    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
-    <AssemblyName>NetCoreKit.Template.gRPC.Standard</AssemblyName>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>cloud-native grpc-standard-template web-development</PackageTags>
+    <RootNamespace>NetCoreKit.Template.Grpc.Standard</RootNamespace>
+    <AssemblyName>NetCoreKit.Template.Grpc.Standard</AssemblyName>
     <LangVersion>latest</LangVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Host.gRPC\NetCoreKit.Infrastructure.Host.gRPC.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,13 +22,13 @@ var libs = new List<string>{
     "./src/NetCoreKit.Infrastructure.Bus/NetCoreKit.Infrastructure.Bus.csproj",
     "./src/NetCoreKit.Infrastructure.Bus.Kafka/NetCoreKit.Infrastructure.Bus.Kafka.csproj",
     "./src/NetCoreKit.Infrastructure.Bus.Redis/NetCoreKit.Infrastructure.Bus.Redis.csproj",
-    "./src/NetCoreKit.Infrastructure.Host.gRPC/NetCoreKit.Infrastructure.Host.gRPC.csproj",
+    "./src/NetCoreKit.Infrastructure.Host.Grpc/NetCoreKit.Infrastructure.Host.Grpc.csproj",
     "./templates/NetCoreKit.Template.Rest.Standard/NetCoreKit.Template.Rest.Standard.csproj",
     "./templates/NetCoreKit.Template.Rest.EfCore/NetCoreKit.Template.Rest.EfCore.csproj",
     "./templates/NetCoreKit.Template.Rest.MongoDb/NetCoreKit.Template.Rest.MongoDb.csproj",
-    "./templates/NetCoreKit.Template.gRPC.Standard/NetCoreKit.Template.gRPC.Standard.csproj",
-    "./templates/NetCoreKit.Template.gRPC.EfCore/NetCoreKit.Template.gRPC.EfCore.csproj",
-    "./templates/NetCoreKit.Template.gRPC.MongoDb/NetCoreKit.Template.gRPC.MongoDb.csproj"
+    "./templates/NetCoreKit.Template.Grpc.Standard/NetCoreKit.Template.Grpc.Standard.csproj",
+    "./templates/NetCoreKit.Template.Grpc.EfCore/NetCoreKit.Template.Grpc.EfCore.csproj",
+    "./templates/NetCoreKit.Template.Grpc.MongoDb/NetCoreKit.Template.Grpc.MongoDb.csproj"
 };
 
 Task("Clean")

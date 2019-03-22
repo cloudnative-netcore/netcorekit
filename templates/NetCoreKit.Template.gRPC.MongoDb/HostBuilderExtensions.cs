@@ -12,7 +12,7 @@ using NetCoreKit.Infrastructure;
 using NetCoreKit.Infrastructure.Features;
 using NetCoreKit.Infrastructure.Mongo;
 
-namespace NetCoreKit.Template.gRPC.MongoDb
+namespace NetCoreKit.Template.Grpc.MongoDb
 {
     public static class HostBuilderExtensions
     {

@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NetCoreKit.Utils.Extensions;
 
-namespace NetCoreKit.Infrastructure.Host.gRPC
+namespace NetCoreKit.Infrastructure.Host.Grpc
 {
     public class AuthNInterceptor : Interceptor
     {

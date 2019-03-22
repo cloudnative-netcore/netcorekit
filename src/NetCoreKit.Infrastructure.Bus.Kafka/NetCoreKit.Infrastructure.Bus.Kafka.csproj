@@ -1,20 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\build\packages.props" />
+
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.Bus.Kafka</id>
     <version>0.0.0</version>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>NetCoreKit.Infrastructure.Bus.Kafka</AssemblyName>
     <RootNamespace>NetCoreKit.Infrastructure.Bus.Kafka</RootNamespace>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Title>The kafka bus infrastructure library for Cloud Native .NET Core Kit.</Title>
     <Description>Supports Kafka Bus for NetCoreKit.Infrastructure.Bus.</Description>
-    <Authors>Thang Chung</Authors>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
-    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

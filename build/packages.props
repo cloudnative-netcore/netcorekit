@@ -1,0 +1,25 @@
+<Project>
+
+  <Import Project="common.props" />
+
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)netcorekit.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>netcorekit</Product>
+    <Authors>Thang Chung</Authors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
+	  <Copyright>Copyright (c) Thang Chung - 2019</Copyright>
+  </PropertyGroup>
+
+</Project>

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NetCoreKit.Infrastructure;
 
-namespace NetCoreKit.Template.gRPC.Standard
+namespace NetCoreKit.Template.Grpc.Standard
 {
     public static class HostBuilderExtensions
     {

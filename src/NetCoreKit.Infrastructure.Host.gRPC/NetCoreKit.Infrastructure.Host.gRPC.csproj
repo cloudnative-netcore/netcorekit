@@ -1,25 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Infrastructure.Host.gRPC</id>
+    <id>NetCoreKit.Infrastructure.Host.Grpc</id>
     <version>0.0.0</version>
     <Title>The generic host with gRPC protocol supports.</Title>
     <Description>This library contains some of utility tools that is to help for boost up the generic host with gRPC protocol.</Description>
-    <Authors>Thang Chung</Authors>
+    <PackageId>NetCoreKit.Infrastructure.Host.Grpc</PackageId>
+    <PackageTags>cloud-native host-grpc web-development</PackageTags>
+    <RootNamespace>NetCoreKit.Infrastructure.Host.Grpc</RootNamespace>
+    <AssemblyName>NetCoreKit.Infrastructure.Host.Grpc</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>NetCoreKit.Infrastructure.Host.gRPC</PackageId>
-    <PackageTags>cloud-native host-gRPC web-development</PackageTags>
-    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>NetCoreKit.Infrastructure.Host.gRPC</RootNamespace>
-    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
-    <AssemblyName>NetCoreKit.Infrastructure.Host.gRPC</AssemblyName>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

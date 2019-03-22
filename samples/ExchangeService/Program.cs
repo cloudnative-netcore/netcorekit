@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NetCoreKit.Infrastructure.Host.gRPC;
+using NetCoreKit.Infrastructure.Host.Grpc;
 using NetCoreKit.Samples.ExchangeService.v1.Services;
-using NetCoreKit.Template.gRPC.Standard;
+using NetCoreKit.Template.Grpc.Standard;
 using NetCoreKit.Utils.Extensions;
 
 namespace NetCoreKit.Samples.ExchangeService

@@ -1,25 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\packages.props" />
 
   <PropertyGroup>
-    <id>NetCoreKit.Template.gRPC.MongoDb</id>
+    <id>NetCoreKit.Template.Grpc.MongoDb</id>
     <version>0.0.0</version>
     <Title>The MongoDb gRPC Service template.</Title>
     <Description>This template is for a standard server (microservice) using gRPC protocol with MongoDb.</Description>
-    <Authors>Thang Chung</Authors>
+    <PackageId>NetCoreKit.Template.Grpc.MongoDb</PackageId>
+    <PackageTags>cloud-native grpc-mongodb-template web-development</PackageTags>
+    <RootNamespace>NetCoreKit.Template.Grpc.MongoDb</RootNamespace>
+    <AssemblyName>NetCoreKit.Template.Grpc.MongoDb</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <PackageId>NetCoreKit.Template.gRPC.MongoDb</PackageId>
-    <PackageTags>cloud-native gRPC-mongodb-template web-development</PackageTags>
-    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <RootNamespace>NetCoreKit.Template.gRPC.MongoDb</RootNamespace>
-    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
-    <AssemblyName>NetCoreKit.Template.gRPC.MongoDb</AssemblyName>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,7 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
-    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Host.gRPC\NetCoreKit.Infrastructure.Host.gRPC.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.Mongo\NetCoreKit.Infrastructure.Mongo.csproj" />
   </ItemGroup>

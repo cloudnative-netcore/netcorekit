@@ -1,10 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Grpc.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace NetCoreKit.Infrastructure.Host.gRPC
+namespace NetCoreKit.Infrastructure.Host.Grpc
 {
     public abstract class HostedServiceBase : IHostedService
     {
@@ -56,7 +57,7 @@ namespace NetCoreKit.Infrastructure.Host.gRPC
             Logger.LogInformation("OnStopped has been called.");
         }
 
-        protected abstract Grpc.Core.Server ConfigureServer();
+        protected abstract Server ConfigureServer();
         protected abstract void SuppressFinalize();
     }
 }

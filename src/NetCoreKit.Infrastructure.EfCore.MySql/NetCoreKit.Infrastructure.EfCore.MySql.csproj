@@ -1,18 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\build\packages.props" />
+
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.EfCore.MySql</id>
     <version>0.0.0</version>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Title>The EfCore MySQL library for Cloud Native .NET Core Kit.</Title>
     <Description>The MySQL database default for NetCoreKit.Infrastructure.EfCore</Description>
-    <Authors>Thang Chung</Authors>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/cloudnative-netcore/netcorekit.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/cloudnative-netcore/netcorekit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/cloudnative-netcore/netcorekit/blob/master/LICENSE</PackageLicenseUrl>
-    <Copyright>Copyright (c) Thang Chung - 2018</Copyright>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
