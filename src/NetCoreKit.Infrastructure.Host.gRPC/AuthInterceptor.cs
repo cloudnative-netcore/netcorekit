@@ -98,6 +98,7 @@ namespace NetCoreKit.Infrastructure.Host.gRPC
             }
             catch (Exception ex)
             {
+                // http://avi.im/grpc-errors
                 _logger.LogError(ex.Message);
                 throw new RpcException(new Status(StatusCode.Unauthenticated, ex.Message));
             }
