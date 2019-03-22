@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <id>NetCoreKit.Infrastructure.Host.gRPC</id>
@@ -38,6 +38,14 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="IdentityModel" Version="3.10.6" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
   </ItemGroup>
 
 </Project>
