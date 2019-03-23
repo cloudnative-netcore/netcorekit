@@ -74,7 +74,7 @@ namespace NetCoreKit.Infrastructure.GrpcHost
                 var parameters = new TokenValidationParameters
                 {
                     ValidIssuer = disco.Issuer,
-                    ValidAudience = idpConfig.GetValue<string>("Jwt_Audience"),
+                    ValidAudience = idpConfig.GetValue<string>("Audience"),
                     IssuerSigningKeys = keys,
 
                     NameClaimType = JwtClaimTypes.Name,
