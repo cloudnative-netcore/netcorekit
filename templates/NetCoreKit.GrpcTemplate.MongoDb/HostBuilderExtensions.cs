@@ -23,19 +23,19 @@ namespace NetCoreKit.GrpcTemplate.MongoDb
         {
             return hostBuilder
                 .ConfigureHostConfiguration(configHost =>
-                 {
-                     configHost.SetBasePath(Directory.GetCurrentDirectory());
-                     configHost.AddJsonFile("hostsettings.json", optional: true);
-                     configHost.AddEnvironmentVariables();
-                     configHost.AddCommandLine(args);
-                 })
+                {
+                    configHost.SetBasePath(Directory.GetCurrentDirectory());
+                    configHost.AddJsonFile("hostsettings.json", optional: true);
+                    configHost.AddEnvironmentVariables();
+                    configHost.AddCommandLine(args);
+                })
                 .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
+                    configApp.AddEnvironmentVariables();
                     configApp.AddJsonFile("appsettings.json", optional: true);
                     configApp.AddJsonFile(
                         $"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
                         optional: true);
-                    configApp.AddEnvironmentVariables();
                     configApp.AddCommandLine(args);
                 })
                 .ConfigureServices((hostContext, services) =>
