@@ -88,10 +88,23 @@ namespace NetCoreKit.Infrastructure.GrpcHost
                 handler.InboundClaimTypeMap.Clear();
 
                 var userToken = context.RequestHeaders.FirstOrDefault(x => x.Key == "authorization")?.Value;
+
+                if (string.IsNullOrEmpty(userToken))
+                {
+                    throw new AuthenticationException("Cannot get authorization on the header");
+                }
+
                 var user = handler.ValidateToken(userToken.TrimStart("Bearer").TrimStart("bearer").TrimStart(" "), parameters, out _);
+
+                if (user == null)
+                {
+                    throw new AuthenticationException(
+                        "Cannot validate jwt token. Check authority and audience configuration.");
+                }
+
                 if (!user.HasClaim(c => c.Value == attribute.Name))
                 {
-                    throw new AuthenticationException("Couldn't access to this API, please check your permission.");
+                    throw new AuthenticationException("Cannot access to this API, please check your permission.");
                 }
 
                 return await continuation(request, context);
