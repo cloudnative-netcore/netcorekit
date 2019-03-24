@@ -50,7 +50,7 @@ namespace NetCoreKit.Infrastructure.GrpcHost
 
                 if (_config.GetSection("Idp") == null)
                 {
-                    throw new Exception("Provide bearer token in the header.");
+                    throw new Exception("Provide Idp configuration section in appsettings.json.");
                 }
 
                 var client = new HttpClient();
@@ -91,7 +91,7 @@ namespace NetCoreKit.Infrastructure.GrpcHost
 
                 if (string.IsNullOrEmpty(userToken))
                 {
-                    throw new AuthenticationException("Cannot get authorization on the header");
+                    throw new AuthenticationException("Cannot get authorization on the header.");
                 }
 
                 var user = handler.ValidateToken(userToken.TrimStart("Bearer").TrimStart("bearer").TrimStart(" "), parameters, out _);
@@ -113,6 +113,7 @@ namespace NetCoreKit.Infrastructure.GrpcHost
             {
                 // http://avi.im/grpc-errors
                 _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 throw new RpcException(new Status(StatusCode.Unauthenticated, ex.Message));
             }
         }
