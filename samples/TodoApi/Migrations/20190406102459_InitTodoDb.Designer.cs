@@ -9,14 +9,14 @@ using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 namespace NetCoreKit.Samples.TodoApi.Migrations
 {
     [DbContext(typeof(TodoListDbContext))]
-    [Migration("20181207042249_InitTodoDb")]
+    [Migration("20190406102459_InitTodoDb")]
     partial class InitTodoDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("NetCoreKit.Samples.TodoAPI.Domain.Project", b =>

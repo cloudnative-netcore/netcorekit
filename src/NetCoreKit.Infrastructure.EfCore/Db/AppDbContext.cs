@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Humanizer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using NetCoreKit.Domain;
 
@@ -14,17 +13,21 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 {
     public abstract class AppDbContext : DbContext
     {
-        protected AppDbContext(DbContextOptions options) : base(options)
+        private readonly IConfiguration _config;
+        private readonly IDomainEventDispatcher _eventBus = null;
+
+        protected AppDbContext(DbContextOptions options, IConfiguration config, IDomainEventDispatcher eventBus = null)
+            : base(options)
         {
+            _config = config;
+            _eventBus = eventBus ?? new MemoryDomainEventDispatcher();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var config = this.GetService<IConfiguration>();
-
             var typeToRegisters = new List<Type>();
 
-            var ourModules = config.LoadFullAssemblies();
+            var ourModules = _config.LoadFullAssemblies();
 
             typeToRegisters.AddRange(ourModules.SelectMany(m => m.DefinedTypes));
 
@@ -39,25 +42,15 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            var eventBus = this.GetService<IDomainEventDispatcher>();
-
             var result = base.SaveChangesAsync(cancellationToken);
-
-            if (eventBus != null)
-                SaveChangesWithEvents(eventBus);
-
+            SaveChangesWithEvents(_eventBus);
             return result;
         }
 
         public override int SaveChanges()
         {
-            var eventBus = this.GetService<IDomainEventDispatcher>();
-
             var result = base.SaveChanges();
-
-            if (eventBus != null)
-                SaveChangesWithEvents(eventBus);
-
+            SaveChangesWithEvents(_eventBus);
             return result;
         }
 

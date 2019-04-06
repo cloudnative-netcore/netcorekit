@@ -42,7 +42,7 @@ namespace NetCoreKit.RestTemplate.EfCore
                 {
                     if (feature.IsEnabled("Mongo")) throw new Exception("Should turn MongoDb feature off.");
 
-                    services.AddDbContextPool<TDbContext>((sp, o) =>
+                    services.AddDbContext<TDbContext>((sp, o) =>
                     {
                         var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
                         var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();

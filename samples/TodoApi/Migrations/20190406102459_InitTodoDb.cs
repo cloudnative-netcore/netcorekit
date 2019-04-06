@@ -8,8 +8,8 @@ namespace NetCoreKit.Samples.TodoApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                "Projects",
-                table => new
+                name: "Projects",
+                columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
@@ -17,11 +17,14 @@ namespace NetCoreKit.Samples.TodoApi.Migrations
                     Version = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Projects", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Tasks",
-                table => new
+                name: "Tasks",
+                columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
@@ -37,26 +40,26 @@ namespace NetCoreKit.Samples.TodoApi.Migrations
                 {
                     table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        "FK_Tasks_Projects_ProjectId",
-                        x => x.ProjectId,
-                        "Projects",
-                        "Id",
+                        name: "FK_Tasks_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_Tasks_ProjectId",
-                "Tasks",
-                "ProjectId");
+                name: "IX_Tasks_ProjectId",
+                table: "Tasks",
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "Tasks");
+                name: "Tasks");
 
             migrationBuilder.DropTable(
-                "Projects");
+                name: "Projects");
         }
     }
 }
