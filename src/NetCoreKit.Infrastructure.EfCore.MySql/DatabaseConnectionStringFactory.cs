@@ -6,13 +6,13 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
     public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
     {
-        private readonly DbOptions _dbOption;
+        public DbOptions DbOptions { get; }
 
         public DatabaseConnectionStringFactory()
         {
             var config = ConfigurationHelper.GetConfiguration();
             var dbSection = config.GetSection("Features:EfCore:MySqlDb");
-            _dbOption = new DbOptions {
+            DbOptions = new DbOptions {
                 ConnString = dbSection["ConnString"],
                 FQDN = dbSection["FQDN"],
                 Database = dbSection["Database"],
@@ -24,22 +24,22 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
 
         public DatabaseConnectionStringFactory(IOptions<DbOptions> options)
         {
-            _dbOption = options.Value;
+            DbOptions = options.Value;
         }
 
         public string Create()
         {
-            var connPattern = _dbOption.ConnString;
-            var connConfigs = _dbOption.FQDN?.Split(':');
+            var connPattern = DbOptions.ConnString;
+            var connConfigs = DbOptions.FQDN?.Split(':');
             var fqdn = connConfigs?.First();
             var port = connConfigs?.Except(new[] {fqdn}).First();
 
             return string.Format(
                 connPattern,
                 fqdn, port,
-                _dbOption.UserName,
-                _dbOption.Password,
-                _dbOption.Database);
+                DbOptions.UserName,
+                DbOptions.Password,
+                DbOptions.Database);
         }
     }
 }
