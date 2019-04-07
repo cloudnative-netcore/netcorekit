@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,21 @@ namespace NetCoreKit.Infrastructure
                 throw new Exception("Should have at least one application assembly to load.");
 
             return apps;
+        }
+    }
+
+    public class ConfigurationHelper
+    {
+        public static IConfigurationRoot GetConfiguration(string basePath = null)
+        {
+            basePath = basePath ?? Directory.GetCurrentDirectory();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{ Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true)
+                .AddEnvironmentVariables();
+
+            return builder.Build();
         }
     }
 }
