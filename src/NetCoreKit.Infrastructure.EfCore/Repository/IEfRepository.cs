@@ -3,12 +3,12 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.EfCore.Repository
 {
-    public interface IEfRepositoryAsync<TEntity> : IEfRepositoryAsync<DbContext, TEntity>
+    /*public interface IEfRepositoryAsync<TEntity> : IEfRepositoryAsync<DbContext, TEntity>
         where TEntity : IAggregateRoot
     {
     }
 
-    public interface IEfQueryRepository<out TEntity> : IEfQueryRepository<DbContext, TEntity>
+    public interface IEfQueryRepository<TEntity> : IEfQueryRepository<DbContext, TEntity>
         where TEntity : IAggregateRoot
     {
     }
@@ -19,9 +19,9 @@ namespace NetCoreKit.Infrastructure.EfCore.Repository
     {
     }
 
-    public interface IEfQueryRepository<TDbContext, out TEntity> : IQueryRepository<TEntity>
+    public interface IEfQueryRepository<TDbContext, TEntity> : IQueryRepository<TEntity>
         where TDbContext : DbContext
         where TEntity : IAggregateRoot
     {
-    }
+    }*/
 }

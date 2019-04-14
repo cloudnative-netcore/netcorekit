@@ -6,6 +6,7 @@ using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.AspNetCore.CleanArch;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
 using NetCoreKit.Samples.TodoAPI.Extensions;
+using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
 
 namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
 {
@@ -20,9 +21,9 @@ namespace NetCoreKit.Samples.TodoAPI.v1.UseCases.UpdateTask
             CancellationToken cancellationToken)
         {
             var commandRepository = CommandFactory.RepositoryAsync<Domain.Project>();
-            var queryRepository = QueryFactory.QueryEfRepository<Domain.Project>();
+            var queryRepository = QueryFactory.QueryRepository<Domain.Project>();
 
-            var project = await queryRepository.GetByIdAsync(request.ProjectId, q => q.Include(x => x.Tasks), false);
+            var project = await queryRepository.GetByIdAsync<TodoListDbContext, Domain.Project>(request.ProjectId, q => q.Include(x => x.Tasks), false);
             if (project == null) throw new Exception($"Couldn't find project#{request.ProjectId}.");
 
             project.UpdateTask(request.TaskId, request.Title, request.Order ?? 1, request.Completed ?? false);

@@ -21,21 +21,30 @@ namespace NetCoreKit.Infrastructure.Mongo
             foreach (var entity in entityTypes)
             {
                 var repoType = typeof(IRepositoryAsync<>).MakeGenericType(entity);
-                var implRepoType = typeof(MongoRepositoryAsync<>).MakeGenericType(entity);
+                var implRepoType = typeof(Repository<>).MakeGenericType(entity);
                 services.AddScoped(repoType, implRepoType);
 
                 var queryRepoType = typeof(IQueryRepository<>).MakeGenericType(entity);
-                var implQueryRepoType = typeof(MongoRepositoryAsync<>).MakeGenericType(entity);
+                var implQueryRepoType = typeof(Repository<>).MakeGenericType(entity);
                 services.AddScoped(queryRepoType, implQueryRepoType);
             }
 
             services.Configure<MongoSettings>(config.GetSection("Features:Mongo"));
             services.AddScoped<MongoContext>();
 
-            services.AddScoped<IUnitOfWorkAsync, MongoUnitOfWorkAsync>();
-            services.AddScoped<IQueryRepositoryFactory, MongoQueryRepositoryFactory>();
+            services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync>();
+            services.AddScoped<IQueryRepositoryFactory, QueryRepositoryFactory>();
 
             return services;
+        }
+    }
+
+    public static class MongoQueryRepositoryFactoryExtensions
+    {
+        public static IMongoQueryRepository<TEntity> MongoQueryRepository<TEntity>(this IQueryRepositoryFactory factory)
+            where TEntity : IAggregateRoot
+        {
+            return factory.QueryRepository<TEntity>() as IMongoQueryRepository<TEntity>;
         }
     }
 }

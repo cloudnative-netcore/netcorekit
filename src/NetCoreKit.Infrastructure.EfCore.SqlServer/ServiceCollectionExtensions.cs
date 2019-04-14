@@ -17,8 +17,8 @@ namespace NetCoreKit.Infrastructure.EfCore.SqlServer
 
             services.Replace(
                 ServiceDescriptor.Scoped<
-                    IDatabaseConnectionStringFactory,
-                    DatabaseConnectionStringFactory>());
+                    IDbConnStringFactory,
+                    DbConnStringFactory>());
 
             services.Replace(
                 ServiceDescriptor.Scoped<

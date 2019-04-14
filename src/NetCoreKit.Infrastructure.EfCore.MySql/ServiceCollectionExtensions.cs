@@ -16,8 +16,8 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
 
             services.Replace(
                 ServiceDescriptor.Scoped<
-                    IDatabaseConnectionStringFactory,
-                    DatabaseConnectionStringFactory>());
+                    IDbConnStringFactory,
+                    DbConnStringFactory>());
 
             services.Replace(
                 ServiceDescriptor.Scoped<

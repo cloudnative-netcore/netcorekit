@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.EfCore.Extensions;
-using NetCoreKit.Infrastructure.EfCore.Repository;
-// using MediatR;
 
 namespace NetCoreKit.Infrastructure.AspNetCore
 {
@@ -14,21 +13,19 @@ namespace NetCoreKit.Infrastructure.AspNetCore
         //protected IMediator Eventor;
 
         /*protected EvtControllerBase(IMediator eventor)
-      {
-        Eventor = eventor;
-      }*/
+          {
+            Eventor = eventor;
+          }*/
     }
 
     [ApiController]
     public abstract class EfCoreControllerBase<TEntity> : Controller
         where TEntity : AggregateRootBase
     {
-        protected readonly IEfRepositoryAsync<TEntity> MutateRepository;
-        protected readonly IEfQueryRepository<TEntity> QueryRepository;
+        protected readonly IRepositoryAsync<TEntity> MutateRepository;
+        protected readonly IQueryRepository<TEntity> QueryRepository;
 
-        protected EfCoreControllerBase(
-            IEfQueryRepository<TEntity> queryRepository,
-            IEfRepositoryAsync<TEntity> mutateRepository)
+        protected EfCoreControllerBase(IQueryRepository<TEntity> queryRepository, IRepositoryAsync<TEntity> mutateRepository)
         {
             QueryRepository = queryRepository;
             MutateRepository = mutateRepository;
@@ -43,9 +40,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore
     public abstract class CrudControllerBase<TEntity> : EfCoreControllerBase<TEntity>
         where TEntity : AggregateRootBase
     {
-        protected CrudControllerBase(
-            IEfQueryRepository<TEntity> queryRepository,
-            IEfRepositoryAsync<TEntity> mutateRepository)
+        protected CrudControllerBase(IQueryRepository<TEntity> queryRepository, IRepositoryAsync<TEntity> mutateRepository)
             : base(queryRepository, mutateRepository)
         {
         }
@@ -54,13 +49,13 @@ namespace NetCoreKit.Infrastructure.AspNetCore
         public async Task<ActionResult<PaginatedItem<TEntity>>> GetAllItems([FromQuery] Criterion criterion)
         {
             criterion = criterion ?? new Criterion();
-            return await QueryRepository.QueryAsync(criterion, entity => entity);
+            return await QueryRepository.QueryAsync<DbContext, TEntity, Guid, TEntity>(criterion, entity => entity);
         }
 
         [HttpGet("{id}", Name = nameof(GetItem))]
         public async Task<ActionResult<TEntity>> GetItem(Guid id)
         {
-            return await QueryRepository.GetByIdAsync(id);
+            return await QueryRepository.GetByIdAsync<DbContext, TEntity, Guid>(id);
         }
 
         [HttpPost(Name = nameof(PostItem))]
@@ -78,7 +73,7 @@ namespace NetCoreKit.Infrastructure.AspNetCore
         [HttpDelete("{id}", Name = nameof(DeleteItem))]
         public async Task<TEntity> DeleteItem(Guid id)
         {
-            return await MutateRepository.DeleteAsync(await QueryRepository.GetByIdAsync(id));
+            return await MutateRepository.DeleteAsync(await QueryRepository.GetByIdAsync<DbContext, TEntity, Guid>(id));
         }
     }
 }

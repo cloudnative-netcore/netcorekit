@@ -9,6 +9,21 @@ using NetCoreKit.Infrastructure.EfCore.Repository;
 
 namespace NetCoreKit.Infrastructure.EfCore
 {
+    public static class QueryRepositoryFactoryExtensions
+    {
+        public static IQueryRepository<TEntity> QueryEfRepository<TEntity>(this IQueryRepositoryFactory factory)
+            where TEntity : IAggregateRoot
+        {
+            return factory.QueryRepository<TEntity>() as IQueryRepository<TEntity>;
+        }
+
+        public static IQueryRepositoryWithType<TEntity, TId> QueryEfRepository<TEntity, TId>(this IQueryRepositoryFactory factory)
+            where TEntity : IAggregateRootWithType<TId>
+        {
+            return factory.QueryRepository<TEntity, TId>() as IQueryRepositoryWithType<TEntity, TId>;
+        }
+    }
+
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddGenericRepository(this IServiceCollection services)
@@ -23,17 +38,17 @@ namespace NetCoreKit.Infrastructure.EfCore
 
             foreach (var entity in entityTypes)
             {
-                var repoType = typeof(IEfRepositoryAsync<>).MakeGenericType(entity);
-                var implRepoType = typeof(EfRepositoryAsync<>).MakeGenericType(entity);
+                var repoType = typeof(IRepositoryAsync<>).MakeGenericType(entity);
+                var implRepoType = typeof(RepositoryAsync<,>).MakeGenericType(typeof(DbContext), entity);
                 services.AddScoped(repoType, implRepoType);
 
-                var queryRepoType = typeof(IEfQueryRepository<>).MakeGenericType(entity);
-                var implQueryRepoType = typeof(EfQueryRepository<>).MakeGenericType(entity);
+                var queryRepoType = typeof(IQueryRepository<>).MakeGenericType(entity);
+                var implQueryRepoType = typeof(QueryRepository<,>).MakeGenericType(typeof(DbContext), entity);
                 services.AddScoped(queryRepoType, implQueryRepoType);
             }
 
-            services.AddScoped<IUnitOfWorkAsync, EfUnitOfWork>();
-            services.AddScoped<IQueryRepositoryFactory, EfQueryRepositoryFactory>();
+            services.AddScoped<IUnitOfWorkAsync, UnitOfWork>();
+            services.AddScoped<IQueryRepositoryFactory, QueryRepositoryFactory>();
 
             return services;
         }
@@ -41,13 +56,13 @@ namespace NetCoreKit.Infrastructure.EfCore
         public static IServiceCollection AddEfSqlLiteDb(this IServiceCollection services)
         {
             // default if we don't declare any db provider
-            services.AddScoped<IDatabaseConnectionStringFactory, NoOpDatabaseConnectionStringFactory>();
+            services.AddScoped<IDbConnStringFactory, NoOpDbConnStringFactory>();
             services.AddScoped<IExtendDbContextOptionsBuilder, InMemoryDbContextOptionsBuilderFactory>();
             return services;
         }
     }
 
-    internal class NoOpDatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
+    internal class NoOpDbConnStringFactory : IDbConnStringFactory
     {
         public string Create()
         {
@@ -59,12 +74,10 @@ namespace NetCoreKit.Infrastructure.EfCore
     {
         public DbContextOptionsBuilder Extend(
             DbContextOptionsBuilder optionsBuilder,
-            IDatabaseConnectionStringFactory connectionStringFactory,
+            IDbConnStringFactory connStringFactory,
             string assemblyName)
         {
-            return optionsBuilder.UseSqlite(
-                "Data Source=App_Data\\localdb.db",
-                sqlOptions => { sqlOptions.MigrationsAssembly(assemblyName); });
+            return optionsBuilder.UseInMemoryDatabase("defaultDb");
         }
     }
 }

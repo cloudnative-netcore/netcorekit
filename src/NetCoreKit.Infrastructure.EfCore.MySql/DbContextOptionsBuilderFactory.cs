@@ -16,11 +16,11 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
 
         public DbContextOptionsBuilder Extend(
             DbContextOptionsBuilder optionsBuilder,
-            IDatabaseConnectionStringFactory connectionStringFactory,
+            IDbConnStringFactory connStringFactory,
             string assemblyName)
         {
             return optionsBuilder.UseMySql(
-                    connectionStringFactory.Create(),
+                    connStringFactory.Create(),
                     sqlOptions =>
                     {
                         sqlOptions.MigrationsAssembly(assemblyName);

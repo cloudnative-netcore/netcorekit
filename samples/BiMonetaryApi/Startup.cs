@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.RestTemplate.MongoDb;
-using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
+using static NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
 
 namespace NetCoreKit.Samples.BiMonetaryApi
 {
@@ -15,8 +15,8 @@ namespace NetCoreKit.Samples.BiMonetaryApi
             {
                 var config = resolver.GetService<IConfiguration>();
                 var channel = new Channel(config["RpcClients:ExchangeService"], ChannelCredentials.Insecure);
-                var client = new MyExchangeService.ExchangeServiceClient(channel);
-                services.AddSingleton(typeof(MyExchangeService.ExchangeServiceClient), client);
+                var client = new ExchangeServiceClient(channel);
+                services.AddSingleton(typeof(ExchangeServiceClient), client);
             });
         }
 

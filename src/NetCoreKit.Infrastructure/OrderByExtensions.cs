@@ -8,13 +8,19 @@ namespace NetCoreKit.Infrastructure
     public static class OrderByExtensions
     {
         public static IQueryable<TEntity> OrderByPropertyName<TEntity>(this IQueryable<TEntity> source,
-            string propertyName,
-            bool isDescending)
-            where TEntity : IEntity
+            string propertyName, bool isDescending) where TEntity : IEntityWithId<Guid>
         {
-            if (source == null) throw new ArgumentException("source");
+            return OrderByPropertyName(source, propertyName, isDescending);
+        }
 
-            if (string.IsNullOrWhiteSpace(propertyName)) throw new ArgumentException("propertyName");
+        public static IQueryable<TEntity> OrderByPropertyName<TEntity, TId>(this IQueryable<TEntity> source,
+            string propertyName, bool isDescending) where TEntity : IEntityWithId<TId>
+        {
+            if (source == null)
+                throw new ArgumentException("source");
+
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentException("propertyName");
 
             var type = typeof(TEntity);
             var arg = Expression.Parameter(type, "x");
@@ -32,7 +38,7 @@ namespace NetCoreKit.Infrastructure
                               && method.GetGenericArguments().Length == 2
                               && method.GetParameters().Length == 2)
                 .MakeGenericMethod(typeof(TEntity), type)
-                .Invoke(null, new object[] {source, lambda});
+                .Invoke(null, new object[] { source, lambda });
 
             return (IQueryable<TEntity>)result;
         }

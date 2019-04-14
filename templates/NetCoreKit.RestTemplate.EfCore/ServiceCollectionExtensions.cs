@@ -45,7 +45,7 @@ namespace NetCoreKit.RestTemplate.EfCore
                     services.AddDbContext<TDbContext>((sp, o) =>
                     {
                         var extendOptionsBuilder = sp.GetRequiredService<IExtendDbContextOptionsBuilder>();
-                        var connStringFactory = sp.GetRequiredService<IDatabaseConnectionStringFactory>();
+                        var connStringFactory = sp.GetRequiredService<IDbConnStringFactory>();
                         extendOptionsBuilder.Extend(o, connStringFactory,
                             config.LoadApplicationAssemblies().FirstOrDefault()?.GetName().Name);
                     });

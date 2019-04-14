@@ -8,7 +8,7 @@ namespace NetCoreKit.Infrastructure.EfCore.SqlServer
     {
         public DbContextOptionsBuilder Extend(
             DbContextOptionsBuilder optionsBuilder,
-            IDatabaseConnectionStringFactory connectionStringFactory,
+            IDbConnStringFactory connectionStringFactory,
             string assemblyName)
         {
             return optionsBuilder.UseSqlServer(

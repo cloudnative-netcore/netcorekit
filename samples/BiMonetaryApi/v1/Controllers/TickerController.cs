@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetCoreKit.Domain;
 using NetCoreKit.Infrastructure.Mongo;
 using NetCoreKit.Samples.BiMonetaryApi.Rpc;
-using MyExchangeService = NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
+using static NetCoreKit.Samples.BiMonetaryApi.Rpc.ExchangeService;
 
 namespace NetCoreKit.Samples.BiMonetaryApi.v1.Controllers
 {
@@ -48,12 +48,12 @@ namespace NetCoreKit.Samples.BiMonetaryApi.v1.Controllers
     {
         private readonly IQueryRepositoryFactory _repositoryFactory;
         private readonly IUnitOfWorkAsync _uow;
-        private readonly MyExchangeService.ExchangeServiceClient _exchangeServiceClient;
+        private readonly ExchangeServiceClient _exchangeServiceClient;
 
         public TickerController(
             IQueryRepositoryFactory repositoryFactory,
             IUnitOfWorkAsync uow,
-            MyExchangeService.ExchangeServiceClient exchangeServiceClient)
+            ExchangeServiceClient exchangeServiceClient)
         {
             _repositoryFactory = repositoryFactory;
             _uow = uow;

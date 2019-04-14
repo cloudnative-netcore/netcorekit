@@ -4,11 +4,11 @@ using NetCoreKit.Infrastructure.EfCore.Db;
 
 namespace NetCoreKit.Infrastructure.EfCore.MySql
 {
-    public sealed class DatabaseConnectionStringFactory : IDatabaseConnectionStringFactory
+    public sealed class DbConnStringFactory : IDbConnStringFactory
     {
         public DbOptions DbOptions { get; }
 
-        public DatabaseConnectionStringFactory()
+        public DbConnStringFactory()
         {
             var config = ConfigurationHelper.GetConfiguration();
             var dbSection = config.GetSection("Features:EfCore:MySqlDb");
@@ -22,7 +22,7 @@ namespace NetCoreKit.Infrastructure.EfCore.MySql
             };
         }
 
-        public DatabaseConnectionStringFactory(IOptions<DbOptions> options)
+        public DbConnStringFactory(IOptions<DbOptions> options)
         {
             DbOptions = options.Value;
         }
