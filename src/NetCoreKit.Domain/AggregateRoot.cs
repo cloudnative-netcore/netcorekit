@@ -6,18 +6,18 @@ using static NetCoreKit.Utils.Helpers.DateTimeHelper;
 
 namespace NetCoreKit.Domain
 {
-    public interface IAggregateRoot : IAggregateRootWithType<Guid>
+    public interface IAggregateRoot : IAggregateRootWithId<Guid>
     {
     }
 
-    public interface IAggregateRootWithType<TId> : IEntityWithId<TId>
+    public interface IAggregateRootWithId<TId> : IEntityWithId<TId>
     {
-        IAggregateRootWithType<TId> ApplyEvent(IEvent payload);
+        IAggregateRootWithId<TId> ApplyEvent(IEvent payload);
         List<IEvent> GetUncommittedEvents();
         void ClearUncommittedEvents();
-        IAggregateRootWithType<TId> RemoveEvent(IEvent @event);
-        IAggregateRootWithType<TId> AddEvent(IEvent uncommittedEvent);
-        IAggregateRootWithType<TId> RegisterHandler<T>(Action<T> handler);
+        IAggregateRootWithId<TId> RemoveEvent(IEvent @event);
+        IAggregateRootWithId<TId> AddEvent(IEvent uncommittedEvent);
+        IAggregateRootWithId<TId> RegisterHandler<T>(Action<T> handler);
     }
 
     public abstract class AggregateRootBase : AggregateRootWithIdBase<Guid>, IAggregateRoot
@@ -27,7 +27,7 @@ namespace NetCoreKit.Domain
         }
     }
 
-    public abstract class AggregateRootWithIdBase<TId> : EntityWithIdBase<TId>, IAggregateRootWithType<TId>
+    public abstract class AggregateRootWithIdBase<TId> : EntityWithIdBase<TId>, IAggregateRootWithId<TId>
     {
         private readonly IDictionary<Type, Action<object>> _handlers = new ConcurrentDictionary<Type, Action<object>>();
         private readonly List<IEvent> _uncommittedEvents = new List<IEvent>();
@@ -39,14 +39,14 @@ namespace NetCoreKit.Domain
 
         public int Version { get; protected set; }
 
-        public IAggregateRootWithType<TId> AddEvent(IEvent uncommittedEvent)
+        public IAggregateRootWithId<TId> AddEvent(IEvent uncommittedEvent)
         {
             _uncommittedEvents.Add(uncommittedEvent);
             ApplyEvent(uncommittedEvent);
             return this;
         }
 
-        public IAggregateRootWithType<TId> ApplyEvent(IEvent payload)
+        public IAggregateRootWithId<TId> ApplyEvent(IEvent payload)
         {
             if (!_handlers.ContainsKey(payload.GetType()))
                 return this;
@@ -65,13 +65,13 @@ namespace NetCoreKit.Domain
             return _uncommittedEvents;
         }
 
-        public IAggregateRootWithType<TId> RegisterHandler<T>(Action<T> handler)
+        public IAggregateRootWithId<TId> RegisterHandler<T>(Action<T> handler)
         {
             _handlers.Add(typeof(T), e => handler((T)e));
             return this;
         }
 
-        public IAggregateRootWithType<TId> RemoveEvent(IEvent @event)
+        public IAggregateRootWithId<TId> RemoveEvent(IEvent @event)
         {
             if (_uncommittedEvents.Find(e => e == @event) != null)
                 _uncommittedEvents.Remove(@event);

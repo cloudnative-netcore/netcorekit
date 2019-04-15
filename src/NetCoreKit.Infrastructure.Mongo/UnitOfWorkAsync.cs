@@ -8,11 +8,11 @@ namespace NetCoreKit.Infrastructure.Mongo
 {
     public class UnitOfWorkAsync : IUnitOfWorkAsync
     {
-        private readonly MongoContext _dbContext;
+        private readonly DbContext _dbContext;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
         private ConcurrentDictionary<Type, object> _repositories;
 
-        public UnitOfWorkAsync(MongoContext dbContext, IDomainEventDispatcher domainEventDispatcher)
+        public UnitOfWorkAsync(DbContext dbContext, IDomainEventDispatcher domainEventDispatcher)
         {
             _dbContext = dbContext;
             _domainEventDispatcher = domainEventDispatcher;
@@ -28,8 +28,8 @@ namespace NetCoreKit.Infrastructure.Mongo
             return (IRepositoryAsync<TEntity>)_repositories[type];
         }
 
-        public virtual IRepositoryWithTypeAsync<TEntity, TId> RepositoryAsync<TEntity, TId>()
-            where TEntity : class, IAggregateRootWithType<TId>
+        public virtual IRepositoryWithIdAsync<TEntity, TId> RepositoryAsync<TEntity, TId>()
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             throw new NotImplementedException();
         }

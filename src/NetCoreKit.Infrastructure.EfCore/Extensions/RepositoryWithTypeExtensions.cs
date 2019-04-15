@@ -9,15 +9,15 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.EfCore.Extensions
 {
-    public static class RepositoryWithTypeExtensions
+    public static class RepositoryWithIdExtensions
     {
         public static async Task<TEntity> GetByIdAsync<TDbContext, TEntity, TId>(
-            this IQueryRepositoryWithType<TEntity, TId> repo,
+            this IQueryRepositoryWithId<TEntity, TId> repo,
             Guid id,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             var queryable = repo.Queryable();
 
@@ -29,12 +29,12 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
         }
 
         public static async Task<TEntity> FindOneAsync<TDbContext, TEntity, TId>(
-            this IQueryRepositoryWithType<TEntity, TId> repo,
+            this IQueryRepositoryWithId<TEntity, TId> repo,
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             var queryable = repo.Queryable();
 
@@ -46,11 +46,11 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
         }
 
         public static async Task<IReadOnlyList<TEntity>> ListAsync<TDbContext, TEntity, TId>(
-            this IQueryRepositoryWithType<TEntity, TId> repo,
+            this IQueryRepositoryWithId<TEntity, TId> repo,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             var queryable = repo.Queryable();
 
@@ -62,39 +62,39 @@ namespace NetCoreKit.Infrastructure.EfCore.Extensions
         }
 
         public static async Task<PaginatedItem<TResponse>> QueryAsync<TDbContext, TEntity, TId, TResponse>(
-            this IQueryRepositoryWithType<TEntity, TId> repo,
+            this IQueryRepositoryWithId<TEntity, TId> repo,
             Criterion criterion,
             Expression<Func<TEntity, TResponse>> selector,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             return await GetDataAsync<TDbContext, TEntity, TId, TResponse>(repo, criterion, selector, null, include, disableTracking);
         }
 
         public static async Task<PaginatedItem<TResponse>> FindAllAsync<TDbContext, TEntity, TId, TResponse>(
-            this IQueryRepositoryWithType<TEntity, TId> repo,
+            this IQueryRepositoryWithId<TEntity, TId> repo,
             Criterion criterion,
             Expression<Func<TEntity, TResponse>> selector,
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             return await GetDataAsync<TDbContext, TEntity, TId, TResponse>(repo, criterion, selector, filter, include, disableTracking);
         }
 
         private static async Task<PaginatedItem<TResponse>> GetDataAsync<TDbContext, TEntity, TId, TResponse>(
-            IQueryRepositoryWithType<TEntity, TId> repo,
+            IQueryRepositoryWithId<TEntity, TId> repo,
             Criterion criterion,
             Expression<Func<TEntity, TResponse>> selector,
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true)
             where TDbContext : DbContext
-            where TEntity : class, IAggregateRootWithType<TId>
+            where TEntity : class, IAggregateRootWithId<TId>
         {
             var queryable = repo.Queryable();
             if (disableTracking) queryable = queryable.AsNoTracking();

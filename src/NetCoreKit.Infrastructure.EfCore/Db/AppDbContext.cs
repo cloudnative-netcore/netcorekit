@@ -26,7 +26,6 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var typeToRegisters = new List<Type>();
-
             var ourModules = _config.LoadFullAssemblies();
 
             typeToRegisters.AddRange(ourModules.SelectMany(m => m.DefinedTypes));
@@ -55,20 +54,24 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
         }
 
         /// <summary>
-        ///     Source:
-        ///     https://github.com/ardalis/CleanArchitecture/blob/master/src/CleanArchitecture.Infrastructure/Data/AppDbContext.cs
+        /// Source:
+        /// https://github.com/ardalis/CleanArchitecture/blob/master/src/CleanArchitecture.Infrastructure/Data/AppDbContext.cs
         /// </summary>
         private void SaveChangesWithEvents(IDomainEventDispatcher domainEventDispatcher)
         {
-            var entitiesWithEvents = ChangeTracker.Entries<IAggregateRoot>()
+            var entitiesWithEvents = ChangeTracker
+                .Entries()
                 .Select(e => e.Entity)
-                .Where(e => e.GetUncommittedEvents().Any())
+                .Where(e =>
+                    !e.GetType().BaseType.IsGenericType &&
+                    typeof(AggregateRootBase).IsAssignableFrom(e.GetType()))
+                .Where(e => ((IAggregateRoot)e).GetUncommittedEvents().Any())
                 .ToArray();
 
             foreach (var entity in entitiesWithEvents)
             {
-                var events = entity.GetUncommittedEvents().ToArray();
-                entity.GetUncommittedEvents().Clear();
+                var events = ((IAggregateRoot)entity).GetUncommittedEvents().ToArray();
+                ((IAggregateRoot)entity).GetUncommittedEvents().Clear();
                 foreach (var domainEvent in events)
                     domainEventDispatcher.Dispatch(domainEvent);
             }
@@ -76,10 +79,12 @@ namespace NetCoreKit.Infrastructure.EfCore.Db
 
         private static void RegisterEntities(ModelBuilder modelBuilder, IEnumerable<Type> typeToRegisters)
         {
-            // TODO: will optimize this more
-            var types = typeToRegisters.Where(x =>
-                typeof(IEntity).IsAssignableFrom(x) &&
-                !x.GetTypeInfo().IsAbstract);
+            var concreteTypes = typeToRegisters.Where(x => !x.GetTypeInfo().IsAbstract && !x.GetTypeInfo().IsInterface);
+            var types = concreteTypes
+                .Where(x =>
+                    typeof(EntityBase).IsAssignableFrom(x) ||
+                    typeof(AggregateRootBase).IsAssignableFrom(x)
+                );
 
             foreach (var type in types) modelBuilder.Entity(type);
         }

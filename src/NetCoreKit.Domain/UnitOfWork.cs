@@ -12,15 +12,15 @@ namespace NetCoreKit.Domain
 
     public interface IRepositoryFactoryAsync
     {
-        IRepositoryWithTypeAsync<TEntity, TId> RepositoryAsync<TEntity, TId>() where TEntity : class, IAggregateRootWithType<TId>;
+        IRepositoryWithIdAsync<TEntity, TId> RepositoryAsync<TEntity, TId>() where TEntity : class, IAggregateRootWithId<TId>;
         IRepositoryAsync<TEntity> RepositoryAsync<TEntity>() where TEntity : class, IAggregateRoot;
     }
 
-    public interface IRepositoryAsync<TEntity> : IRepositoryWithTypeAsync<TEntity, Guid> where TEntity : IAggregateRoot
+    public interface IRepositoryAsync<TEntity> : IRepositoryWithIdAsync<TEntity, Guid> where TEntity : IAggregateRoot
     {
     }
 
-    public interface IRepositoryWithTypeAsync<TEntity, TId> where TEntity : IAggregateRootWithType<TId>
+    public interface IRepositoryWithIdAsync<TEntity, TId> where TEntity : IAggregateRootWithId<TId>
     {
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Mongo
@@ -12,14 +13,14 @@ namespace NetCoreKit.Infrastructure.Mongo
             _serviceProvider = serviceProvider;
         }
 
-        public IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IAggregateRoot
+        public IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : class, IAggregateRoot
         {
-            return _serviceProvider.GetService(typeof(IQueryRepository<TEntity>)) as IQueryRepository<TEntity>;
+            return _serviceProvider.GetService<IQueryRepository<TEntity>>();
         }
 
-        public IQueryRepositoryWithType<TEntity, TId> QueryRepository<TEntity, TId>() where TEntity : IAggregateRootWithType<TId>
+        public IQueryRepositoryWithId<TEntity, TId> QueryRepository<TEntity, TId>() where TEntity : class, IAggregateRootWithId<TId>
         {
-            throw new NotImplementedException();
+            return _serviceProvider.GetService<IQueryRepositoryWithId<TEntity, TId>>();
         }
     }
 }

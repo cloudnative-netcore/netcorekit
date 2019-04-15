@@ -4,11 +4,11 @@ using NetCoreKit.Domain;
 
 namespace NetCoreKit.Infrastructure.Mongo
 {
-    public class MongoContext
+    public class DbContext
     {
         private readonly IMongoDatabase _database;
 
-        public MongoContext(IOptions<MongoSettings> settings)
+        public DbContext(IOptions<MongoSettings> settings)
         {
             var client = new MongoClient(settings.Value.ConnString);
             _database = client.GetDatabase(settings.Value.Database);

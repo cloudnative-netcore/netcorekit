@@ -30,7 +30,7 @@ namespace NetCoreKit.Infrastructure.Mongo
             }
 
             services.Configure<MongoSettings>(config.GetSection("Features:Mongo"));
-            services.AddScoped<MongoContext>();
+            services.AddScoped<DbContext>();
 
             services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync>();
             services.AddScoped<IQueryRepositoryFactory, QueryRepositoryFactory>();
@@ -42,7 +42,7 @@ namespace NetCoreKit.Infrastructure.Mongo
     public static class MongoQueryRepositoryFactoryExtensions
     {
         public static IMongoQueryRepository<TEntity> MongoQueryRepository<TEntity>(this IQueryRepositoryFactory factory)
-            where TEntity : IAggregateRoot
+            where TEntity : class, IAggregateRoot
         {
             return factory.QueryRepository<TEntity>() as IMongoQueryRepository<TEntity>;
         }

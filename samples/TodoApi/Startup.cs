@@ -24,7 +24,7 @@ namespace NetCoreKit.Samples.TodoAPI
             );
 
             services.AddDomainEventBus();
-            services.AddRedisBus();
+            //services.AddRedisBus(); //todo: enabled it if using a broker
         }
 
         public void Configure(IApplicationBuilder app)

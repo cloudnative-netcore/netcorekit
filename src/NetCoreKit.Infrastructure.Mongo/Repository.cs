@@ -11,13 +11,13 @@ namespace NetCoreKit.Infrastructure.Mongo
     {
         private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public Repository(MongoContext dbContext, IDomainEventDispatcher domainEventDispatcher)
+        public Repository(DbContext dbContext, IDomainEventDispatcher domainEventDispatcher)
         {
             DbContext = dbContext;
             _domainEventDispatcher = domainEventDispatcher;
         }
 
-        public MongoContext DbContext { get; }
+        public DbContext DbContext { get; }
 
         public IQueryable<TEntity> Queryable()
         {

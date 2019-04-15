@@ -5,17 +5,15 @@ namespace NetCoreKit.Domain
 {
     public interface IQueryRepositoryFactory
     {
-        IQueryRepositoryWithType<TEntity, TId> QueryRepository<TEntity, TId>() where TEntity : IAggregateRootWithType<TId>;
-        IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : IAggregateRoot;
+        IQueryRepositoryWithId<TEntity, TId> QueryRepository<TEntity, TId>() where TEntity : class, IAggregateRootWithId<TId>;
+        IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : class, IAggregateRoot;
     }
 
-    public interface IQueryRepository<TEntity> : IQueryRepositoryWithType<TEntity, Guid>
-        where TEntity : IAggregateRootWithType<Guid>
+    public interface IQueryRepository<TEntity> : IQueryRepositoryWithId<TEntity, Guid> where TEntity : IAggregateRoot
     {
     }
 
-    public interface IQueryRepositoryWithType<TEntity, TId>
-        where TEntity : IAggregateRootWithType<TId>
+    public interface IQueryRepositoryWithId<TEntity, TId> where TEntity : IAggregateRootWithId<TId>
     {
         IQueryable<TEntity> Queryable();
     }
