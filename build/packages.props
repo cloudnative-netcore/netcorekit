@@ -6,6 +6,7 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)netcorekit.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
