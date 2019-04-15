@@ -10,8 +10,24 @@ using Xunit;
 
 namespace NetCoreKit.Infrastructure.EfCore.Tests
 {
+    public class TestEvent : EventBase
+    {
+    }
+
     public class TestEntity : AggregateRootBase
     {
+        public TestEntity()
+        {
+            AddEvent(new TestEvent());
+        }
+    }
+
+    public class TestEntityWithId : AggregateRootWithIdBase<int>
+    {
+        public TestEntityWithId()
+        {
+            AddEvent(new TestEvent());
+        }
     }
 
     public class TestDbContext : AppDbContext
@@ -46,9 +62,16 @@ namespace NetCoreKit.Infrastructure.EfCore.Tests
         {
             // command
             var uow = _services.BuildServiceProvider().GetService<IUnitOfWorkAsync>();
+
+            // without id type, default is Guid
             var testCommandRepo = uow.RepositoryAsync<TestEntity>();
             await testCommandRepo.AddAsync(new TestEntity());
             await testCommandRepo.AddAsync(new TestEntity());
+
+            // with int type for id
+            var testCommandRepoWithId = uow.RepositoryAsync<TestEntityWithId, int>();
+            await testCommandRepoWithId.AddAsync(new TestEntityWithId());
+
             var result = await uow.SaveChangesAsync(default);
 
             // assert
@@ -60,11 +83,18 @@ namespace NetCoreKit.Infrastructure.EfCore.Tests
         {
             // query
             var repoFactory = _services.BuildServiceProvider().GetService<IQueryRepositoryFactory>();
+
+            // without id type, default is Guid
             var testQueryRepo = repoFactory.QueryRepository<TestEntity>();
-            var result = await testQueryRepo.ListAsync<TestDbContext, TestEntity>();
+            var result1 = await testQueryRepo.ListAsync<TestDbContext, TestEntity>();
+
+            // with int type for id
+            var testQueryRepoWithId = repoFactory.QueryRepository<TestEntityWithId, int>();
+            var result2 = await testQueryRepoWithId.ListAsync<TestDbContext, TestEntityWithId, int>();
 
             // assert
-            Assert.NotNull(result.ToList());
+            Assert.NotNull(result1.ToList());
+            Assert.NotNull(result2.ToList());
         }
     }
 }

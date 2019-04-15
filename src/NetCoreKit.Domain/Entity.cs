@@ -11,7 +11,7 @@ namespace NetCoreKit.Domain
 
     /// <inheritdoc />
     /// <summary>
-    ///     Supertype for all Entity types
+    ///  Supertype for all Entity types
     /// </summary>
     public interface IEntityWithId<TId> : IIdentityWithId<TId>
     {
@@ -30,7 +30,7 @@ namespace NetCoreKit.Domain
 
     /// <inheritdoc />
     /// <summary>
-    ///     Source: https://github.com/VaughnVernon/IDDD_Samples_NET
+    ///  Source: https://github.com/VaughnVernon/IDDD_Samples_NET
     /// </summary>
     public abstract class EntityWithIdBase<TId> : IEntityWithId<TId>
     {

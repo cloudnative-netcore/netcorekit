@@ -32,6 +32,10 @@ namespace NetCoreKit.Domain
         private readonly IDictionary<Type, Action<object>> _handlers = new ConcurrentDictionary<Type, Action<object>>();
         private readonly List<IEvent> _uncommittedEvents = new List<IEvent>();
 
+        protected AggregateRootWithIdBase() : this(default)
+        {
+        }
+
         protected AggregateRootWithIdBase(TId id) : base(id)
         {
             Created = GenerateDateTime();
