@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NetCoreKit.Infrastructure.Bus;
 using NetCoreKit.Infrastructure.Bus.Redis;
 using NetCoreKit.Infrastructure.EfCore.MySql;
+using NetCoreKit.Infrastructure.EfCore.Postgres;
 using NetCoreKit.RestTemplate.EfCore;
 using NetCoreKit.Samples.TodoAPI.Domain;
 using NetCoreKit.Samples.TodoAPI.Infrastructure.Db;
@@ -18,7 +19,8 @@ namespace NetCoreKit.Samples.TodoAPI
                 svc =>
                 {
                     //svc.AddEfSqlLiteDb();
-                    svc.AddEfCoreMySqlDb();
+                    //svc.AddEfCoreMySqlDb();
+                    svc.AddEfCorePostgresDb();
                 },
                 (svc, _) => { svc.AddScoped<IUserGateway, UserGateway>(); }
             );
@@ -30,6 +32,7 @@ namespace NetCoreKit.Samples.TodoAPI
         public void Configure(IApplicationBuilder app)
         {
             app.UseEfCoreTemplate();
+            app.UseMigrationsEndPoint();
         }
     }
 }

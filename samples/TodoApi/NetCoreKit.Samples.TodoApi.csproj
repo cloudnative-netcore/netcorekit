@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure.EfCore.Postgres\NetCoreKit.Infrastructure.EfCore.Postgres.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Utils\NetCoreKit.Utils.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Domain\NetCoreKit.Domain.csproj" />
     <ProjectReference Include="..\..\src\NetCoreKit.Infrastructure\NetCoreKit.Infrastructure.csproj" />

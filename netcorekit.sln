@@ -100,6 +100,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{4F50C243
 		build\packages.props = build\packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreKit.Infrastructure.EfCore.Postgres", "src\NetCoreKit.Infrastructure.EfCore.Postgres\NetCoreKit.Infrastructure.EfCore.Postgres.csproj", "{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +334,14 @@ Global
 		{B4C4A9F0-00F0-45D8-8A82-60870EBD17A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4C4A9F0-00F0-45D8-8A82-60870EBD17A3}.Release|x86.ActiveCfg = Release|Any CPU
 		{B4C4A9F0-00F0-45D8-8A82-60870EBD17A3}.Release|x86.Build.0 = Release|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Debug|x86.Build.0 = Debug|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Release|x86.ActiveCfg = Release|Any CPU
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -368,6 +378,7 @@ Global
 		{4BC63394-EFEF-499E-9D43-39AA96244502} = {4A2D1031-E1FD-43BB-B8D3-F570F4020A29}
 		{D175B413-2373-46C9-86EB-65329AFF2B98} = {4A2D1031-E1FD-43BB-B8D3-F570F4020A29}
 		{B4C4A9F0-00F0-45D8-8A82-60870EBD17A3} = {1317E2B0-8834-4770-9759-9CD0D9E84D28}
+		{2358FCCE-7C78-49C3-84A9-A3B2E83624C4} = {6CF50533-EBD6-47B1-9AD9-9EBBFF3AC887}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9325AE8-21A8-4D46-9B04-38BD2BC35C0F}
